@@ -101,18 +101,18 @@ export function buildRoom() {
 export function buildLights(scene) {
   const g = group('Aydinlatma', { layer: 'lights', label: 'Işık kaynakları' });
 
-  const hemi = new THREE.HemisphereLight(0xd2dcea, 0x6f685d, 0.34);
+  const hemi = new THREE.HemisphereLight(0xccd7e6, 0x5d564c, 0.26);
   hemi.position.set(cm(room.width / 2), cm(room.height + 100), cm(room.depth / 2));
   g.add(hemi);
 
   // Tavan armaturleri -> yumusak spot
   ceilCfg.luminaires.forEach((l, i) => {
-    const sp = new THREE.SpotLight(0xffeecf, 19, cm(520), Math.PI / 2.15, 1.0, 1.7);
+    const sp = new THREE.SpotLight(0xffeecf, 24, cm(520), Math.PI / 2.15, 0.95, 1.7);
     sp.position.set(cm(l.pos[0]), cm(room.height - 8), cm(l.pos[1]));
     sp.target.position.set(cm(l.pos[0]), 0, cm(l.pos[1]));
-    sp.castShadow = i === 0;
+    sp.castShadow = true;
     if (sp.castShadow) {
-      sp.shadow.mapSize.set(2048, 2048);
+      sp.shadow.mapSize.set(1536, 1536);
       sp.shadow.bias = -0.0012;
       sp.shadow.normalBias = 0.02;
       sp.shadow.camera.near = 0.2;
@@ -134,11 +134,11 @@ export function buildLights(scene) {
   g.add(sun, sun.target);
 
   // Dolgu (golgeleri yumusatir)
-  const fill = new THREE.PointLight(0xf2ece0, 3.2, cm(400), 2.0);
+  const fill = new THREE.PointLight(0xf2ece0, 1.9, cm(400), 2.0);
   fill.position.set(cm(room.width * 0.72), cm(200), cm(room.depth * 0.72));
   g.add(fill);
 
-  const fill2 = new THREE.PointLight(0xe8ecf2, 2.0, cm(360), 2.0);
+  const fill2 = new THREE.PointLight(0xe8ecf2, 1.2, cm(360), 2.0);
   fill2.position.set(cm(60), cm(210), cm(room.depth * 0.7));
   g.add(fill2);
 

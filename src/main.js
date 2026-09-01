@@ -19,6 +19,7 @@ import {
 import { buildRoom, buildLights, LAYERS, roomMetrics } from './model/index.js';
 import { buildPlanDimensions, buildElevationDimensions } from './viewer/dimensions.js';
 import { exportGLB, exportOBJ, exportPNG } from './export/gltf.js';
+import { createPipeline } from './viewer/render.js';
 import { cm } from './lib/geom.js';
 import { doorSwingLimit, metrics } from './lib/analysis.js';
 
@@ -57,6 +58,16 @@ controls.target.set(cm(room.width / 2), cm(120), cm(room.depth / 2));
 const modelRoot = buildRoom();
 scene.add(modelRoot);
 const lights = buildLights(scene);
+
+/* --------------------------------------------------- isleme hatti (AO) */
+let pipeline = null;
+let useAO = true;
+try {
+  pipeline = createPipeline(renderer, scene, camera);
+} catch (e) {
+  console.warn('GTAO baslatilamadi, duz isleme kullanilacak:', e);
+  useAO = false;
+}
 
 const dimPlan = buildPlanDimensions();
 const dimElev = buildElevationDimensions();
@@ -510,7 +521,12 @@ function secTools() {
     <div class="row" style="margin-top:10px"><label>Pozlama: <b id="ev">0.98</b></label></div>
     <input type="range" id="er" min="40" max="180" value="98">
     <div class="row" style="margin-top:10px"><label>Gün ışığı (koridordan): <b id="sv">0.85</b></label></div>
-    <input type="range" id="sr" min="0" max="250" value="85">`;
+    <input type="range" id="sr" min="0" max="250" value="85">
+    <div class="row" style="margin-top:12px">
+      <input type="checkbox" id="ao" ${useAO ? 'checked' : ''}>
+      <label for="ao"><b>Ortam gölgelemesi</b> (AO) — köşelerde yumuşak gölge</label>
+    </div>
+    <p class="note">Yavaş çalışıyorsa kapatın; geometri ve ölçüler etkilenmez.</p>`;
   d.body.querySelector('#dr').oninput = (e) => setDoorAngle(+e.target.value);
   d.body.querySelector('#er').oninput = (e) => {
     renderer.toneMappingExposure = +e.target.value / 100;
@@ -520,6 +536,8 @@ function secTools() {
     lights.sun.intensity = +e.target.value / 100;
     d.body.querySelector('#sv').textContent = (+e.target.value / 100).toFixed(2);
   };
+  const aoBox = d.body.querySelector('#ao');
+  if (aoBox) aoBox.onchange = (e) => { useAO = e.target.checked && !!pipeline; };
   return d;
 }
 
@@ -651,6 +669,7 @@ function onResize() {
   renderer.setSize(w, h);
   camera.aspect = w / h; camera.updateProjectionMatrix();
   fitOrtho();
+  pipeline?.setSize(w, h);
 }
 addEventListener('resize', onResize);
 
@@ -664,7 +683,12 @@ function loop() {
   else if (activeCam === camera) controls.update();
   applyCutaway();
   if (selected?.host && selBox.visible) selBox.update();
-  renderer.render(scene, activeCam);
+  if (useAO && pipeline) {
+    pipeline.setCamera(activeCam);
+    pipeline.composer.render();
+  } else {
+    renderer.render(scene, activeCam);
+  }
   requestAnimationFrame(loop);
 }
 
@@ -680,4 +704,4 @@ setTimeout(() => {
 }, 260);
 
 // Gelistirme kolayligi: konsoldan erisim
-Object.assign(window, { THREE, scene, camera, modelRoot, layerState, applyLayers, room });
+Object.assign(window, { THREE, scene, camera, modelRoot, layerState, applyLayers, room, pipeline: () => pipeline, GTAOOut: null });

@@ -218,6 +218,15 @@ function drawPlan() {
     lk++;
   }
 
+  // kesme cizgileri (1-1 enine, 2-2 boyuna)
+  const cutLine = (a, b, c, d2, lab) => [
+    line(a, b, c, d2, C.cut, 0.5, 'stroke-dasharray="9 2.5 2 2.5"'),
+    circle(a, b, 3.4, C.cut, 0.4, '#fff'), text(a, b + 1.1, lab, 2.4, 'middle', C.cut, 'font-weight="700"'),
+    circle(c, d2, 3.4, C.cut, 0.4, '#fff'), text(c, d2 + 1.1, lab, 2.4, 'middle', C.cut, 'font-weight="700"'),
+  ].join('');
+  p.push(cutLine(X(-26), Y(110), X(room.width + 26), Y(110), '1'));
+  p.push(cutLine(X(300), Y(-26), X(300), Y(room.depth + 26), '2'));
+
   // gorunus isaretleri
   p.push(viewMark(X(room.width / 2), Y(0) + PT + 26, 'A'));
   p.push(viewMark(X(room.width) + TW + 26, Y(room.depth / 2), 'B'));
@@ -367,6 +376,173 @@ function drawElevation(side, code, name) {
   return svg(wMM, hMM, `${code} gorunusu`, p.join('\n'));
 }
 
+/* ================================================================ KESIT */
+/**
+ * Dusey kesit. Plan duzlemini bir cizgiyle keser ve o cizginin arkasinda
+ * kalanlari gorunus olarak cizer.
+ *   axis 'y' -> yatay kesme cizgisi, ON duvara bakis  (enine kesit)
+ *   axis 'x' -> dusey kesme cizgisi,  SAG duvara bakis (boyuna kesit)
+ * Plan/gorunuslerde okunmayan seyleri gosterir: asma tavan ustu tesisat
+ * boslugu, kaba doseme, boluntu konstruksiyonu, ankastre dolabin derinligi.
+ */
+function drawSection(axis, at, code, name) {
+  const H = MM(room.height);
+  const VOID = MM(room.slabToCeiling);          // asma tavan ustu bosluk
+  const SLAB = MM(22);                          // kaba doseme kalinligi (temsili)
+  const len = axis === 'y' ? room.width : room.depth;
+  const L = MM(len);
+  const wMM = L + PAD * 2 + 104, hMM = H + VOID + SLAB * 2 + PAD * 2 + 96;
+  const ox = PAD + 38, oy = PAD + 34 + SLAB + VOID;   // ust kaba dosemeye yer birak
+  const U = (u) => ox + MM(u);                  // kesit boyunca yatay
+  const Z = (z) => oy + H - MM(z);              // kot
+  const p = [];
+
+  p.push(`<defs>
+    <pattern id="hs" width="1.6" height="1.6" patternTransform="rotate(45)" patternUnits="userSpaceOnUse">
+      <line x1="0" y1="0" x2="0" y2="1.6" stroke="${C.hatch}" stroke-width="0.55"/></pattern>
+    <pattern id="hc" width="1.1" height="1.1" patternTransform="rotate(45)" patternUnits="userSpaceOnUse">
+      <line x1="0" y1="0" x2="0" y2="1.1" stroke="#b9bec6" stroke-width="0.45"/></pattern>
+  </defs>`);
+
+  // --- kesilen yapi elemanlari (kalin cizgi + tarama) ---
+  const TW = MM(room.wallThickness);
+  // kaba doseme
+  p.push(rect(U(-room.wallThickness) - 6, Z(0), L + TW * 2 + 12, SLAB, C.cut, 0.6, 'url(#hc)'));
+  // yan duvarlar (kesitte)
+  p.push(rect(U(0) - TW, Z(room.height) - VOID, TW, H + VOID, C.cut, 0.6, 'url(#hs)'));
+  p.push(rect(U(len), Z(room.height) - VOID, TW, H + VOID, C.cut, 0.6, 'url(#hs)'));
+  // ust kaba doseme
+  p.push(rect(U(-room.wallThickness) - 6, Z(room.height) - VOID - SLAB, L + TW * 2 + 12, SLAB, C.cut, 0.6, 'url(#hc)'));
+  // asma tavan plakasi (kesitte ince) + askilar
+  p.push(rect(U(0), Z(room.height), L, MM(3), C.cut, 0.45, '#e9e4d8'));
+  for (let x = 45; x < len; x += 60) {
+    p.push(line(U(x), Z(room.height), U(x), Z(room.height) - VOID, C.thin, 0.2, 'stroke-dasharray="1.4 1.2"'));
+    p.push(line(U(x) - 1.6, Z(room.height) - VOID, U(x) + 1.6, Z(room.height) - VOID, C.thin, 0.35));
+  }
+  // doseme kaplamasi
+  p.push(rect(U(0), Z(0), L, MM(3), C.cut, 0.45, '#dcdee1'));
+  // tesisat boslugu etiketi
+  p.push(text(U(len * 0.5), Z(room.height) - VOID / 2 + 1,
+    `asma tavan üstü tesisat boşluğu  ${room.slabToCeiling} cm`, 2.3, 'middle', C.view));
+
+  // --- kesit duzleminin ARKASINDA kalanlar (gorunus) ---
+  const back = axis === 'y' ? 0 : room.width;    // bakis yonundeki duvar
+  if (axis === 'y') {
+    // on boluntu gorunuste
+    let cx = 0;
+    for (const pan of partition.panels) {
+      const x0 = U(cx), w = MM(pan.width);
+      if (pan.kind === 'door') {
+        p.push(rect(x0, Z(door.height), w, MM(door.height), C.view, 0.35, '#f2f2f0'));
+        p.push(text(x0 + w / 2, Z(door.height / 2), door.id, 3.0, 'middle', C.view, 'font-weight="700"'));
+      } else {
+        p.push(rect(x0, Z(partition.sillHeight), w, MM(partition.sillHeight), C.view, 0.3,
+          pan.color === 'green' ? '#e6f3df' : '#fdf6dd'));
+      }
+      cx += pan.width;
+    }
+    p.push(rect(U(0), Z(partition.transomTop), L, MM(partition.transomTop - partition.sillHeight), C.view, 0.3, '#eff3f4'));
+    p.push(rect(U(0), Z(room.height), L, MM(room.height - partition.transomTop), C.view, 0.3, '#e2f2ce'));
+  } else {
+    // Sag duvar gorunuste: ankastre dolap bankosu modul modul, altinda bos duvar.
+    // Kesit boyunca u ekseni arka duvardan (u=0) on duvara (u=derinlik) gider.
+    p.push(rect(U(0), Z(room.height), L, H, C.view, 0.25, '#fcfcfb'));
+    const wu = wallUnits;
+    const n = Math.max(1, Math.round((wu.yEnd - wu.yStart) / wu.moduleWidth));
+    const mw = (wu.yEnd - wu.yStart) / n;
+    p.push(rect(U(0), Z(wu.zTop), L, MM(wu.zTop - wu.zBottom), C.view, 0.45, '#ffffff'));
+    for (let i = 0; i < n; i++) {
+      const uStart = room.depth - (wu.yStart + (i + 1) * mw);   // y -> u cevrimi
+      const colorName = wu.frontPattern[i % wu.frontPattern.length];
+      for (let r = 0; r < 2; r++) {
+        const cName = (i + r) % 2 === 0 ? colorName : (colorName === 'yellow' ? 'offwhite' : 'yellow');
+        const rh = (wu.zTop - wu.zBottom - 3.6) / 2;
+        const zz = wu.zBottom + 1.8 + r * rh;
+        p.push(rect(U(uStart + 1), Z(zz + rh - 0.4), MM(mw - 2), MM(rh - 0.4), C.view, 0.28,
+          cName === 'yellow' ? '#fdf3cf' : '#f2efe8'));
+      }
+    }
+    p.push(text(U(room.depth / 2), Z(wu.zBottom) + 5, `${wu.id} — ${n} modül × ${Math.round(mw)} cm`, 2.4, 'middle', C.acc));
+    p.push(dimV(Z(wu.zTop), Z(wu.zBottom), U(len) + TW + 12, `${wu.zTop - wu.zBottom}`, -1));
+    p.push(dimV(Z(wu.zBottom), Z(0), U(len) + TW + 12, `${wu.zBottom}`, -1));
+    // sag duvardaki elemanlar
+    for (const wi of wallItems.filter((x) => x.wall === 'right')) {
+      const w = wi.w || wi.dia || 10, h = wi.h || wi.dia || 10;
+      const uu = room.depth - wi.u;
+      p.push(rect(U(uu - w / 2), Z(wi.z + h / 2), MM(w), MM(h), C.view, 0.4, '#ffffff'));
+      p.push(text(U(uu), Z(wi.z - h / 2) + 4.2, `${wi.id} +${wi.z}`, 2.1, 'middle', C.acc));
+    }
+  }
+
+  // ankastre dolap: y kesitinde KESILIR, x kesitinde gorunuste kalir
+  if (axis === 'y') {
+    const wu = wallUnits;
+    const x0 = U(len - wu.depth);
+    p.push(rect(x0, Z(wu.zTop), MM(wu.depth), MM(wu.zTop - wu.zBottom), C.cut, 0.6, '#ffffff'));
+    const rows = 2, rh = (wu.zTop - wu.zBottom - 3.6) / rows;
+    for (let r = 0; r < rows; r++) {
+      p.push(line(x0, Z(wu.zBottom + 1.8 + r * rh), x0 + MM(wu.depth), Z(wu.zBottom + 1.8 + r * rh), C.view, 0.25));
+      // raf
+      p.push(line(x0 + 1, Z(wu.zBottom + 1.8 + r * rh + rh / 2), x0 + MM(wu.depth) - 1,
+        Z(wu.zBottom + 1.8 + r * rh + rh / 2), C.thin, 0.22));
+    }
+    p.push(text(x0 - 3, Z((wu.zBottom + wu.zTop) / 2), wu.id, 2.4, 'end', C.acc, 'font-weight="700"'));
+    p.push(dimV(Z(wu.zTop), Z(wu.zBottom), U(len) + TW + 12, `${wu.zTop - wu.zBottom}`, -1));
+    p.push(dimV(Z(wu.zBottom), Z(0), U(len) + TW + 12, `${wu.zBottom}`, -1));
+  }
+
+  // --- mobilya: kesme cizgisini kesenler KESITTE, arkada kalanlar gorunuste ---
+  const items = furniture.map((it) => ({ it, r: footprint(it) }));
+  const beyond = [], cut = [];
+  for (const o of items) {
+    if (axis === 'y') {
+      if (o.r.y0 <= at && o.r.y1 >= at) cut.push(o);
+      else if (o.r.y1 < at) beyond.push(o);
+    } else {
+      if (o.r.x0 <= at && o.r.x1 >= at) cut.push(o);
+      else if (o.r.x0 > at) beyond.push(o);
+    }
+  }
+  const uOf = (r) => axis === 'y' ? [r.x0, r.x1] : [room.depth - r.y1, room.depth - r.y0];
+  // once arkadakiler (acik), sonra kesilenler (koyu)
+  for (const { it, r } of beyond) {
+    const [u0, u1] = uOf(r);
+    p.push(rect(U(u0), Z(it.h), MM(u1 - u0), MM(it.h), C.thin, 0.28, '#fbfbfa'));
+    p.push(text(U((u0 + u1) / 2), Z(it.h) - 3, it.id, 2.2, 'middle', C.thin));
+  }
+  for (const { it, r } of cut) {
+    const [u0, u1] = uOf(r);
+    p.push(rect(U(u0), Z(it.h), MM(u1 - u0), MM(it.h), C.cut, 0.55, 'url(#hc)'));
+    p.push(bubble(U((u0 + u1) / 2), Z(it.h) - 5.5, it.id));
+    p.push(text(U((u0 + u1) / 2), Z(it.h / 2), `${it.h}`, 2.3, 'middle', C.cut));
+  }
+
+  // --- kot isaretleri ---
+  const lvl = (z, label) => {
+    const x = U(-room.wallThickness) - 14;
+    return [
+      line(x, Z(z), U(0) - TW, Z(z), C.dim, 0.16, 'stroke-dasharray="3 2"'),
+      `<path d="M ${(x + 3).toFixed(2)} ${Z(z).toFixed(2)} l -2.4 -2.4 l -2.4 2.4 z" fill="${C.dim}"/>`,
+      text(x + 4, Z(z) - 1.6, label, 2.4, 'start', C.dim),
+    ].join('');
+  };
+  p.push(lvl(0, '±0.00'));
+  p.push(lvl(room.height, `+${(room.height / 100).toFixed(2)} asma tavan`));
+  p.push(lvl(room.height + room.slabToCeiling, `+${((room.height + room.slabToCeiling) / 100).toFixed(2)} kaba tavan`));
+
+  // --- kotalar ---
+  p.push(dimV(Z(room.height), Z(0), U(0) - TW - 10, `${room.height} net`, 1));
+  p.push(dimV(Z(room.height + room.slabToCeiling), Z(room.height), U(0) - TW - 10, `${room.slabToCeiling}`, 1));
+  p.push(dimH(U(0), U(len), Z(0) + 13, `${len}`));
+
+  p.push(text(ox - 30, PAD + 8, `${code} KESITI — ${name}`, 3.2, 'start', C.txt, 'font-weight="700"'));
+  p.push(text(ox - 30, PAD + 14,
+    axis === 'y' ? `Kesme duzlemi y = ${at} cm, on duvara bakis` : `Kesme duzlemi x = ${at} cm, sag duvara bakis`,
+    2.4, 'start', C.view));
+  p.push(titleBlock(wMM, hMM, `${code} kesiti — ${name}`, code === '1-1' ? 'M-08' : 'M-09'));
+  return svg(wMM, hMM, `${code} kesiti`, p.join('\n'));
+}
+
 /* ======================================================== TAVAN / DOSEME */
 function drawGridPlan(kind) {
   const isCeil = kind === 'ceiling';
@@ -413,6 +589,8 @@ const files = [
   ['gorunus-B-sag.svg', drawElevation('right', 'B', 'Sag duvar / ankastre dolap')],
   ['gorunus-C-arka.svg', drawElevation('back', 'C', 'Arka duvar')],
   ['gorunus-D-sol.svg', drawElevation('left', 'D', 'Sol duvar')],
+  ['kesit-1-1.svg', drawSection('y', 110, '1-1', 'Enine kesit — kapı duvarına bakış')],
+  ['kesit-2-2.svg', drawSection('x', 300, '2-2', 'Boyuna kesit — sağ duvara bakış')],
   ['tavan-plani.svg', drawGridPlan('ceiling')],
   ['doseme-plani.svg', drawGridPlan('floor')],
 ];

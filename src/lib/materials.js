@@ -34,7 +34,7 @@ function M(key, fn) {
 export const mat = {
   floor: (wCm, dCm) => M(`floor${wCm}x${dCm}`, () => new THREE.MeshStandardMaterial({
     map: tx(T.floorTexture(), { repeat: [wCm / 66, dCm / 66] }),
-    roughness: 0.42, metalness: 0.0, envMapIntensity: 0.5,
+    roughness: 0.34, metalness: 0.02, envMapIntensity: 0.75,
   })),
 
   ceiling: (wCm, dCm) => M(`ceil${wCm}x${dCm}`, () => new THREE.MeshStandardMaterial({
@@ -51,7 +51,7 @@ export const mat = {
   wood: (name = 'beech', wCm = 100, hCm = 100, streak = 0.5) =>
     M(`wood${name}${Math.round(wCm)}x${Math.round(hCm)}x${streak}`, () => new THREE.MeshStandardMaterial({
       map: tx(T.woodTexture(palette[name].hex, 1024, streak), { repeat: [wCm / 120, hCm / 60] }),
-      roughness: 0.46, metalness: 0.02, envMapIntensity: 0.7,
+      roughness: 0.40, metalness: 0.02, envMapIntensity: 0.85,
     })),
 
   wiredGlass: (wCm = 100, hCm = 60) => M(`wg${Math.round(wCm)}x${Math.round(hCm)}`, () =>

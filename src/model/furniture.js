@@ -10,23 +10,63 @@ import { mat } from '../lib/materials.js';
 import { box, boxAt, roundedBox, cyl, sphere, group, cm } from '../lib/geom.js';
 
 /* ------------------------------------------------------------- yardimci */
-const BOOK_COLORS = ['#3d5a8a', '#8a3d3d', '#3d6b4a', '#7a6a3a', '#4a3d6b', '#2f3f4a', '#8a6a3d', '#5a5a5a'];
+const BOOK_COLORS = [
+  '#33507d', '#7d3535', '#356043', '#6f6033', '#433569', '#2b3a45',
+  '#7d5f35', '#4f4f52', '#8d6a4a', '#2f5a5e', '#6b3050', '#3f5230',
+];
 
-/** Bir rafa siralanmis dosya/kitap sirti */
+/**
+ * Bir rafi dosya/kitapla doldurur. Duz duran ciltler, yana yatmis birkac kitap,
+ * yatay istifler ve bos araliklar karisik olarak yerlestirilir - hepsi ayni
+ * kalinlikta dizilmis "levha" gorunumunden kacinmak icin.
+ */
 function books(g, { x, y, z, len, depth, height, seedN = 1 }) {
-  let s = seedN * 7919;
+  let s = seedN * 7919 + 13;
   const r = () => ((s = (s * 1103515245 + 12345) % 2147483648) / 2147483648);
+  const col = () => BOOK_COLORS[Math.floor(r() * BOOK_COLORS.length)];
   let cx = x + 1;
-  while (cx < x + len - 4) {
-    const w = 1.4 + r() * 3.2;
-    if (cx + w > x + len - 1) break;
-    const h = height * (0.62 + r() * 0.3);
-    const lean = r() < 0.08;
-    const b = box(w, depth * (0.72 + r() * 0.2), h, mat.plain(BOOK_COLORS[Math.floor(r() * BOOK_COLORS.length)], 0.75),
-      { x: cx, y, z });
-    if (lean) b.rotation.z = (r() - 0.5) * 0.14;
+  const end = x + len - 1;
+
+  while (cx < end - 3) {
+    const roll = r();
+
+    if (roll < 0.10) {                       // bos aralik
+      cx += 3 + r() * 9;
+      continue;
+    }
+    if (roll < 0.24) {                       // yatay istif (yan yatmis kitaplar)
+      const w = 14 + r() * 10;
+      if (cx + w > end) break;
+      let sz = z;
+      const n = 2 + Math.floor(r() * 3);
+      for (let i = 0; i < n && sz < z + height - 3; i++) {
+        const t = 2.2 + r() * 1.6;
+        g.add(box(w - r() * 2, depth * (0.8 + r() * 0.15), t, mat.plain(col(), 0.78),
+          { x: cx + r() * 1.5, y: y + r() * 1.5, z: sz }));
+        sz += t + 0.15;
+      }
+      cx += w + 1.5;
+      continue;
+    }
+    if (roll < 0.34) {                       // arsiv kutusu / genis klasor
+      const w = 7 + r() * 3;
+      if (cx + w > end) break;
+      const h = height * (0.86 + r() * 0.1);
+      g.add(box(w, depth * 0.94, h, mat.plain(r() < 0.5 ? '#3b4250' : '#5c4a3a', 0.82), { x: cx, y, z }));
+      g.add(box(w - 2, 0.5, 3.2, mat.plain('#efece4', 0.85), { x: cx + 1, y: y + depth * 0.94, z: z + h * 0.66 }));
+      cx += w + 0.5;
+      continue;
+    }
+
+    // duz duran cilt
+    const w = 1.3 + r() * 3.4;
+    if (cx + w > end) break;
+    const h = height * (0.58 + r() * 0.34);
+    const d2 = depth * (0.70 + r() * 0.24);
+    const b = box(w, d2, h, mat.plain(col(), 0.72 + r() * 0.12), { x: cx, y: y + r() * 1.2, z });
+    if (r() < 0.10) { b.rotation.z = (r() - 0.5) * 0.20; b.position.y -= cm(0.4); }
     g.add(b);
-    cx += w + (r() < 0.15 ? 1.5 + r() * 5 : 0.4);
+    cx += w + (r() < 0.12 ? 1.2 + r() * 3 : 0.35);
   }
 }
 

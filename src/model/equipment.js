@@ -125,23 +125,45 @@ export function coaster(it) {
 }
 
 /* ============================================================== YAZICI */
+/** Ofis tipi cok fonksiyonlu yazici: govde + kagit cikis yuvasi + tarayici + ADF */
 export function printer(it) {
   const g = group(`${it.id} ${it.name}`, { layer: 'equipment', label: it.name, item: it });
   const { w, d, h } = it;
-  const body = mat.plain('#ded9cf', 0.62);
-  g.add(roundedBox(w, d, h * 0.62, 1.2, body, { x: 0, y: 0, z: 0, name: 'govde' }));
-  // kagit cikis tepsisi
-  g.add(box(w - 8, d - 14, 1.4, mat.plain('#cfcac0', 0.6), { x: 4, y: 6, z: h * 0.62 }));
-  // tarayici ustu
-  g.add(roundedBox(w, d - 4, h * 0.24, 1.0, body, { x: 0, y: 2, z: h * 0.66, name: 'tarayici' }));
-  g.add(roundedBox(w - 4, d - 10, 2.2, 0.8, mat.plain('#3d3f42', 0.5), { x: 2, y: 5, z: h * 0.90, name: 'kapak' }));
-  // kontrol paneli
-  g.add(box(14, 8, 1.2, mat.plain('#2b2d30', 0.4), { x: 4, y: d - 12, z: h * 0.90 + 2.2 }));
-  const scr = box(9, 4.5, 0.4, mat.plain('#5a7f6a', 0.35), { x: 6.5, y: d - 10, z: h * 0.90 + 3.4 });
+  const shell = mat.plain('#dcd7cd', 0.62);
+  const shell2 = mat.plain('#cbc6bb', 0.62);
+  const dark = mat.plain('#3a3c40', 0.5);
+
+  const hBody = h * 0.46;      // alt govde (kaset + mekanik)
+  const hSlot = h * 0.16;      // kagit cikis yuvasi (icerlek)
+  const hScan = h * 0.24;      // tarayici govdesi
+  const hLid = h * 0.14;       // ADF / kapak
+
+  // alt govde + kagit kaseti
+  g.add(roundedBox(w, d, hBody, 1.4, shell, { x: 0, y: 0, z: 0, name: 'govde' }));
+  g.add(box(w - 8, 2.0, hBody * 0.52, shell2, { x: 4, y: -2.0, z: hBody * 0.16, name: 'kagit-kaseti' }));
+  g.add(box(w * 0.34, 0.8, 1.4, dark, { x: w * 0.33, y: -2.6, z: hBody * 0.16 + hBody * 0.52 * 0.42 }));
+
+  // icerlek kagit cikis yuvasi (govde ile tarayici arasi)
+  g.add(box(w - 7, d - 7, hSlot, mat.plain('#8f8b84', 0.75), { x: 3.5, y: 3.5, z: hBody, name: 'cikis-yuvasi' }));
+  g.add(box(w - 14, d - 16, 1.2, shell2, { x: 7, y: 8, z: hBody + 1.0, name: 'cikis-tepsisi' }));
+
+  // tarayici govdesi
+  g.add(roundedBox(w, d - 3, hScan, 1.2, shell, { x: 0, y: 1.5, z: hBody + hSlot, name: 'tarayici' }));
+  // ADF kapagi (arkaya dogru menteseli, hafif aralikli)
+  g.add(roundedBox(w - 3, d - 10, hLid, 1.0, shell2, { x: 1.5, y: 5, z: hBody + hSlot + hScan, name: 'adf-kapak' }));
+  g.add(box(w - 12, d - 22, 1.6, mat.plain('#b9b4ab', 0.7), { x: 6, y: 10, z: hBody + hSlot + hScan + hLid, name: 'adf-tepsi' }));
+
+  // kontrol paneli (on sag)
+  const pz = hBody + hSlot + hScan * 0.86;
+  g.add(box(w * 0.36, 9, 1.6, dark, { x: w * 0.58, y: d - 11, z: pz, name: 'kontrol-paneli' }));
+  const scr = box(w * 0.20, 5, 0.5, mat.plain('#6d8f7a', 0.32), { x: w * 0.62, y: d - 9.5, z: pz + 1.6 });
   scr.castShadow = false;
   g.add(scr);
-  // alt kagit kaseti
-  g.add(box(w - 6, 2.5, 8, mat.plain('#c8c3b9', 0.6), { x: 3, y: -2.5, z: 3 }));
+  for (let i = 0; i < 4; i++) {
+    g.add(cyl(0.7, 0.7, 0.7, mat.plain('#5c5f63', 0.5), { x: w * 0.86, y: d - 9.5 + i * 1.8, z: pz + 1.6, seg: 10 }));
+  }
+  // marka seridi
+  g.add(box(w * 0.22, 0.5, 1.6, mat.plain('#8a8680', 0.6), { x: w * 0.08, y: d - 1.5, z: hBody + hSlot + hScan * 0.35 }));
   return g;
 }
 
