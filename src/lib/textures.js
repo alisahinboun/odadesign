@@ -3,6 +3,7 @@
  * Hepsi <canvas> uzerinde cizilir, THREE.CanvasTexture olarak dondurulur.
  */
 import * as THREE from 'three';
+import { wallpaperDataURI } from '../assets/wallpaper.js';
 
 const cache = new Map();
 function memo(key, fn) {
@@ -574,6 +575,41 @@ function turna(g, { x, y, s, ang = 0 }) {
  * Duvar kagidi dokusu. Oran dolap yuzeyi ile ayni: 270 x 213 cm.
  * @param {number} px doku genisligi (piksel)
  */
+/**
+ * Gomulu gorsel yuklendiginde haber verilecekler. Gorsel base64 de olsa
+ * <img> cozumlemesi ASENKRON; doku bir kare sonra tazelenmeli.
+ */
+let muralHazir = false;
+const muralBekleyen = [];
+export function onMuralReady(fn) { if (muralHazir) fn(); else muralBekleyen.push(fn); }
+
+/** Gomulu gorseli tuvale, ORANI BOZMADAN yerlestir */
+function gomuluGorseliCiz(c, g, W, H) {
+  const img = new Image();
+  img.onload = () => {
+    // Genislik boyunca tam otur, ALTA hizala. Dolap yuzeyi (270x213) gorselden
+    // daha kare oldugu icin ustte kalan bosluk gorselin kendi gogu ile
+    // doldurulur - ek olarak gokyuzu yukari uzamis gibi gorunur, dikis olmaz.
+    const dh = Math.round(W * img.naturalHeight / img.naturalWidth);
+    const dy = H - dh;
+    if (dy > 0) {
+      // gorselin ust satirindan renk ornekle
+      const t = document.createElement('canvas');
+      t.width = 1; t.height = 1;
+      const tg = t.getContext('2d');
+      tg.drawImage(img, 0, 0, img.naturalWidth, 2, 0, 0, 1, 1);
+      const [r, gg, bb] = tg.getImageData(0, 0, 1, 1).data;
+      g.fillStyle = `rgb(${r},${gg},${bb})`;
+      g.fillRect(0, 0, W, dy + 2);
+    }
+    g.drawImage(img, 0, Math.max(0, dy), W, dh);
+    muralHazir = true;
+    while (muralBekleyen.length) muralBekleyen.pop()();
+  };
+  img.onerror = () => { muralHazir = true; while (muralBekleyen.length) muralBekleyen.pop()(); };
+  img.src = wallpaperDataURI;
+}
+
 export function muralTexture(px = 2048) {
   return memo('mural' + px, () => {
     const W = px, H = Math.round(px * 213 / 270);
@@ -693,6 +729,10 @@ export function muralTexture(px = 2048) {
     turna(g, { x: iw * 0.81, y: ih * 0.14, s: 0.56, ang: -0.03 });
     turna(g, { x: iw * 0.48, y: ih * 0.05, s: 0.60, ang: 0.04 });
     g.restore();
+
+    // Gercek gorsel gomuluyse cizimin UZERINE gelir; degilse cizim kalir.
+    if (wallpaperDataURI) gomuluGorseliCiz(c, g, W, H);
+    else { muralHazir = true; while (muralBekleyen.length) muralBekleyen.pop()(); }
 
     return c;
   });

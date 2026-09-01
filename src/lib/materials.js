@@ -152,6 +152,8 @@ mat.mural = (u0, v0, du, dv, px = 2048) =>
     t.offset.set(u0, v0);
     t.repeat.set(du, dv);
     t.needsUpdate = true;
+    // Gomulu gorsel asenkron cozumleniyor; geldiginde dokuyu tazele
+    T.onMuralReady(() => { t.needsUpdate = true; });
     return new THREE.MeshStandardMaterial({
       map: t, roughness: 0.78, metalness: 0, envMapIntensity: 0.5,
     });

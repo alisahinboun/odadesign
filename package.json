@@ -15,7 +15,8 @@
     "all:schemes": "node scripts/build-all.mjs",
     "compare": "node scripts/karsilastirma.mjs",
     "foy": "node scripts/olcu-foyu.mjs",
-    "secenekler": "node scripts/secenekler.mjs"
+    "secenekler": "node scripts/secenekler.mjs",
+    "duvar-kagidi": "node scripts/embed-wallpaper.mjs"
   },
   "dependencies": {
     "three": "^0.169.0"

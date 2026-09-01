@@ -83,12 +83,33 @@ sürümden daha iyi çalışır:
 | **3B model indirme (GLB / OBJ)** | ❌ tarayıcı izin vermiyor | ✅ |
 | **Odada yürüme (G) — fare kilidi** | kısıtlı | ✅ tam |
 
+### Eşyaları çevirme
+
+Taşıma kipinde bir eşya seçtiğiniz anda ekranda **çevirme çubuğu** çıkar:
+`⟲ 90° · ⟲ 15° · 15° ⟳ · 90° ⟳`. Klavyede **R** sağa, **Shift+R** sola çevirir.
+Dokunmatik cihazlarda R tuşu olmadığı için çubuk tek yoldur; telefonda tam
+genişlikte, parmak boyutunda görünür. Masayı çevirirseniz üstündeki ekran,
+klavye ve diğer eşyalar onunla birlikte döner; her adımda denetim yeniden
+çalışır (çakışma, kapı yayı, pencere ve radyatör önü).
+
 ### Dolaba duvar kâğıdı
 
 Sağ duvardaki dolap kapaklarına tropik bir duvar kâğıdı kaplanmış hâli
-panelden **açılıp kapatılabilir** (Dolaba duvar kâğıdı bölümü). Desen dış bir
-görsel değil, `src/lib/textures.js → muralTexture()` içinde `<canvas>` üzerine
-**çizilir** — tek dosyalık dağıtımın bozulmaması için. Kâğıt tekrar etmez:
+panelden **açılıp kapatılabilir** (Dolaba duvar kâğıdı bölümü).
+
+Desen iki kaynaktan gelebilir:
+
+1. **Gerçek görsel (tercih edilen).** Bir görseli base64 olarak HTML'e gömün:
+   ```bash
+   npm run duvar-kagidi -- reference/duvar-kagidi.jpg
+   npm run build
+   ```
+   Komut görseli 2048 px'e ölçekler, JPEG'e sıkıştırır ve
+   `src/assets/wallpaper.js` dosyasını yeniden yazar. Dış dosya kalmaz; tek
+   dosyalık dağıtım bozulmaz (dist yaklaşık 300–600 kB büyür).
+2. **Çizilmiş desen (yedek).** Gömülü görsel yoksa `src/lib/textures.js →
+   muralTexture()` içinde `<canvas>` üzerine çizilen prosedürel tropik desen
+   kullanılır. Yani görsel olmadan da her şey çalışır. Kâğıt tekrar etmez:
 270 × 213 cm'lik dolap yüzeyi boyunca tek parça akar, her kapak kendi dilimini
 gösterir (`mat.mural(u0, v0, du, dv)`), gerçekte de duvar kâğıdı böyle kesilir.
 Kapatınca kapaklar sarı-beyaz hâline döner; ölçüler, yerleşim ve denetim

@@ -309,6 +309,11 @@ function setEditMode(on) {
       drawMeasure();
     }
     if (walk.on) setWalk(false);
+    if (selected?.item) {
+      dragger.select(selected.item);
+      const h = dragGroupOf(selected.item.id) || selected.host;
+      if (h) { selBox.setFromObject(h); selBox.visible = true; }
+    }
   } else {
     dragger.end();
     dragger.select(null);
@@ -333,11 +338,7 @@ addEventListener('keydown', (e) => {
                        : setMeasure(false);
   }
   if (e.code === 'KeyE' && !e.metaKey && !e.ctrlKey) setEditMode(!editMode);
-  if (e.code === 'KeyR' && editMode && selected?.item) {
-    dragger.rotate(e.shiftKey ? -15 : 15);
-    if (selected.host) selBox.setFromObject(dragGroupOf(selected.item.id) || selected.host);
-    buildUI();
-  }
+  if (e.code === 'KeyR' && editMode && selected?.item) doRotate(e.shiftKey ? -15 : 15);
 });
 addEventListener('keyup', (e) => walk.keys.delete(e.code));
 /**
@@ -627,8 +628,41 @@ const el = {
   hint: document.getElementById('hint'),
   panel: document.getElementById('panel'),
   toggle: document.getElementById('toggle'),
+  rot: document.getElementById('rotbar'),
   sub: document.getElementById('subhead'),
 };
+/**
+ * CEVIRME CUBUGU.
+ * Daha once dondurmenin tek yolu R tusu ve panelin icindeki tek yonlu bir
+ * dugmeydi; dokunmatikte R tusu yok, panel de acikken odayi kapatiyor.
+ * Artik esya secilir secilmez ekranda dort yonlu bir cubuk cikiyor.
+ */
+let rotUiTimer = null;
+function doRotate(step) {
+  if (!editMode || !selected?.item) return;
+  // Esya listeden secildiyse tasima motoru bunu bilmiyor olabilir; cevirme
+  // motorun state.item'ine bagli oldugu icin once eslesmeyi garantiliyoruz.
+  if (dragger.state.item !== selected.item) dragger.select(selected.item);
+  dragger.rotate(step);
+  const host = dragGroupOf(selected.item.id) || selected.host;
+  if (host) { selBox.setFromObject(host); selBox.visible = true; }
+  updateReadout();
+  // Panel her tikta bastan kurulursa cubuk takiliyor; son tiktan sonra bir kez.
+  clearTimeout(rotUiTimer);
+  rotUiTimer = setTimeout(() => buildUI(), 320);
+}
+for (const b of document.querySelectorAll('#rotbar button')) {
+  b.onclick = () => doRotate(Number(b.dataset.r));
+}
+function syncRotBar() {
+  const on = editMode && !!selected?.item;
+  el.rot.style.display = on ? 'flex' : 'none';
+  if (on) {
+    const it = selected.item;
+    el.rot.querySelector('.nm').textContent = `${it.id} · ${Math.round(it.rot || 0)}°`;
+  }
+}
+
 el.close = document.getElementById('close');
 const setPanel = (open) => {
   el.panel.classList.toggle('hidden', !open);
@@ -651,6 +685,7 @@ function updateHead() {
 updateHead();
 
 function updateReadout() {
+  syncRotBar();
   if (measure.on) {
     const [a, b] = measure.pts;
     if (a && b) {
@@ -747,7 +782,7 @@ function buildUI() {
   el.topbar.appendChild(bm);
 
   if (editMode) {
-    el.hint.innerHTML = 'Bir mobilyaya <b>tıklayıp sürükleyin</b> · <kbd>R</kbd> 15° çevir '
+    el.hint.innerHTML = 'Bir mobilyaya <b>tıklayıp sürükleyin</b> · sağdaki <b>çevirme çubuğu</b> veya <kbd>R</kbd> '
       + '(<kbd>Shift+R</kbd> ters) · duvara yaklaşınca <b>yapışır</b> · '
       + 'çerçeve <b style="color:#6cc248">yeşilse</b> yerleşim geçerli, '
       + '<b style="color:#d4553a">kırmızıysa</b> sorunlu · <kbd>E</kbd> çık';
@@ -830,7 +865,9 @@ function secEdit() {
   const d = sec('Eşyaları taşı', true);
   const n = dragger.movedCount;
   const info = document.createElement('div');
-  info.innerHTML = `<p class="note">Bir mobilyaya tıklayıp sürükleyin. <b>R</b> ile 15° çevirin.
+  info.innerHTML = `<p class="note">Bir mobilyaya tıklayıp sürükleyin. Seçtiğiniz anda
+    ekranda <b>çevirme çubuğu</b> çıkar: ⟲ 90° · ⟲ 15° · 15° ⟳ · 90° ⟳.
+    Klavyede <b>R</b> sağa, <b>Shift+R</b> sola çevirir.
     Masayı taşırsanız üzerindeki monitör, klavye ve diğer eşyalar birlikte gelir.</p>
     <p class="note">Her hareket sonrası <b>denetim</b> çalışır: oda sınırı, çakışma,
     kapı süpürme yayı, pencere önü ve radyatör önü. Sonuç seçim çerçevesinin
@@ -840,15 +877,10 @@ function secEdit() {
 
   const g2 = document.createElement('div');
   g2.className = 'grid2';
-  g2.innerHTML = `<button class="btn" id="ed-rot">Çevir 15°</button>
+  g2.innerHTML = `<button class="btn" id="ed-rot90">Çevir 90°</button>
     <button class="btn" id="ed-reset">Yerleşimi geri al</button>`;
   d.body.appendChild(g2);
-  g2.querySelector('#ed-rot').onclick = () => {
-    if (!selected?.item) return;
-    dragger.rotate(15);
-    selBox.setFromObject(dragGroupOf(selected.item.id) || selected.host);
-    buildUI();
-  };
+  g2.querySelector('#ed-rot90').onclick = () => doRotate(90);
   g2.querySelector('#ed-reset').onclick = () => {
     dragger.clearMoved();
     const pl = curPalette, ly = curLayout;
@@ -1154,6 +1186,7 @@ function focusItem(it) {
   if (userHidden.has(it.id)) { userHidden.delete(it.id); applyLayers(); buildUI(); }
   const host = dragGroupOf(it.id);
   selected = { item: it, host: host || null, name: it.name };
+  if (editMode) dragger.select(it);
   if (host) { selBox.setFromObject(host); selBox.visible = true; } else selBox.visible = false;
   updateReadout();
 }

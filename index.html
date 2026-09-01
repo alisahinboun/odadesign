@@ -201,6 +201,20 @@ button.scheme.on .kind{border-color:rgba(242,193,28,.35);color:var(--acc)}
   font-family:var(--mono)}
 #readout .sm.w{color:#d5b58c;font-family:var(--ui);font-size:10.5px}
 
+/* ------------------------------------------------------- cevirme cubugu */
+/* Esya secildiginde ekranda gorunur; R tusu olmayan dokunmatik cihazlarda
+   dondurmenin TEK yolu bu. */
+#rotbar{position:fixed;right:342px;bottom:96px;z-index:12;display:none;
+  align-items:center;gap:5px;background:rgba(29,27,34,.96);border:1px solid var(--acc);
+  border-radius:5px;padding:6px 8px;backdrop-filter:blur(8px);box-shadow:var(--shadow)}
+#rotbar button{background:var(--raise);color:var(--txt);border:1px solid var(--line);
+  border-radius:4px;padding:7px 9px;font:600 12px/1 var(--ui);cursor:pointer;
+  white-space:nowrap;min-width:52px}
+#rotbar button:hover{border-color:var(--acc);color:var(--acc)}
+#rotbar button:active{background:var(--acc);color:var(--acc-ink)}
+#rotbar .nm{font-family:var(--mono);font-size:11px;color:var(--txt-3);padding:0 6px;
+  min-width:78px;text-align:center}
+
 /* ------------------------------------------------------------- olcum */
 #mlab{position:fixed;inset:0;z-index:10;pointer-events:none}
 #mlab .ml{position:absolute;transform:translate(-50%,-50%);white-space:nowrap;
@@ -263,6 +277,11 @@ button.scheme.on .kind{border-color:rgba(242,193,28,.35);color:var(--acc)}
   #hint{display:none}
 
   #readout{left:10px;right:10px;top:10px;bottom:auto;max-width:none;padding:10px 13px}
+  #rotbar{left:10px;right:10px;bottom:calc(108px + env(safe-area-inset-bottom,0px));
+    justify-content:space-between;padding:7px 8px}
+  #rotbar button{flex:1;padding:11px 4px;min-width:0}
+  #rotbar .nm{display:none}
+  body.panel-open #rotbar{display:none!important}
   #readout .big{font-size:19px}
 
   #toggle{display:block;right:12px;bottom:calc(60px + env(safe-area-inset-bottom,0px));
@@ -294,6 +313,13 @@ button.scheme.on .kind{border-color:rgba(242,193,28,.35);color:var(--acc)}
 <body>
   <div id="app"></div>
   <div id="topbar"></div>
+  <div id="rotbar">
+    <button data-r="-90" title="90 derece sola çevir">⟲&nbsp;90°</button>
+    <button data-r="-15" title="15 derece sola çevir">⟲&nbsp;15°</button>
+    <span class="nm"></span>
+    <button data-r="15" title="15 derece sağa çevir">15°&nbsp;⟳</button>
+    <button data-r="90" title="90 derece sağa çevir">90°&nbsp;⟳</button>
+  </div>
   <div id="readout"></div>
   <div id="hint"></div>
   <button id="toggle" title="Paneli göster" aria-label="Paneli göster">☰</button>
