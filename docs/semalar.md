@@ -13,7 +13,13 @@ npm run check    -- --sema=s2      # denetim
 npm run drawings -- --sema=s2      # docs/drawings/*-s2.svg
 npm run schedule -- --sema=s2      # docs/mahal-listesi-s2.md
 npm run all:schemes                # üçünü de, hepsi için
+npm run compare                    # karşılaştırma paftası (Ş-0 vs Ş-2)
+node scripts/karsilastirma.mjs s0 s1
 ```
+
+**Sunum paftası:** `docs/drawings/karsilastirma-s0-s2.svg` — iki planı yan yana,
+kapı süpürme sektörü taralı, altında ölçülebilir fark tablosu. ▲ iyileşme,
+▼ gerileme (kabul edilebilir sınırlar içinde), işaretsiz fark yok.
 
 Görselleştiricide sağ paneldeki **Tasarım şeması** bölümünden anında geçilir;
 kamera açısı korunur, böylece iki şema aynı bakıştan karşılaştırılabilir.

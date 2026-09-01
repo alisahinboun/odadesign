@@ -12,7 +12,8 @@
     "drawings": "node scripts/drawings.mjs",
     "schedule": "node scripts/schedule.mjs",
     "all": "node scripts/check.mjs && node scripts/drawings.mjs && node scripts/schedule.mjs",
-    "all:schemes": "node scripts/build-all.mjs"
+    "all:schemes": "node scripts/build-all.mjs",
+    "compare": "node scripts/karsilastirma.mjs"
   },
   "dependencies": {
     "three": "^0.169.0"

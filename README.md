@@ -138,6 +138,14 @@ mevcut durum ve iki öneri tanımlı:
 
 Ayrıntı, gerekçe ve karşılaştırma tablosu: [`docs/semalar.md`](docs/semalar.md)
 
+Müşteri sunumu için **karşılaştırma paftası** — iki plan yan yana, kapı süpürme
+sektörü taralı, altında ölçülebilir fark tablosu:
+
+```bash
+npm run compare                      # docs/drawings/karsilastirma-s0-s2.svg
+node scripts/karsilastirma.mjs s0 s1
+```
+
 Bir şema seçildiğinde **her şey** onu izler: 3B model, ölçü kotaları, 9 pafta teknik
 çizim ve metraj listesi. Yeni şema eklemek `schemes.js` içine bir nesne yazmaktır.
 
@@ -190,6 +198,7 @@ scripts/
   drawings.mjs          2B teknik çizim üreteci (plan · 4 görünüş · 2 kesit · tavan · döşeme)
   schedule.mjs          mahal ve donatı listesi üreteci
   build-all.mjs         tüm şemalar için denetim + çizim + metraj
+  karsilastirma.mjs     iki şemayı yan yana koyan sunum paftası
 docs/
   roleve.md             ⚠️ röleve notları, varsayımlar, yerinde kontrol listesi
   semalar.md            tasarım şemaları: gerekçe, değişiklik ve karşılaştırma
