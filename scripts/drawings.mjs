@@ -1,0 +1,423 @@
+#!/usr/bin/env node
+/**
+ * 2B TEKNIK CIZIM URETECI
+ * src/config/room.js verisinden olculendirilmis SVG cizimler uretir:
+ *   plan.svg            1:25  - yerlesim plani, kotalar, poz numaralari
+ *   gorunus-on.svg      1:25  - A gorunusu (kapi duvari / boluntu)
+ *   gorunus-sag.svg     1:25  - B gorunusu (ankastre dolap bankosu)
+ *   gorunus-arka.svg    1:25  - C gorunusu
+ *   gorunus-sol.svg     1:25  - D gorunusu
+ *   tavan-plani.svg     1:25  - asma tavan plaka bolumu + armatur yerlesimi
+ *   doseme-plani.svg    1:25  - doseme karo bolumu
+ * Ciktilar docs/drawings/ altina yazilir. Kullanim: npm run drawings
+ */
+import fs from 'node:fs';
+import path from 'node:path';
+import { fileURLToPath } from 'node:url';
+import {
+  room, partition, door, furniture, equipment, wallItems, wallUnits,
+  ceiling as ceilCfg, floor as floorCfg, palette, meta,
+} from '../src/config/room.js';
+import { footprint, doorSwingLimit, metrics, hingeX, leafWidth } from '../src/lib/analysis.js';
+
+const OUT = path.resolve(path.dirname(fileURLToPath(import.meta.url)), '../docs/drawings');
+fs.mkdirSync(OUT, { recursive: true });
+
+/* ------------------------------------------------------------- cizim ayarlari */
+const SCALE = 1 / 25;             // 1:25
+const MM = (cmVal) => cmVal * 10 * SCALE;   // cm -> cizim mm
+const PAD = 55;                   // kenar payi (mm)
+const C = {
+  cut:   '#111318',   // kesit cizgisi (kalin)
+  view:  '#5a626e',   // gorunus cizgisi
+  thin:  '#98a0ab',   // ince / mobilya ici
+  dim:   '#1b4f7a',   // kota
+  hatch: '#c9ced6',
+  fill:  '#f3f1ec',
+  txt:   '#111318',
+  acc:   '#b8860b',
+};
+const F = 'font-family="Helvetica,Arial,sans-serif"';
+
+function svg(wMM, hMM, title, body) {
+  return `<svg xmlns="http://www.w3.org/2000/svg" width="${wMM}mm" height="${hMM}mm"
+  viewBox="0 0 ${wMM} ${hMM}" ${F}>
+<title>${title}</title>
+<rect width="${wMM}" height="${hMM}" fill="#ffffff"/>
+${body}
+</svg>`;
+}
+
+const esc = (t) => String(t).replace(/&/g, '&amp;').replace(/</g, '&lt;').replace(/>/g, '&gt;');
+const line = (x1, y1, x2, y2, c = C.view, w = 0.25, extra = '') =>
+  `<line x1="${x1.toFixed(2)}" y1="${y1.toFixed(2)}" x2="${x2.toFixed(2)}" y2="${y2.toFixed(2)}" stroke="${c}" stroke-width="${w}" ${extra}/>`;
+const rect = (x, y, w, h, stroke = C.view, sw = 0.25, fill = 'none', extra = '') =>
+  `<rect x="${x.toFixed(2)}" y="${y.toFixed(2)}" width="${w.toFixed(2)}" height="${h.toFixed(2)}" fill="${fill}" stroke="${stroke}" stroke-width="${sw}" ${extra}/>`;
+const text = (x, y, t, size = 2.6, anchor = 'middle', c = C.txt, extra = '') =>
+  `<text x="${x.toFixed(2)}" y="${y.toFixed(2)}" font-size="${size}" fill="${c}" text-anchor="${anchor}" ${extra}>${esc(t)}</text>`;
+const circle = (x, y, r, stroke = C.view, sw = 0.25, fill = 'none') =>
+  `<circle cx="${x.toFixed(2)}" cy="${y.toFixed(2)}" r="${r.toFixed(2)}" fill="${fill}" stroke="${stroke}" stroke-width="${sw}"/>`;
+
+/** Yatay kota zinciri */
+function dimH(x1, x2, y, label, flip = 1) {
+  const t = 1.4;
+  return [
+    line(x1, y - t * flip, x1, y + t * flip, C.dim, 0.18),
+    line(x2, y - t * flip, x2, y + t * flip, C.dim, 0.18),
+    line(x1, y, x2, y, C.dim, 0.18),
+    line(x1 - 1.0, y + 1.0 * flip, x1 + 1.0, y - 1.0 * flip, C.dim, 0.3),
+    line(x2 - 1.0, y + 1.0 * flip, x2 + 1.0, y - 1.0 * flip, C.dim, 0.3),
+    text((x1 + x2) / 2, y - 1.1 * flip, label, 2.5, 'middle', C.dim),
+  ].join('');
+}
+/** Dusey kota zinciri */
+function dimV(y1, y2, x, label, flip = 1) {
+  const t = 1.4;
+  return [
+    line(x - t * flip, y1, x + t * flip, y1, C.dim, 0.18),
+    line(x - t * flip, y2, x + t * flip, y2, C.dim, 0.18),
+    line(x, y1, x, y2, C.dim, 0.18),
+    line(x - 1.0, y1 - 1.0, x + 1.0, y1 + 1.0, C.dim, 0.3),
+    line(x - 1.0, y2 - 1.0, x + 1.0, y2 + 1.0, C.dim, 0.3),
+    `<text x="${(x - 1.2 * flip).toFixed(2)}" y="${((y1 + y2) / 2).toFixed(2)}" font-size="2.5" fill="${C.dim}"
+       text-anchor="middle" transform="rotate(-90 ${(x - 1.2 * flip).toFixed(2)} ${((y1 + y2) / 2).toFixed(2)})">${esc(label)}</text>`,
+  ].join('');
+}
+
+/** Poz balonu */
+function bubble(x, y, id) {
+  return circle(x, y, 3.1, C.acc, 0.3, '#fffdf5') + text(x, y + 0.95, id, 2.5, 'middle', '#7a5c05', 'font-weight="700"');
+}
+
+/** Antet */
+function titleBlock(wMM, hMM, name, no, scaleTxt = '1:25') {
+  const bw = 78, bh = 30, x = wMM - PAD - bw, y = hMM - PAD - bh + 26;
+  return [
+    rect(x, y, bw, bh, C.cut, 0.4, '#ffffff'),
+    line(x, y + 8, x + bw, y + 8, C.cut, 0.25),
+    line(x, y + 15.5, x + bw, y + 15.5, C.view, 0.18),
+    line(x, y + 22, x + bw, y + 22, C.view, 0.18),
+    text(x + 3, y + 5.6, meta.project, 3.2, 'start', C.txt, 'font-weight="700"'),
+    text(x + 3, y + 13, name, 2.9, 'start'),
+    text(x + 3, y + 19.6, `Olcek ${scaleTxt}  ·  Olculer cm  ·  Pafta ${no}`, 2.3, 'start', C.view),
+    text(x + 3, y + 26.5, `${meta.revision}  ${meta.date}  ·  parametrik model: src/config/room.js`, 2.1, 'start', C.view),
+  ].join('');
+}
+
+/** Kuzey / bakis oku */
+function viewMark(x, y, label) {
+  return circle(x, y, 4, C.cut, 0.3, '#fff') + text(x, y + 1.2, label, 3.4, 'middle', C.cut, 'font-weight="700"');
+}
+
+/* ==================================================================== PLAN */
+function drawPlan() {
+  const W = MM(room.width), D = MM(room.depth), TW = MM(room.wallThickness), PT = MM(room.partitionThickness);
+  const wMM = W + PAD * 2 + 96, hMM = D + PAD * 2 + 108;
+  const ox = PAD + 40, oy = PAD + 52;          // ic sol-on kose
+  const X = (cx) => ox + MM(cx);
+  const Y = (cy) => oy + D - MM(cy);           // plan: +Y yukari
+  const p = [];
+
+  // doseme
+  p.push(rect(X(0), Y(room.depth), W, D, 'none', 0, C.fill));
+
+  // duvarlar (kesit - kalin + tarama)
+  p.push(`<defs><pattern id="h" width="1.6" height="1.6" patternTransform="rotate(45)" patternUnits="userSpaceOnUse">
+    <line x1="0" y1="0" x2="0" y2="1.6" stroke="${C.hatch}" stroke-width="0.5"/></pattern></defs>`);
+  const wall = (x, y, w, h) => rect(x, y, w, h, C.cut, 0.5, 'url(#h)');
+  p.push(wall(X(0) - TW, Y(room.depth), TW, D));                 // sol
+  p.push(wall(X(room.width), Y(room.depth), TW, D));             // sag
+  p.push(wall(X(0) - TW, Y(room.depth) - TW, W + TW * 2, TW));   // arka
+
+  // on boluntu: panel panel
+  let cx = 0;
+  for (const pan of partition.panels) {
+    const x0 = X(cx), w = MM(pan.width);
+    if (pan.kind === 'door') {
+      // kasa
+      p.push(rect(x0, Y(0), MM(door.frameFace), PT, C.cut, 0.5, C.hatch));
+      p.push(rect(x0 + w - MM(door.frameFace), Y(0), MM(door.frameFace), PT, C.cut, 0.5, C.hatch));
+      // kanat + supurme yayi
+      const hx = X(hingeX()), R = MM(leafWidth());
+      const lim = doorSwingLimit();
+      const a = Math.min(lim.angle, 95) * Math.PI / 180;
+      p.push(line(hx, Y(0), hx + R * Math.cos(a), Y(0) - R * Math.sin(a), C.cut, 0.6));
+      p.push(`<path d="M ${(hx + R).toFixed(2)} ${Y(0).toFixed(2)} A ${R.toFixed(2)} ${R.toFixed(2)} 0 0 0 ${(hx + R * Math.cos(a)).toFixed(2)} ${(Y(0) - R * Math.sin(a)).toFixed(2)}"
+        fill="none" stroke="${C.thin}" stroke-width="0.2" stroke-dasharray="1.6 1.2"/>`);
+      // pratik azami aci
+      const am = lim.angle * Math.PI / 180;
+      p.push(line(hx, Y(0), hx + R * Math.cos(am), Y(0) - R * Math.sin(am), C.acc, 0.3, 'stroke-dasharray="2 1.5"'));
+          p.push(text(hx + R * 1.02 * Math.cos(am), Y(0) - R * 1.02 * Math.sin(am) - 2, `azami ${lim.angle}°`, 2.2, 'middle', C.acc));
+    } else {
+      p.push(rect(x0, Y(0), w, PT, C.cut, 0.5, pan.color === 'green' ? '#dff0d8' : '#fdf3cf'));
+    }
+    cx += pan.width;
+  }
+
+  // ankastre ust dolap bankosu (kesik cizgi - kesit duzlemi ustunde)
+  p.push(rect(X(room.width - wallUnits.depth), Y(wallUnits.yEnd), MM(wallUnits.depth), MM(wallUnits.yEnd - wallUnits.yStart),
+    C.thin, 0.3, 'none', 'stroke-dasharray="3 1.6"'));
+  p.push(text(X(room.width - wallUnits.depth / 2), Y(wallUnits.yEnd / 2), wallUnits.id, 2.1, 'middle', C.thin,
+    `transform="rotate(-90 ${X(room.width - wallUnits.depth / 2).toFixed(2)} ${Y(wallUnits.yEnd / 2).toFixed(2)})"`));
+
+  // mobilya
+  for (const it of furniture) {
+    const r = footprint(it);
+    const rx = X(r.x0), ry = Y(r.y1), rw = MM(r.x1 - r.x0), rh = MM(r.y1 - r.y0);
+    p.push(rect(rx, ry, rw, rh, C.view, 0.4, '#ffffff'));
+    // yon isareti: on yuz cizgisi
+    const rad = -(it.rot || 0) * Math.PI / 180;
+    const fx = Math.round(-Math.sin(rad)), fy = Math.round(Math.cos(rad)); // yerel +Y dunya yonu
+    if (fy === 1) p.push(line(rx, ry, rx + rw, ry, C.thin, 0.9));
+    if (fy === -1) p.push(line(rx, ry + rh, rx + rw, ry + rh, C.thin, 0.9));
+    if (fx === 1) p.push(line(rx + rw, ry, rx + rw, ry + rh, C.thin, 0.9));
+    if (fx === -1) p.push(line(rx, ry, rx, ry + rh, C.thin, 0.9));
+    p.push(bubble(X(it.pos[0]), Y(it.pos[1]), it.id));
+  }
+  // masa ustu ekipman (ince)
+  for (const it of equipment) {
+    const r = footprint(it);
+    p.push(rect(X(r.x0), Y(r.y1), MM(r.x1 - r.x0), MM(r.y1 - r.y0), C.thin, 0.18, 'none', 'stroke-dasharray="1.2 1"'));
+  }
+  // tavan armaturleri (nokta-kesik)
+  for (const l of ceilCfg.luminaires) {
+    p.push(rect(X(l.pos[0] - l.w / 2), Y(l.pos[1] + l.d / 2), MM(l.w), MM(l.d), C.thin, 0.2, 'none', 'stroke-dasharray="0.8 0.8"'));
+  }
+
+  // ---- kotalar ----
+  const dy1 = Y(0) + PT + 10, dy2 = dy1 + 9;
+  let cxx = 0;
+  for (const pan of partition.panels) {
+    p.push(dimH(X(cxx), X(cxx + pan.width), dy1, `${pan.width}`));
+    cxx += pan.width;
+  }
+  p.push(dimH(X(0), X(room.width), dy2, `${room.width}`));
+  p.push(dimV(Y(room.depth), Y(0), X(room.width) + TW + 11, `${room.depth}`, -1));
+
+  // Mobilya konum kotalari:
+  //   ust kenar  -> on duvara oturan elemanlarin sol duvardan uzakligi
+  //   sol kenar  -> sol duvara oturan elemanlarin on duvardan uzakligi
+  const topRow = Y(room.depth) - TW - 9;
+  let tk = 0;
+  for (const id of ['M1', 'C1', 'A1']) {
+    const it = furniture.find((f) => f.id === id); if (!it) continue;
+    const r = footprint(it);
+    const yy = topRow - tk * 8;                 // her eleman kendi kota satirinda
+    p.push(dimH(X(0), X(r.x0), yy, `${Math.round(r.x0)}`, 1));
+    p.push(dimH(X(r.x0), X(r.x1), yy, `${Math.round(r.x1 - r.x0)}`, 1));
+    p.push(text(X(r.x1) + 5, yy + 0.9, it.id, 2.3, 'start', C.acc, 'font-weight="700"'));
+    tk++;
+  }
+  let lk = 0;
+  for (const id of ['D1', 'S2', 'K2']) {
+    const it = furniture.find((f) => f.id === id); if (!it) continue;
+    const r = footprint(it);
+    const xx = X(0) - TW - 8 - lk * 8;
+    p.push(dimV(Y(r.y1), Y(0), xx, `${Math.round(r.y1)}`, 1));
+    p.push(text(xx, Y(r.y1) - 3, it.id, 2.3, 'middle', C.acc, 'font-weight="700"'));
+    lk++;
+  }
+
+  // gorunus isaretleri
+  p.push(viewMark(X(room.width / 2), Y(0) + PT + 26, 'A'));
+  p.push(viewMark(X(room.width) + TW + 26, Y(room.depth / 2), 'B'));
+  p.push(viewMark(X(room.width / 2), Y(room.depth) - TW - 32, 'C'));
+  p.push(viewMark(X(0) - TW - 32, Y(room.depth / 2), 'D'));
+
+  // kuzey oku benzeri: giris yonu
+  p.push(text(X(room.width / 2), Y(0) + PT + 34, 'GIRIS', 2.4, 'middle', C.cut));
+
+  const M = metrics();
+  p.push(text(ox - 20, oy - 42, `OFIS / IDARI ODA   ${room.width}x${room.depth} cm   Net alan ${M.alan.toFixed(2)} m²   Net yuk. ${room.height} cm`, 3.0, 'start', C.txt, 'font-weight="700"'));
+  p.push(titleBlock(wMM, hMM, 'Yerlesim plani', 'M-01'));
+  return svg(wMM, hMM, 'Yerlesim plani', p.join('\n'));
+}
+
+/* ============================================================== GORUNUSLER */
+/**
+ * @param {'front'|'right'|'back'|'left'} side
+ */
+function drawElevation(side, code, name) {
+  const H = MM(room.height);
+  const len = (side === 'front' || side === 'back') ? room.width : room.depth;
+  const L = MM(len);
+  const wMM = L + PAD * 2 + 72, hMM = H + PAD * 2 + 58;
+  const ox = PAD + 22, oy = PAD + 16;
+  const U = (u) => ox + MM(u);            // duvar boyunca
+  const Z = (z) => oy + H - MM(z);        // kot
+  const p = [];
+
+  // duvar yuzeyi
+  p.push(rect(U(0), Z(room.height), L, H, C.cut, 0.5, '#ffffff'));
+  // doseme ve tavan cizgisi
+  p.push(line(U(-8), Z(0), U(len + 8), Z(0), C.cut, 0.8));
+  p.push(line(U(-8), Z(room.height), U(len + 8), Z(room.height), C.cut, 0.5));
+
+  if (side === 'front') {
+    let cx = 0;
+    for (const pan of partition.panels) {
+      const x0 = U(cx), w = MM(pan.width);
+      if (pan.kind === 'door') {
+        p.push(rect(x0, Z(door.height), w, MM(door.height), C.cut, 0.5, '#f6f6f4'));
+        p.push(rect(x0 + MM(door.frameFace), Z(door.height - door.frameFace), w - MM(door.frameFace * 2), MM(door.height - door.frameFace), C.view, 0.35, '#ececeb'));
+        // acilma yonu (V)
+        p.push(line(x0 + MM(door.frameFace), Z(0), x0 + w - MM(door.frameFace), Z(door.height / 2), C.thin, 0.22, 'stroke-dasharray="2.5 1.5"'));
+        p.push(line(x0 + MM(door.frameFace), Z(door.height), x0 + w - MM(door.frameFace), Z(door.height / 2), C.thin, 0.22, 'stroke-dasharray="2.5 1.5"'));
+        // kol + koruma saci
+        p.push(circle(x0 + w - MM(door.frameFace + 12), Z(door.handleHeight), 1.1, C.view, 0.3));
+        p.push(rect(x0 + MM(door.frameFace), Z(door.kickPlate), w - MM(door.frameFace * 2), MM(door.kickPlate), C.view, 0.25, '#e2e4e6'));
+        p.push(text(x0 + w / 2, Z(door.height / 2) + 8, `${door.id}`, 3.2, 'middle', C.txt, 'font-weight="700"'));
+        p.push(text(x0 + w / 2, Z(door.height / 2) + 12.5, `${door.width}/${door.height}`, 2.3, 'middle', C.view));
+      } else {
+        p.push(rect(x0, Z(partition.sillHeight), w, MM(partition.sillHeight), C.cut, 0.4,
+          pan.color === 'green' ? '#dff0d8' : '#fdf3cf'));
+        p.push(rect(x0, Z(partition.baseHeight), w, MM(partition.baseHeight), C.view, 0.3, '#e2e4e6'));
+      }
+      cx += pan.width;
+    }
+    // vasistas
+    p.push(rect(U(0), Z(partition.transomTop), L, MM(partition.transomTop - partition.sillHeight), C.cut, 0.4, '#eef2f3'));
+    for (let x = 95; x < len; x += 95) p.push(line(U(x), Z(partition.transomTop), U(x), Z(partition.sillHeight), C.view, 0.3));
+    // capraz tarama = cam
+    for (let x = 4; x < len; x += 9) {
+      p.push(line(U(x), Z(partition.sillHeight), U(Math.min(x + 22, len)), Z(partition.transomTop), '#cfd8db', 0.18));
+    }
+    p.push(text(U(len - 30), Z((partition.sillHeight + partition.transomTop) / 2), 'telli cam', 2.2, 'middle', C.view));
+    // yesil bant
+    p.push(rect(U(0), Z(room.height), L, MM(room.height - partition.transomTop), C.cut, 0.4, '#d9f0b8'));
+    // dusey kotalar
+    p.push(dimV(Z(door.height), Z(0), U(len) + 12, `${door.height}`, -1));
+    p.push(dimV(Z(partition.transomTop), Z(partition.sillHeight), U(len) + 12, `${partition.transomTop - partition.sillHeight}`, -1));
+    p.push(dimV(Z(room.height), Z(partition.transomTop), U(len) + 12, `${room.height - partition.transomTop}`, -1));
+    p.push(dimV(Z(room.height), Z(0), U(len) + 24, `${room.height}`, -1));
+    let cxx = 0;
+    for (const pan of partition.panels) { p.push(dimH(U(cxx), U(cxx + pan.width), Z(0) + 11, `${pan.width}`)); cxx += pan.width; }
+    p.push(dimH(U(0), U(len), Z(0) + 20, `${len}`));
+  }
+
+  if (side === 'right') {
+    // ankastre dolap bankosu
+    const zb = wallUnits.zBottom, zt = wallUnits.zTop;
+    p.push(rect(U(wallUnits.yStart), Z(zt), MM(wallUnits.yEnd - wallUnits.yStart), MM(zt - zb), C.cut, 0.5, '#ffffff'));
+    const n = Math.max(1, Math.round((wallUnits.yEnd - wallUnits.yStart) / wallUnits.moduleWidth));
+    const mw = (wallUnits.yEnd - wallUnits.yStart) / n;
+    for (let i = 0; i < n; i++) {
+      const colorName = wallUnits.frontPattern[i % wallUnits.frontPattern.length];
+      for (let r = 0; r < 2; r++) {
+        const cName = (i + r) % 2 === 0 ? colorName : (colorName === 'yellow' ? 'offwhite' : 'yellow');
+        const zz = zb + 1.8 + r * ((zt - zb - 3.6) / 2);
+        p.push(rect(U(wallUnits.yStart + i * mw + 1), Z(zz + (zt - zb - 3.6) / 2 - 0.4), MM(mw - 2), MM((zt - zb - 3.6) / 2 - 0.4),
+          C.view, 0.3, cName === 'yellow' ? '#fdf3cf' : '#f2efe8'));
+      }
+      p.push(text(U(wallUnits.yStart + i * mw + mw / 2), Z(zt) - 2.5, `${Math.round(mw)}`, 2.0, 'middle', C.view));
+    }
+    p.push(dimH(U(wallUnits.yStart), U(wallUnits.yEnd), Z(zt) - 8, `${wallUnits.yEnd - wallUnits.yStart}`));
+    p.push(dimV(Z(zt), Z(zb), U(len) + 12, `${zt - zb}`, -1));
+    p.push(dimV(Z(zb), Z(0), U(len) + 12, `${zb}`, -1));
+    p.push(dimV(Z(room.height), Z(0), U(len) + 24, `${room.height}`, -1));
+    p.push(dimH(U(0), U(len), Z(0) + 12, `${len}`));
+  }
+
+  if (side === 'left' || side === 'back') {
+    p.push(dimV(Z(room.height), Z(0), U(len) + 12, `${room.height}`, -1));
+    p.push(dimH(U(0), U(len), Z(0) + 12, `${len}`));
+    if (side === 'back') {
+      p.push(text(U(len / 2), Z(room.height / 2), 'ROLEVE EKSIK — bu duvar fotograflarda gorunmuyor', 3.0, 'middle', '#a03030'));
+      p.push(text(U(len / 2), Z(room.height / 2) - 5, 'yerinde olcum gerekiyor', 2.4, 'middle', '#a03030'));
+    }
+  }
+
+  // bu duvarin onundeki mobilya (gorunus)
+  const proj = { front: (r) => [r.x0, r.x1, r.y0], back: (r) => [len - r.x1, len - r.x0, room.depth - r.y1],
+                 left: (r) => [r.y0, r.y1, r.x0], right: (r) => [room.depth - r.y1, room.depth - r.y0, room.width - r.x1] };
+  const items = [...furniture].sort((a, b) => {
+    const ra = footprint(a), rb = footprint(b);
+    return proj[side](rb)[2] - proj[side](ra)[2];
+  });
+  for (const it of items) {
+    const r = footprint(it);
+    const [u0, u1, dist] = proj[side](r);
+    if (dist > 90) continue;                      // sadece duvara yakin olanlar
+    p.push(rect(U(u0), Z(it.h), MM(u1 - u0), MM(it.h), C.view, 0.4, '#fbfaf8'));
+    p.push(bubble(U((u0 + u1) / 2), Z(it.h) - 5, it.id));
+    // gorunuste okunan genislik (donmus elemanda derinlik olabilir) x yukseklik
+    p.push(text(U((u0 + u1) / 2), Z(it.h / 2), `${Math.round(u1 - u0)}x${it.h}`, 2.1, 'middle', C.thin));
+  }
+
+  // Bu duvardaki elemanlar. Kot degeri, cizimi kirletmemek icin kota zinciri
+  // yerine elemanin yanina "+kot" olarak yazilir (montaj kotu, doseme ustunden).
+  const wis = wallItems.filter((x) => x.wall === side);
+  for (const wi of wis) {
+    const w = wi.w || wi.dia || 10, h = wi.h || wi.dia || 10;
+    if (wi.type === 'clock') {
+      p.push(circle(U(wi.u), Z(wi.z), MM(wi.dia / 2), C.view, 0.4, '#ffffff'));
+      p.push(line(U(wi.u), Z(wi.z), U(wi.u), Z(wi.z + wi.dia * 0.32), C.view, 0.25));
+    } else {
+      p.push(rect(U(wi.u - w / 2), Z(wi.z + h / 2), MM(w), MM(h), C.view, 0.4, '#ffffff'));
+    }
+    p.push(text(U(wi.u), Z(wi.z + h / 2) - 2.2, `${wi.id}  +${wi.z}`, 2.1, 'middle', C.acc));
+  }
+  if (wis.length) {
+    p.push(text(U(0), Z(room.height) - 6,
+      wis.map((x) => `${x.id} ${x.name} (+${x.z})`).join('   ·   '), 2.0, 'start', C.view));
+  }
+
+  p.push(text(ox, oy - 6, `${code} GORUNUSU — ${name}`, 3.2, 'start', C.txt, 'font-weight="700"'));
+  p.push(titleBlock(wMM, hMM, `${code} gorunusu — ${name}`, `M-${code === 'A' ? '02' : code === 'B' ? '03' : code === 'C' ? '04' : '05'}`));
+  return svg(wMM, hMM, `${code} gorunusu`, p.join('\n'));
+}
+
+/* ======================================================== TAVAN / DOSEME */
+function drawGridPlan(kind) {
+  const isCeil = kind === 'ceiling';
+  const tile = isCeil ? ceilCfg.tile : floorCfg.tile;
+  const W = MM(room.width), D = MM(room.depth);
+  const wMM = W + PAD * 2 + 40, hMM = D + PAD * 2 + 40;
+  const ox = PAD + 18, oy = PAD + 14;
+  const X = (cx) => ox + MM(cx), Y = (cy) => oy + D - MM(cy);
+  const p = [];
+  p.push(rect(X(0), Y(room.depth), W, D, C.cut, 0.6, '#fbfbf9'));
+  for (let x = tile[0]; x < room.width; x += tile[0]) p.push(line(X(x), Y(0), X(x), Y(room.depth), C.thin, 0.18));
+  for (let y = tile[1]; y < room.depth; y += tile[1]) p.push(line(X(0), Y(y), X(room.width), Y(y), C.thin, 0.18));
+  const nx = Math.floor(room.width / tile[0]), ny = Math.floor(room.depth / tile[1]);
+  const rx = room.width - nx * tile[0], ry = room.depth - ny * tile[1];
+
+  if (isCeil) {
+    for (const l of ceilCfg.luminaires) {
+      p.push(rect(X(l.pos[0] - l.w / 2), Y(l.pos[1] + l.d / 2), MM(l.w), MM(l.d), C.cut, 0.5, '#fff8dc'));
+      p.push(line(X(l.pos[0] - l.w / 2), Y(l.pos[1] + l.d / 2), X(l.pos[0] + l.w / 2), Y(l.pos[1] - l.d / 2), C.view, 0.25));
+      p.push(line(X(l.pos[0] - l.w / 2), Y(l.pos[1] - l.d / 2), X(l.pos[0] + l.w / 2), Y(l.pos[1] + l.d / 2), C.view, 0.25));
+      p.push(text(X(l.pos[0]), Y(l.pos[1]) - 8, l.id, 2.4, 'middle', C.acc));
+      p.push(dimH(X(0), X(l.pos[0]), Y(room.depth) - 7, `${l.pos[0]}`));
+      p.push(dimV(Y(l.pos[1]), Y(0), X(room.width) + 8, `${l.pos[1]}`, -1));
+    }
+    p.push(text(ox, oy - 6, `ASMA TAVAN PLANI — ${tile[0]}x${tile[1]} plaka, T24 tasiyici, alt kot +${room.height} cm`, 3.0, 'start', C.txt, 'font-weight="700"'));
+  } else {
+    p.push(text(ox, oy - 6, `DOSEME KAPLAMA PLANI — ${tile[0]}x${tile[1]} karo (${floorCfg.finish})`, 3.0, 'start', C.txt, 'font-weight="700"'));
+    for (const it of furniture) {
+      const r = footprint(it);
+      p.push(rect(X(r.x0), Y(r.y1), MM(r.x1 - r.x0), MM(r.y1 - r.y0), C.thin, 0.2, 'none', 'stroke-dasharray="2 1.4"'));
+    }
+  }
+  p.push(dimH(X(0), X(room.width), Y(0) + 11, `${room.width}`));
+  p.push(dimV(Y(room.depth), Y(0), X(room.width) + 18, `${room.depth}`, -1));
+  p.push(text(ox, oy + D + 20, `Tam plaka: ${nx} x ${ny} adet  ·  kenar kesim: ${rx.toFixed(0)} cm (X) / ${ry.toFixed(0)} cm (Y)`, 2.5, 'start', C.view));
+  p.push(titleBlock(wMM, hMM, isCeil ? 'Asma tavan plani' : 'Doseme kaplama plani', isCeil ? 'M-06' : 'M-07'));
+  return svg(wMM, hMM, isCeil ? 'Tavan plani' : 'Doseme plani', p.join('\n'));
+}
+
+/* ------------------------------------------------------------------ yaz */
+const files = [
+  ['plan.svg', drawPlan()],
+  ['gorunus-A-on.svg', drawElevation('front', 'A', 'On boluntu / kapi duvari')],
+  ['gorunus-B-sag.svg', drawElevation('right', 'B', 'Sag duvar / ankastre dolap')],
+  ['gorunus-C-arka.svg', drawElevation('back', 'C', 'Arka duvar')],
+  ['gorunus-D-sol.svg', drawElevation('left', 'D', 'Sol duvar')],
+  ['tavan-plani.svg', drawGridPlan('ceiling')],
+  ['doseme-plani.svg', drawGridPlan('floor')],
+];
+for (const [n, c] of files) {
+  fs.writeFileSync(path.join(OUT, n), c);
+  console.log(`  ✓ docs/drawings/${n}  (${(c.length / 1024).toFixed(1)} kB)`);
+}
+console.log(`\n${files.length} pafta uretildi. Olcek 1:25 — A3'e sigmayan paftalar 1:50 yazdirilabilir.`);
