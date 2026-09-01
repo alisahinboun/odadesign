@@ -16,7 +16,7 @@
         fill="none" stroke="#98a0ab" stroke-width="0.22" stroke-dasharray="1.6 1.2"/>
 <line x1="134.60" y1="237.00" x2="120.01" y2="194.64" stroke="#b8860b" stroke-width="0.3" stroke-dasharray="2 1.5"/>
 <text x="151.20" y="208.30" font-size="2.3" fill="#b8860b" text-anchor="middle" >azami 109°</text>
-<rect x="181.00" y="237.00" width="14.00" height="3.20" fill="#d5ecd3" stroke="#111318" stroke-width="0.5" />
+<rect x="181.00" y="237.00" width="14.00" height="3.20" fill="#d4e9d1" stroke="#111318" stroke-width="0.5" />
 <rect x="195.00" y="237.00" width="48.00" height="3.20" fill="#fcf1cd" stroke="#111318" stroke-width="0.5" />
 <rect x="118.20" y="129.00" width="114.00" height="4.00" fill="#ffffff" stroke="#111318" stroke-width="0.5" />
 <line x1="118.20" y1="130.80" x2="232.20" y2="130.80" stroke="#5a626e" stroke-width="0.45" />

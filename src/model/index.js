@@ -148,7 +148,7 @@ export function buildLights(scene) {
       const u = win.u + (win.width / (n + 1)) * (i + 1);
       // Pencere agzinin bir miktar ICERISINDE: pencere duvarini yikamasin,
       // isigi oda derinligine tasisin.
-      const pl = new THREE.PointLight(0xe6eef8, 2.4, cm(520), 1.9);
+      const pl = new THREE.PointLight(0xe6eef8, 1.9, cm(520), 1.9);
       pl.position.set(cm(u), cm(win.sill + win.height * 0.62), cm(room.depth - 75));
       g.add(pl);
       winFill.push(pl);

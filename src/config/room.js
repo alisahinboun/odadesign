@@ -324,7 +324,7 @@ export const floor = {
 /** Fotograflardan okunan renkler. Teklif/metraj icin RAL karsiliklari not edildi. */
 export const palette = {
   yellow:      { hex: '#f2c11c', label: 'Boluntu panel sarisi',  ral: 'RAL 1023 benzeri' },
-  green:       { hex: '#3faa35', label: 'Yesil (serit + arka duvar)', ral: 'RAL 6018 benzeri' },
+  green:       { hex: '#3d9b2f', label: 'Yesil (serit + arka duvar)', ral: 'RAL 6018 benzeri' },
   curtain:     { hex: '#e8e2d4', label: 'Tul perde',               ral: '-' },
   radiator:    { hex: '#f0efec', label: 'Radyator (beyaz)',         ral: 'RAL 9016' },
   greenLight:  { hex: '#7cc623', label: 'Tavan yesil bandi',      ral: 'RAL 6018 acik' },

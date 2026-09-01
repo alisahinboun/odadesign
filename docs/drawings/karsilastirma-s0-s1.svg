@@ -13,7 +13,7 @@
 <rect x="22.00" y="123.50" width="23.75" height="2.00" fill="#fae7a9" stroke="#14161a" stroke-width="0.55" />
 <rect x="45.75" y="123.50" width="1.00" height="2.00" fill="#ccd1d8" stroke="#14161a" stroke-width="0.55" />
 <rect x="74.75" y="123.50" width="1.00" height="2.00" fill="#ccd1d8" stroke="#14161a" stroke-width="0.55" />
-<rect x="75.75" y="123.50" width="8.75" height="2.00" fill="#b6dfb2" stroke="#14161a" stroke-width="0.55" />
+<rect x="75.75" y="123.50" width="8.75" height="2.00" fill="#b5d9b0" stroke="#14161a" stroke-width="0.55" />
 <rect x="84.50" y="123.50" width="30.00" height="2.00" fill="#fae7a9" stroke="#14161a" stroke-width="0.55" />
 <path d="M 74.75 123.50 A 28.00 28.00 0 0 0 37.63 97.03 L 46.75 123.50 Z"
     fill="rgba(184,134,11,.13)" stroke="none"/>

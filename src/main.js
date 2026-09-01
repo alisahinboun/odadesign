@@ -35,7 +35,7 @@ renderer.setSize(innerWidth, innerHeight);
 renderer.shadowMap.enabled = true;
 renderer.shadowMap.type = THREE.PCFSoftShadowMap;
 renderer.toneMapping = THREE.ACESFilmicToneMapping;
-renderer.toneMappingExposure = 0.95;
+renderer.toneMappingExposure = 0.90;
 renderer.outputColorSpace = THREE.SRGBColorSpace;
 app.appendChild(renderer.domElement);
 
@@ -651,8 +651,8 @@ function secTools() {
     <p class="note" style="margin:2px 0 0">Kanat çarpmadan en fazla
     <b>~${SWING.angle}°</b> açılıyor${SWING.blocker ? ` — sınırlayan eleman <b>${SWING.blocker}</b>` : ''}.
     (src/lib/analysis.js içinde yerleşimden hesaplanır.)</p>
-    <div class="row" style="margin-top:10px"><label>Pozlama: <b id="ev">0.98</b></label></div>
-    <input type="range" id="er" min="40" max="180" value="98">
+    <div class="row" style="margin-top:10px"><label>Pozlama: <b id="ev">0.90</b></label></div>
+    <input type="range" id="er" min="40" max="180" value="90">
     <div class="row" style="margin-top:10px"><label>Gün ışığı (pencereden): <b id="sv">1.15</b></label></div>
     <input type="range" id="sr" min="0" max="300" value="115">
     <div class="row" style="margin-top:10px"><label>Tavan armatürleri: <b id="lv">11</b></label></div>
