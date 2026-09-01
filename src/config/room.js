@@ -373,14 +373,15 @@ export const palette = {
  * Kamera onayarlari. pos/target = [x, y, z] plan koordinatlari (cm).
  * doorAngle: o gorunumde kapinin gosterilecegi aci (foto ile ayni durum).
  */
+/** label: genis ekran · short: telefonda (komut seridi tek satirda kaysin diye) */
 export const viewPresets = [
-  { id: 'foto01', label: 'Foto 01 · Genel görünüm',  pos: [318, 244, 158], target: [122,  40, 118], fov: 76, doorAngle: 0 },
-  { id: 'foto02', label: 'Foto 02 · Kapı açık',      pos: [ 52, 238, 155], target: [300,  35, 115], fov: 70, doorAngle: 105 },
-  { id: 'foto03', label: 'Foto 03 · Sol köşe',       pos: [288, 226, 150], target: [ 26,  35, 108], fov: 66, doorAngle: 105 },
-  { id: 'masa',   label: 'Çalışma alanı',            pos: [150, 232, 138], target: [330,  80,  85], fov: 50, doorAngle: 0 },
-  { id: 'foto05', label: 'Foto 05 · Pencere duvarı',  pos: [186,  36, 152], target: [200, 262, 118], fov: 78, doorAngle: 0 },
-  { id: 'kus',    label: 'Kuş bakışı', pos: [770, 710, 570], target: [185, 135,  55], fov: 34, doorAngle: 100 },
-  { id: 'plan',   label: 'Plan',           pos: [185, 135, 780], target: [185, 135,   0], fov: 30, ortho: true, doorAngle: 95 },
+  { id: 'foto01', label: 'Foto 01 · Genel görünüm', short: 'Genel',   pos: [318, 244, 158], target: [122,  40, 118], fov: 76, doorAngle: 0 },
+  { id: 'foto02', label: 'Foto 02 · Kapı açık',     short: 'Kapı',    pos: [ 52, 238, 155], target: [300,  35, 115], fov: 70, doorAngle: 105 },
+  { id: 'foto03', label: 'Foto 03 · Sol köşe',      short: 'Sol köşe', pos: [288, 226, 150], target: [ 26,  35, 108], fov: 66, doorAngle: 105 },
+  { id: 'masa',   label: 'Çalışma alanı',           short: 'Masa',    pos: [150, 232, 138], target: [330,  80,  85], fov: 50, doorAngle: 0 },
+  { id: 'foto05', label: 'Foto 05 · Pencere duvarı', short: 'Pencere', pos: [186,  36, 152], target: [200, 262, 118], fov: 78, doorAngle: 0 },
+  { id: 'kus',    label: 'Kuş bakışı', short: 'Kuş bakışı', pos: [770, 710, 570], target: [185, 135,  55], fov: 34, doorAngle: 100 },
+  { id: 'plan',   label: 'Plan',       short: 'Plan',       pos: [185, 135, 780], target: [185, 135,   0], fov: 30, ortho: true, doorAngle: 95 },
 ];
 
 export const meta = {

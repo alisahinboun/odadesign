@@ -83,6 +83,19 @@ sürümden daha iyi çalışır:
 | **3B model indirme (GLB / OBJ)** | ❌ tarayıcı izin vermiyor | ✅ |
 | **Odada yürüme (G) — fare kilidi** | kısıtlı | ✅ tam |
 
+### Telefonda
+
+Arayüz telefon ve tablette ayrı çalışır:
+
+- Sağdaki panel **alt sayfaya** döner ve kapalı başlar — önce odayı görürsünüz,
+  **Seçenekler** düğmesiyle açılır, **✕** ile kapanır.
+- Görünüş düğmeleri alt kenarda tek satırda, yana kaydırılır; adları kısalır.
+- Tek parmak döndürür, iki parmak yakınlaştırıp kaydırır, dokunmak eşya seçer.
+  Eşya taşıma ve ölçme parmakla çalışır.
+- Ekran yüksekliği ve GPU sınırlı olduğu için **GTAO gölgelemesi kapalı** başlar
+  ve piksel oranı 1,5 ile sınırlanır; panelden açabilirsiniz.
+- "Odada yürü" klavye (WASD) ve fare kilidi istediği için dokunmatikte gizlenir.
+
 **Dikkat:** Netlify adresi **herkese açıktır**; adresi bilen görür. Arama
 motorlarına düşmesini istemiyorsanız `dist/` içine `robots.txt` koyun
 (`User-agent: *` / `Disallow: /`); gerçek şifre koruması ücretli planda.

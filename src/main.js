@@ -29,9 +29,21 @@ import { applyScheme, userHidden } from './config/room.js';
 import { clearMaterialCache } from './lib/materials.js';
 
 /* ===================================================== SAHNE KURULUMU */
+/**
+ * Telefon / tablet kipi. Iki sey degisir:
+ *   - Panel sag serit yerine alt sayfa (bottom sheet) olur ve KAPALI baslar,
+ *     yoksa kucuk ekranda odayi hic gormeden aciliyor.
+ *   - Isleme yuku dusurulur: GTAO golgelemesi ve yuksek piksel orani
+ *     telefon GPU'sunda kareyi 10 fps'e dusuruyor.
+ * Parmakla kullanim (dokunmatik) ekran genisliginden ayri bir olcut.
+ */
+const TOUCH = matchMedia('(pointer: coarse)').matches;
+const SMALL = matchMedia('(max-width: 820px)').matches;
+const MOBILE = SMALL || TOUCH;
+
 const app = document.getElementById('app');
-const renderer = new THREE.WebGLRenderer({ antialias: true, preserveDrawingBuffer: true, powerPreference: 'high-performance' });
-renderer.setPixelRatio(Math.min(devicePixelRatio, 2));
+const renderer = new THREE.WebGLRenderer({ antialias: !MOBILE, preserveDrawingBuffer: true, powerPreference: 'high-performance' });
+renderer.setPixelRatio(Math.min(devicePixelRatio, MOBILE ? 1.5 : 2));
 renderer.setSize(innerWidth, innerHeight);
 renderer.shadowMap.enabled = true;
 renderer.shadowMap.type = THREE.PCFSoftShadowMap;
@@ -80,7 +92,7 @@ function disposeTree(node) {
 
 /* --------------------------------------------------- isleme hatti (AO) */
 let pipeline = null;
-let useAO = true;
+let useAO = !MOBILE;   // telefonda kapali baslar, panelden acilabilir
 try {
   pipeline = createPipeline(renderer, scene, camera);
 } catch (e) {
@@ -278,6 +290,37 @@ function setWalk(on) {
   }
   buildUI();
 }
+/**
+ * ESYA TASIMA KIPI.
+ *
+ * ⚠ Bu fonksiyon eksikti: "Eşyaları taşı" dügmesi ve E tusu
+ * `setEditMode is not defined` firlatiyor, ustelik drag.js'in state.enabled
+ * bayragi hicbir yerde acilmiyordu. Yani tasima ozelligi arayuzden HIC
+ * calismiyordu. Ikisi de burada duzeltildi.
+ */
+function setEditMode(on) {
+  editMode = !!on;
+  dragger.setEnabled(editMode);
+  if (editMode) {
+    // Olcum ve yurume kipi ayni tiklamayi kullaniyor; biri acilinca digeri kapanir.
+    if (measure.on) {
+      measure.on = false; measure.pts = []; measure.hover = null;
+      renderer.domElement.style.cursor = '';
+      drawMeasure();
+    }
+    if (walk.on) setWalk(false);
+  } else {
+    dragger.end();
+    dragger.select(null);
+    selected = null;
+    selBox.visible = false;
+    editStatus = { ok: true, msgs: [] };
+  }
+  controls.enabled = activeCam === camera && !walk.on;
+  buildUI();
+  updateReadout();
+}
+
 addEventListener('keydown', (e) => {
   if (e.code === 'KeyW' || e.code === 'KeyA' || e.code === 'KeyS' || e.code === 'KeyD' ||
       e.code === 'ArrowUp' || e.code === 'ArrowDown' || e.code === 'ArrowLeft' || e.code === 'ArrowRight' ||
@@ -574,7 +617,16 @@ const el = {
   toggle: document.getElementById('toggle'),
   sub: document.getElementById('subhead'),
 };
-el.toggle.onclick = () => el.panel.classList.remove('hidden');
+el.close = document.getElementById('close');
+const setPanel = (open) => {
+  el.panel.classList.toggle('hidden', !open);
+  document.body.classList.toggle('panel-open', open);
+  el.toggle.textContent = MOBILE ? 'Seçenekler' : '☰';
+};
+el.toggle.onclick = () => setPanel(true);
+el.close.onclick = () => setPanel(false);
+// Telefonda oda once gorunsun; panel kullanici isteyince acilsin.
+setPanel(!MOBILE);
 
 let M = roomMetrics();
 let SWING = doorSwingLimit();
@@ -637,10 +689,10 @@ function updateReadout() {
 }
 
 function setMeasure(on) {
+  if (on && editMode) setEditMode(false);   // once tasima kipini kapat
   measure.on = on;
   measure.pts = []; measure.hover = null;
   if (!on) renderer.domElement.style.cursor = '';
-  if (on && editMode) setEditMode(false);
   drawMeasure(); updateReadout(); buildUI();
 }
 
@@ -649,25 +701,29 @@ function buildUI() {
   el.topbar.innerHTML = '';
   for (const p of viewPresets) {
     const b = document.createElement('button');
-    b.textContent = p.label;
+    b.textContent = MOBILE ? (p.short || p.label) : p.label;
     b.onclick = () => { usePreset(p); };
     el.topbar.appendChild(b);
   }
   const sp = document.createElement('div'); sp.className = 'sep'; el.topbar.appendChild(sp);
-  const bw = document.createElement('button');
-  bw.textContent = walk.on ? 'Yürümeyi bitir  Esc' : 'Odada yürü  G';
-  bw.className = walk.on ? 'act' : '';
-  bw.onclick = () => setWalk(!walk.on);
-  el.topbar.appendChild(bw);
+  // Odada yurume klavye (WASD) + fare kilidi istiyor; dokunmatikte ikisi de yok.
+  if (!TOUCH) {
+    const bw = document.createElement('button');
+    bw.textContent = walk.on ? 'Yürümeyi bitir  Esc' : 'Odada yürü  G';
+    bw.className = walk.on ? 'act' : '';
+    bw.onclick = () => setWalk(!walk.on);
+    el.topbar.appendChild(bw);
+  }
 
   const be = document.createElement('button');
-  be.textContent = editMode ? 'Düzenleme açık  E' : 'Eşyaları taşı  E';
+  be.textContent = MOBILE ? (editMode ? 'Taşıma açık' : 'Eşyaları taşı')
+                          : (editMode ? 'Düzenleme açık  E' : 'Eşyaları taşı  E');
   be.className = editMode ? 'act' : '';
   be.onclick = () => setEditMode(!editMode);
   el.topbar.appendChild(be);
 
   const bm = document.createElement('button');
-  bm.textContent = measure.on ? 'Ölçüm açık  M' : 'Ölç  M';
+  bm.textContent = MOBILE ? (measure.on ? 'Ölçüm açık' : 'Ölç') : (measure.on ? 'Ölçüm açık  M' : 'Ölç  M');
   bm.className = measure.on ? 'act' : '';
   bm.onclick = () => setMeasure(!measure.on);
   if (measure.on) {
@@ -694,6 +750,7 @@ function buildUI() {
 
   /* ---- yan panel ---- */
   el.scroll.innerHTML = '';
+  if (MOBILE) el.scroll.appendChild(secTouchHelp());
   if (editMode) el.scroll.appendChild(secEdit());
   el.scroll.appendChild(secLayouts());
   el.scroll.appendChild(secPalettes());
@@ -823,6 +880,25 @@ function secPalettes() {
     <p class="note">${P.why}</p>
     ${P.is ? `<p class="note callout-inline"><b>Ne gerekiyor:</b> ${P.is}</p>` : ''}`;
   d.body.appendChild(info);
+  return d;
+}
+
+/**
+ * Telefonda alt kenardaki ipucu seridi (#hint) gizleniyor - yerini burasi
+ * aliyor. Parmakla kullanim masaustundekinden farkli oldugu icin ayri yazildi.
+ */
+function secTouchHelp() {
+  const d = sec('Nasıl kullanılır', true);
+  d.body.innerHTML = `<p class="note" style="line-height:1.75">
+    <b>Tek parmak</b> sürükle → odayı döndürür<br>
+    <b>İki parmak</b> → yakınlaş / uzaklaş ve kaydır<br>
+    <b>Dokun</b> → o eşyanın ölçüsünü gösterir<br><br>
+    <b>Eşya taşımak:</b> alttaki <b>Eşyaları taşı</b> düğmesine basın, sonra
+    eşyayı parmağınızla sürükleyin. Çerçeve yeşilse yerleşim uygun, kırmızıysa
+    bir yere çarpıyor ve nedenini yazar.<br><br>
+    <b>Ölçmek:</b> <b>Ölç</b> düğmesine basıp iki noktaya dokunun.<br><br>
+    Bu paneli kapatmak için sağ üstteki <b>✕</b>, tekrar açmak için sağ alttaki
+    <b>Seçenekler</b> düğmesi.</p>`;
   return d;
 }
 
