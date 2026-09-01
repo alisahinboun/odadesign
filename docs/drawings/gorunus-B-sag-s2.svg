@@ -32,9 +32,9 @@
 <rect x="152.20" y="154.20" width="21.60" height="32.80" fill="#fbfaf8" stroke="#5a626e" stroke-width="0.4" />
 <circle cx="163.00" cy="149.20" r="3.10" fill="#fffdf5" stroke="#b8860b" stroke-width="0.3"/><text x="163.00" y="150.15" font-size="2.5" fill="#7a5c05" text-anchor="middle" font-weight="700">S2</text>
 <text x="163.00" y="170.60" font-size="2.1" fill="#98a0ab" text-anchor="middle" >54x82</text>
-<rect x="92.60" y="142.20" width="24.80" height="44.80" fill="#fbfaf8" stroke="#5a626e" stroke-width="0.4" />
-<circle cx="105.00" cy="137.20" r="3.10" fill="#fffdf5" stroke="#b8860b" stroke-width="0.3"/><text x="105.00" y="138.15" font-size="2.5" fill="#7a5c05" text-anchor="middle" font-weight="700">S1</text>
-<text x="105.00" y="164.60" font-size="2.1" fill="#98a0ab" text-anchor="middle" >62x112</text>
+<rect x="93.80" y="142.20" width="24.80" height="44.80" fill="#fbfaf8" stroke="#5a626e" stroke-width="0.4" />
+<circle cx="106.20" cy="137.20" r="3.10" fill="#fffdf5" stroke="#b8860b" stroke-width="0.3"/><text x="106.20" y="138.15" font-size="2.5" fill="#7a5c05" text-anchor="middle" font-weight="700">S1</text>
+<text x="106.20" y="164.60" font-size="2.1" fill="#98a0ab" text-anchor="middle" >62x112</text>
 <rect x="118.00" y="157.00" width="30.00" height="30.00" fill="#fbfaf8" stroke="#5a626e" stroke-width="0.4" />
 <circle cx="133.00" cy="152.00" r="3.10" fill="#fffdf5" stroke="#b8860b" stroke-width="0.3"/><text x="133.00" y="152.95" font-size="2.5" fill="#7a5c05" text-anchor="middle" font-weight="700">M1</text>
 <text x="133.00" y="172.00" font-size="2.1" fill="#98a0ab" text-anchor="middle" >75x75</text>

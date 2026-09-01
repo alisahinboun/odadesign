@@ -15,6 +15,7 @@ import { RoomEnvironment } from 'three/examples/jsm/environments/RoomEnvironment
 import {
   room, furniture, equipment, wallItems, palette, viewPresets, meta, door,
   partition, wallUnits, ceiling as ceilCfg, floor as floorCfg, clutter,
+  windows, radiators,
 } from './config/room.js';
 import { buildRoom, buildLights, LAYERS, roomMetrics } from './model/index.js';
 import { buildPlanDimensions, buildElevationDimensions } from './viewer/dimensions.js';
@@ -578,10 +579,36 @@ function secFindings() {
       body: `Mobilya ayak izi <b>${MET.doluAlan.toFixed(1)} m²</b>, serbest kalan
              <b>${(M.alan - MET.doluAlan).toFixed(1)} m²</b>. Masa arkası çalışma boşluğu
              <b>${behind} cm</b> (en az 100 cm önerilir).` },
-    { no: 'T-5', title: 'Arka duvar röleve dışı',
+    { no: 'T-5', title: 'Arka duvar — ölçüler hâlâ tahmin',
       ok: false,
-      body: `Arka duvar (y=${room.depth}) hiçbir fotoğrafta görünmüyor; sol duvarla aynı kabul edildi.
-             <b>Yerinde ölçüm gerekiyor</b> — priz, kanal veya radyatör olabilir.` },
+      body: (() => {
+        const w = windows[0];
+        return `Foto 05 geldi: duvarın tamamı yeşil, <b>${w.width} cm</b> genişliğinde pencere ve
+                altında dilimli radyatör var. Konum ve ölçüler <b>fotoğraf oranlamasıyla</b>
+                çıkarıldı; geniş açı nedeniyle düşey ölçülerde belirsizlik yüksek.
+                <b>4 ölçü yerinde alınmalı</b> — bkz. <code>docs/roleve.md</code> bölüm 9.`;
+      })() },
+    { no: 'T-6', title: 'Ekranda pencere yansıması',
+      ok: (() => {
+        const w = windows.find((x) => x.wall === 'back'); if (!w) return true;
+        const mon = equipment.find((e) => e.id === 'E1'); if (!mon) return true;
+        // ekran +Y'ye bakiyorsa (rot ~0) normali pencere duvarina donuktur
+        const facesWindow = Math.abs(((mon.rot || 0) % 360 + 360) % 360) < 45;
+        const covered = w.curtain && (w.curtain.to - w.curtain.from) > w.width * 0.85;
+        return !facesWindow || covered;
+      })(),
+      body: (() => {
+        const w = windows.find((x) => x.wall === 'back');
+        const mon = equipment.find((e) => e.id === 'E1');
+        const facesWindow = Math.abs(((mon?.rot || 0) % 360 + 360) % 360) < 45;
+        const cov = w?.curtain ? Math.round(((w.curtain.to - w.curtain.from) / w.width) * 100) : 0;
+        if (!facesWindow) return 'Ekran pencereye dönük değil; doğrudan yansıma riski yok.';
+        return `Ekran (E1) pencere duvarına dönük. Tül perde pencerenin <b>%${cov}</b>'ini
+                kapatıyor. ${cov > 85
+                  ? 'Perde pencere boyunca tamamlandığı için yansıma kesiliyor.'
+                  : 'Foto 05\'te perde tek uca toplanmış — pencere boyunca tamamlanması '
+                    + 'gerekiyor, maliyeti yok.'}`;
+      })() },
   ];
   for (const f of items) {
     const el2 = document.createElement('div');
@@ -626,8 +653,10 @@ function secTools() {
     (src/lib/analysis.js içinde yerleşimden hesaplanır.)</p>
     <div class="row" style="margin-top:10px"><label>Pozlama: <b id="ev">0.98</b></label></div>
     <input type="range" id="er" min="40" max="180" value="98">
-    <div class="row" style="margin-top:10px"><label>Gün ışığı (koridordan): <b id="sv">0.85</b></label></div>
-    <input type="range" id="sr" min="0" max="250" value="85">
+    <div class="row" style="margin-top:10px"><label>Gün ışığı (pencereden): <b id="sv">1.15</b></label></div>
+    <input type="range" id="sr" min="0" max="300" value="115">
+    <div class="row" style="margin-top:10px"><label>Tavan armatürleri: <b id="lv">11</b></label></div>
+    <input type="range" id="lr" min="0" max="35" value="11">
     <div class="row" style="margin-top:12px">
       <input type="checkbox" id="ao" ${useAO ? 'checked' : ''}>
       <label for="ao"><b>Ortam gölgelemesi</b> (AO) — köşelerde yumuşak gölge</label>
@@ -639,8 +668,15 @@ function secTools() {
     d.body.querySelector('#ev').textContent = (+e.target.value / 100).toFixed(2);
   };
   d.body.querySelector('#sr').oninput = (e) => {
-    lights.sun.intensity = +e.target.value / 100;
-    d.body.querySelector('#sv').textContent = (+e.target.value / 100).toFixed(2);
+    const v = +e.target.value / 100;
+    lights.sun.intensity = v;
+    for (const f of lights.winFill) f.intensity = v * 2.6;
+    d.body.querySelector('#sv').textContent = v.toFixed(2);
+  };
+  d.body.querySelector('#lr').oninput = (e) => {
+    const v = +e.target.value;
+    for (const l of lights.lamps) l.intensity = v;
+    d.body.querySelector('#lv').textContent = v;
   };
   const aoBox = d.body.querySelector('#ao');
   if (aoBox) aoBox.onchange = (e) => { useAO = e.target.checked && !!pipeline; };

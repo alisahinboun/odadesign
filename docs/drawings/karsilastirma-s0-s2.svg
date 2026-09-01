@@ -70,26 +70,26 @@
 <line x1="165.25" y1="123.50" x2="137.27" y2="122.52" stroke="#2e7d4f" stroke-width="0.35" stroke-dasharray="2 1.5"/>
 <text x="162.86" y="106.30" font-size="2.6" fill="#2e7d4f" text-anchor="middle" font-weight="700">178°</text>
 <rect x="224.25" y="56.00" width="8.75" height="67.50" fill="none" stroke="#a2a9b2" stroke-width="0.28" stroke-dasharray="2.4 1.4"/>
-<rect x="185.00" y="81.63" width="40.00" height="18.75" fill="#ffffff" stroke="#5d6570" stroke-width="0.4" />
-<line x1="185.00" y1="81.63" x2="225.00" y2="81.63" stroke="#14161a" stroke-width="0.9" />
-<circle cx="205.00" cy="91.00" r="2.70" fill="#fffdf5" stroke="#b8860b" stroke-width="0.28"/>
-<text x="205.00" y="91.85" font-size="2.2" fill="#7a5c05" text-anchor="middle" font-weight="700">M1</text>
-<rect x="140.63" y="68.50" width="13.75" height="20.00" fill="#ffffff" stroke="#5d6570" stroke-width="0.4" />
-<line x1="140.63" y1="68.50" x2="140.63" y2="88.50" stroke="#14161a" stroke-width="0.9" />
-<circle cx="147.50" cy="78.50" r="2.70" fill="#fffdf5" stroke="#b8860b" stroke-width="0.28"/>
-<text x="147.50" y="79.35" font-size="2.2" fill="#7a5c05" text-anchor="middle" font-weight="700">D1</text>
-<rect x="154.25" y="56.63" width="20.00" height="8.75" fill="#ffffff" stroke="#5d6570" stroke-width="0.4" />
-<line x1="154.25" y1="65.38" x2="174.25" y2="65.38" stroke="#14161a" stroke-width="0.9" />
-<circle cx="164.25" cy="61.00" r="2.70" fill="#fffdf5" stroke="#b8860b" stroke-width="0.28"/>
-<text x="164.25" y="61.85" font-size="2.2" fill="#7a5c05" text-anchor="middle" font-weight="700">K2</text>
-<rect x="197.25" y="65.75" width="15.50" height="15.50" fill="#ffffff" stroke="#5d6570" stroke-width="0.4" />
-<line x1="197.25" y1="81.25" x2="212.75" y2="81.25" stroke="#14161a" stroke-width="0.9" />
-<circle cx="205.00" cy="73.50" r="2.70" fill="#fffdf5" stroke="#b8860b" stroke-width="0.28"/>
-<text x="205.00" y="74.35" font-size="2.2" fill="#7a5c05" text-anchor="middle" font-weight="700">S1</text>
-<rect x="199.00" y="103.00" width="12.00" height="13.50" fill="#ffffff" stroke="#5d6570" stroke-width="0.4" />
-<line x1="199.00" y1="103.00" x2="211.00" y2="103.00" stroke="#14161a" stroke-width="0.9" />
-<circle cx="205.00" cy="109.75" r="2.70" fill="#fffdf5" stroke="#b8860b" stroke-width="0.28"/>
-<text x="205.00" y="110.60" font-size="2.2" fill="#7a5c05" text-anchor="middle" font-weight="700">S2</text>
+<rect x="186.75" y="81.63" width="40.00" height="18.75" fill="#ffffff" stroke="#5d6570" stroke-width="0.4" />
+<line x1="186.75" y1="81.63" x2="226.75" y2="81.63" stroke="#14161a" stroke-width="0.9" />
+<circle cx="206.75" cy="91.00" r="2.70" fill="#fffdf5" stroke="#b8860b" stroke-width="0.28"/>
+<text x="206.75" y="91.85" font-size="2.2" fill="#7a5c05" text-anchor="middle" font-weight="700">M1</text>
+<rect x="140.63" y="76.50" width="13.75" height="20.00" fill="#ffffff" stroke="#5d6570" stroke-width="0.4" />
+<line x1="140.63" y1="76.50" x2="140.63" y2="96.50" stroke="#14161a" stroke-width="0.9" />
+<circle cx="147.50" cy="86.50" r="2.70" fill="#fffdf5" stroke="#b8860b" stroke-width="0.28"/>
+<text x="147.50" y="87.35" font-size="2.2" fill="#7a5c05" text-anchor="middle" font-weight="700">D1</text>
+<rect x="141.88" y="56.00" width="8.75" height="20.00" fill="#ffffff" stroke="#5d6570" stroke-width="0.4" />
+<line x1="141.88" y1="56.00" x2="141.88" y2="76.00" stroke="#14161a" stroke-width="0.9" />
+<circle cx="146.25" cy="66.00" r="2.70" fill="#fffdf5" stroke="#b8860b" stroke-width="0.28"/>
+<text x="146.25" y="66.85" font-size="2.2" fill="#7a5c05" text-anchor="middle" font-weight="700">K2</text>
+<rect x="199.00" y="66.50" width="15.50" height="15.50" fill="#ffffff" stroke="#5d6570" stroke-width="0.4" />
+<line x1="199.00" y1="82.00" x2="214.50" y2="82.00" stroke="#14161a" stroke-width="0.9" />
+<circle cx="206.75" cy="74.25" r="2.70" fill="#fffdf5" stroke="#b8860b" stroke-width="0.28"/>
+<text x="206.75" y="75.10" font-size="2.2" fill="#7a5c05" text-anchor="middle" font-weight="700">S1</text>
+<rect x="200.75" y="103.00" width="12.00" height="13.50" fill="#ffffff" stroke="#5d6570" stroke-width="0.4" />
+<line x1="200.75" y1="103.00" x2="212.75" y2="103.00" stroke="#14161a" stroke-width="0.9" />
+<circle cx="206.75" cy="109.75" r="2.70" fill="#fffdf5" stroke="#b8860b" stroke-width="0.28"/>
+<text x="206.75" y="110.60" font-size="2.2" fill="#7a5c05" text-anchor="middle" font-weight="700">S2</text>
 <rect x="221.13" y="58.50" width="11.25" height="22.50" fill="#ffffff" stroke="#5d6570" stroke-width="0.4" />
 <line x1="232.38" y1="58.50" x2="232.38" y2="81.00" stroke="#14161a" stroke-width="0.9" />
 <circle cx="226.75" cy="69.75" r="2.70" fill="#fffdf5" stroke="#b8860b" stroke-width="0.28"/>
@@ -98,10 +98,10 @@
 <line x1="220.75" y1="111.25" x2="230.25" y2="111.25" stroke="#14161a" stroke-width="0.9" />
 <circle cx="225.50" cy="116.00" r="2.70" fill="#fffdf5" stroke="#b8860b" stroke-width="0.28"/>
 <text x="225.50" y="116.85" font-size="2.2" fill="#7a5c05" text-anchor="middle" font-weight="700">C1</text>
-<rect x="193.00" y="85.25" width="7.50" height="7.50" fill="#ffffff" stroke="#5d6570" stroke-width="0.4" />
-<line x1="193.00" y1="85.25" x2="200.50" y2="85.25" stroke="#14161a" stroke-width="0.9" />
-<circle cx="196.75" cy="89.00" r="2.70" fill="#fffdf5" stroke="#b8860b" stroke-width="0.28"/>
-<text x="196.75" y="89.85" font-size="2.2" fill="#7a5c05" text-anchor="middle" font-weight="700">W1</text>
+<rect x="194.25" y="85.25" width="7.50" height="7.50" fill="#ffffff" stroke="#5d6570" stroke-width="0.4" />
+<line x1="194.25" y1="85.25" x2="201.75" y2="85.25" stroke="#14161a" stroke-width="0.9" />
+<circle cx="198.00" cy="89.00" r="2.70" fill="#fffdf5" stroke="#b8860b" stroke-width="0.28"/>
+<text x="198.00" y="89.85" font-size="2.2" fill="#7a5c05" text-anchor="middle" font-weight="700">W1</text>
 <text x="22.00" y="138.50" font-size="3.2" fill="#14161a" text-anchor="start" font-weight="700" letter-spacing="0.4">ÖLÇÜLEBİLİR FARK</text>
 <line x1="22.00" y1="143.50" x2="233.00" y2="143.50" stroke="#14161a" stroke-width="0.4" />
 <text x="108.70" y="148.50" font-size="2.8" fill="#5d6570" text-anchor="start" font-weight="700">Ş-0</text>
@@ -114,7 +114,7 @@
 <line x1="22.00" y1="159.60" x2="233.00" y2="159.60" stroke="#e6e8ea" stroke-width="0.2" />
 <text x="22.00" y="164.40" font-size="2.7" fill="#5d6570" text-anchor="start" >Masa – süpürme yayı payı</text>
 <text x="108.70" y="164.40" font-size="2.8" fill="#14161a" text-anchor="start" >8 cm</text>
-<text x="175.00" y="164.40" font-size="2.8" fill="#2e7d4f" text-anchor="start" font-weight="700">10 cm</text>
+<text x="175.00" y="164.40" font-size="2.8" fill="#2e7d4f" text-anchor="start" font-weight="700">14 cm</text>
 <text x="170.50" y="164.40" font-size="2.4" fill="#2e7d4f" text-anchor="start" >▲</text>
 <line x1="22.00" y1="167.00" x2="233.00" y2="167.00" stroke="#e6e8ea" stroke-width="0.2" />
 <text x="22.00" y="171.80" font-size="2.7" fill="#5d6570" text-anchor="start" >Kullanıcı girişi görüyor mu</text>
@@ -140,6 +140,6 @@
 <text x="175.00" y="201.40" font-size="2.8" fill="#14161a" text-anchor="start" >yok</text>
 <line x1="22.00" y1="204.00" x2="233.00" y2="204.00" stroke="#e6e8ea" stroke-width="0.2" />
 <text x="22.00" y="209.30" font-size="2.3" fill="#a2a9b2" text-anchor="start" >▲ iyileşme     ▼ gerileme (kabul edilebilir sınırlar içinde)     işaretsiz: fark yok</text>
-<text x="22.00" y="214.80" font-size="2.5" fill="#5d6570" text-anchor="start" >Kapsam — Ş-2: Ş-1 boya kalemleri + mobilya taşıma/montaj. Yeni mobilya alımı yok; mevcut parçalar yeniden konumlanır. Priz konumları gözden geçirilmeli (masa arkaya alındığı için arka duvarda priz gerekiyor — röleve eksiği).</text>
+<text x="22.00" y="214.80" font-size="2.5" fill="#5d6570" text-anchor="start" >Kapsam — Ş-2: Ş-1 boya kalemleri + mobilya taşıma/montaj. Yeni mobilya alımı yok; mevcut parçalar yeniden konumlanır. Tül perde pencere boyunca tamamlanır (ekran yansımasını keser). Priz konumları gözden geçirilmeli: masa arkaya alındığı için arka duvarda / döşemede priz gerekiyor.</text>
 <text x="22.00" y="219.80" font-size="2.3" fill="#a2a9b2" text-anchor="start" >Ölçüler modelden hesaplanmıştır (src/config/room.js + schemes.js). R00 · 2026-09-01 · ölçüler cm.</text>
 </svg>

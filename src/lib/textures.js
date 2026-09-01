@@ -322,4 +322,61 @@ export function corridorPoster(px = 384) {
   });
 }
 
+/* ------------------------------------------------------- KARSI BINA CEPHESI */
+/** Foto 05'te pencereden gorunen bina: tasli/seritli cephe, koyu pencereler */
+export function facadeTexture(px = 1024) {
+  return memo('facade' + px, () => {
+    const { c, g } = makeCanvas(px, px);
+    seed(3311);
+    g.fillStyle = '#b9b3a8'; g.fillRect(0, 0, px, px);
+    // yatay kat seritleri
+    const floors = 7, fh = px / floors;
+    for (let f = 0; f < floors; f++) {
+      const y = f * fh;
+      // parapet bandi (tas kaplama)
+      g.fillStyle = f % 2 ? '#c3bdb1' : '#aca69b';
+      g.fillRect(0, y, px, fh * 0.34);
+      for (let i = 0; i < 220; i++) {
+        g.fillStyle = `rgba(${120 + rnd() * 70 | 0},${115 + rnd() * 65 | 0},${105 + rnd() * 60 | 0},${0.25 + rnd() * 0.4})`;
+        g.fillRect(rnd() * px, y + rnd() * fh * 0.34, 3 + rnd() * 22, 2 + rnd() * 7);
+      }
+      // pencere seridi
+      const wy = y + fh * 0.36, wh = fh * 0.5;
+      const cols = 9, cw = px / cols;
+      for (let i = 0; i < cols; i++) {
+        const wx = i * cw + cw * 0.10, ww = cw * 0.80;
+        g.fillStyle = '#6d7a80';
+        g.fillRect(wx, wy, ww, wh);
+        // cam yansimasi
+        const gr = g.createLinearGradient(wx, wy, wx + ww, wy + wh);
+        gr.addColorStop(0, 'rgba(226,236,240,.85)');
+        gr.addColorStop(0.45, 'rgba(150,168,178,.65)');
+        gr.addColorStop(1, 'rgba(96,110,118,.85)');
+        g.fillStyle = gr;
+        g.fillRect(wx + 1.5, wy + 1.5, ww - 3, wh - 3);
+        // dogramada dusey kayit
+        g.fillStyle = 'rgba(60,66,70,.85)';
+        g.fillRect(wx + ww / 2 - 1, wy, 2, wh);
+        // bazi pencerelerde perde / jaluzi
+        if (rnd() < 0.45) {
+          g.fillStyle = `rgba(232,228,214,${0.5 + rnd() * 0.4})`;
+          g.fillRect(wx + 2, wy + 2, ww - 4, wh * (0.25 + rnd() * 0.5));
+        }
+      }
+      // kat arasi golge
+      g.fillStyle = 'rgba(70,66,60,.16)';
+      g.fillRect(0, y + fh * 0.86, px, fh * 0.14);
+    }
+    // kirmizi tabela lekesi (foto 05te gorunen)
+    g.fillStyle = 'rgba(190,42,38,.9)';
+    g.fillRect(px * 0.40, px * 0.34, px * 0.05, px * 0.10);
+    // genel hava perspektifi
+    const hz = g.createLinearGradient(0, 0, 0, px);
+    hz.addColorStop(0, 'rgba(200,214,226,.30)');
+    hz.addColorStop(1, 'rgba(200,214,226,.05)');
+    g.fillStyle = hz; g.fillRect(0, 0, px, px);
+    return c;
+  });
+}
+
 export { finish };

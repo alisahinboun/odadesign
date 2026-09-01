@@ -72,6 +72,25 @@ export const mat = {
       transmission: 0.22, thickness: 0.6, side: THREE.DoubleSide,
     })),
 
+  /** Pencere cami - berrak, disariyi gosterir */
+  windowGlass: (wCm = 100, hCm = 100) => M('wg2', () => new THREE.MeshPhysicalMaterial({
+    color: 0xeaf2f4, transparent: true, opacity: 0.14, roughness: 0.03, metalness: 0,
+    transmission: 0.92, thickness: 0.4, ior: 1.52, side: THREE.DoubleSide,
+    envMapIntensity: 1.4, depthWrite: false,
+  })),
+
+  /** Tul perde - isigi geciren, hafif dokulu */
+  curtain: () => M('curtain', () => new THREE.MeshStandardMaterial({
+    color: palette.curtain.hex, roughness: 0.95, metalness: 0,
+    transparent: true, opacity: 0.60, side: THREE.DoubleSide, depthWrite: false,
+  })),
+
+  /** Karsi bina cephesi */
+  facade: (wCm = 1000, hCm = 1000) => M('facade', () => new THREE.MeshStandardMaterial({
+    map: tx(T.facadeTexture(), { repeat: [Math.max(1, wCm / 1400), Math.max(1, hCm / 1400)] }),
+    roughness: 0.9, metalness: 0,
+  })),
+
   mirror: () => M('mirror', () => new THREE.MeshPhysicalMaterial({
     color: 0xdfe6e8, roughness: 0.06, metalness: 0.92, envMapIntensity: 1.6,
   })),

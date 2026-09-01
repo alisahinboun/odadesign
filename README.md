@@ -6,6 +6,8 @@ kullanabileceği** bir oda modeli: tarayıcıda gezilebilen 3B görselleştirici
 SketchUp / Blender / 3ds Max'e aktarım.
 
 **Oda:** ofis / idari oda · 370 × 270 × 290 cm · net 9,99 m²
+Arka duvarda 285 cm genişliğinde pencere ve altında dilimli radyatör; giriş duvarı
+alüminyum bölüntü (120 cm kapı + vasistas); sağ duvarda ankastre üst dolap bankosu.
 
 <!-- kapak -->
 | | |
@@ -136,6 +138,10 @@ mevcut durum ve iki öneri tanımlı:
 | **Ş‑1** Sakin palet | sadece boya + dolap kapağı | 109° | 0 hata, 1 uyarı |
 | **Ş‑2** Yeniden yerleşim | Ş‑1 + mobilya taşınır | **178°** | **0 hata, 0 uyarı** |
 
+Ş‑2, pencereyi de hesaba katar: depolama arka duvara konulamaz (odanın tek
+penceresini kapatır), radyatörün önü boş bırakılır, tül perde ekran yansımasını
+kesecek şekilde pencere boyunca tamamlanır.
+
 Ayrıntı, gerekçe ve karşılaştırma tablosu: [`docs/semalar.md`](docs/semalar.md)
 
 Müşteri sunumu için **karşılaştırma paftası** — iki plan yan yana, kapı süpürme
@@ -208,7 +214,8 @@ docs/
   drawings/
     00-pafta-listesi.md indeks: hangi pafta ne içeriyor (üretilen)
     *.svg               şema başına 9 pafta + 2 karşılaştırma paftası (üretilen)
-reference/              kaynak fotoğraflar + el krokisi
+reference/              5 kaynak fotoğraf + el krokisi
+                        05 = arka duvar (pencere, perde, radyatör)
 ```
 
 ---
@@ -222,6 +229,11 @@ fotoğraf yorumudur.**
 
 Arka duvar hiçbir fotoğrafta görünmemektedir ve röleve eksiktir.
 Krokideki üçüncü 80 cm'lik elemanın adı okunamamıştır.
+
+Arka duvar ilk turda hiç görünmüyordu; sonradan gelen fotoğrafla pencere ve
+radyatör modele girdi, ancak **pencere ölçüleri hâlâ fotoğraf oranlamasıdır.**
+Geniş açı nedeniyle düşey ölçülerde belirsizlik yüksek — `docs/roleve.md` bölüm 8
+yerinde alınması gereken 4 ölçüyü listeler.
 
 **İmalata girmeden önce [`docs/roleve.md`](docs/roleve.md) içindeki kontrol
 listesini yerinde doğrulayın.**

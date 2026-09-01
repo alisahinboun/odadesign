@@ -38,25 +38,31 @@ export const schemes = [
     code: 'Ş-1',
     name: 'Sakin palet',
     kind: 'oneri',
-    summary: 'Yerleşim aynı, yalnızca yüzey renkleri değişiyor. En düşük maliyetli müdahale.',
+    summary: 'Yerleşim aynı, yalnızca yüzey renkleri. En düşük maliyetli müdahale — ışığı geri kazandırır.',
     rationale:
-      'Oda penceresiz; ışığı vasistastan ödünç alıyor. Doygun sarı ve yeşil hem '
-      + 'ışığı yutuyor hem 10 m²lik hacmi daraltıyor. Panel yüzeyleri sıcak kırık '
-      + 'beyaza alınıyor, yeşil TEK vurgu olarak kalıyor ama okul kimliğini koruyacak '
-      + 'şekilde adaçayı tonuna çekiliyor. Mobilya, kapı kanadı ve ankastre dolap '
-      + 'gövdesi yerinde kalır — sadece boya ve kapak yenilenir.',
+      'Odanın asıl ışık kaynağı arka duvardaki 268 cm genişliğindeki pencere '
+      + '(foto 05). Sorun şu: pencerenin bulunduğu duvarın TAMAMI doygun yeşile '
+      + 'boyalı, yani gelen ışığın büyük bölümü daha odaya yayılmadan bu yüzeyde '
+      + 'yutuluyor; yansıyan az ışık da yeşile boyanıyor. Karşıda bina yakın olduğu '
+      + 'için zaten difüz ve az ışık geliyor. Öneri, ışığın çarptığı ve yansıdığı '
+      + 'yüzeyleri açık nötre almak; yeşil TEK vurgu olarak kalıyor ama okul '
+      + 'kimliğini koruyacak şekilde adaçayı tonuna çekiliyor. Mobilya, kapı kanadı, '
+      + 'pencere doğraması ve ankastre dolap gövdesi yerinde kalır — sadece boya.',
     palette: {
       yellow:      { hex: '#e7e1d5', label: 'Bölüntü panel — sıcak kırık beyaz', ral: 'RAL 9001 yakını' },
       green:       { hex: '#4f7a63', label: 'Düşey vurgu şeridi — adaçayı',      ral: 'RAL 6021 koyu' },
       greenLight:  { hex: '#7d9c87', label: 'Tavan bandı — açık adaçayı',        ral: 'RAL 6021' },
       lilac:       { hex: '#dcd7ce', label: 'Duvar boyası — sıcak nötr',         ral: 'RAL 9002' },
+      radiator:    { hex: '#f4f2ee', label: 'Radyatör (beyaz)',                  ral: 'RAL 9016' },
+      curtain:     { hex: '#efe9dd', label: 'Tül perde',                          ral: '-' },
       offwhite:    { hex: '#efebe3', label: 'Dolap kapağı — açık',               ral: 'RAL 9010' },
       plasticGrey: { hex: '#b9bcbe', label: 'Gri plastik',                        ral: '-' },
     },
     wallUnitPattern: ['offwhite', 'yellow', 'offwhite', 'offwhite', 'yellow', 'offwhite'],
     furniture: {},
-    metrajNote: 'Boya: bölüntü panelleri + 3 sıvalı duvar + tavan bandı. '
-      + 'Ankastre dolap kapakları yeniden kaplama. Mobilya alımı yok.',
+    metrajNote: 'Boya: bölüntü panelleri + sol/sağ duvar + ARKA (pencere) DUVARI + '
+      + 'tavan bandı. Ankastre dolap kapakları yeniden kaplama. Pencere doğraması ve '
+      + 'radyatör yerinde kalır. Mobilya alımı yok.',
   },
 
   /* ---------------------------------------------------------------- S-2 */
@@ -67,59 +73,67 @@ export const schemes = [
     kind: 'oneri',
     summary: 'Ş-1 paleti + mobilya yeniden konumlanıyor. Kapı tam açılıyor, kullanıcı girişi görüyor.',
     rationale:
-      'Modelin ortaya çıkardığı üç sorunu birden çözer: (1) kapı süpürme yayı '
+      'Modelin ortaya çıkardığı dört sorunu birden çözer: (1) kapı süpürme yayı '
       + 'tamamen boşaltılır, kanat neredeyse tam açılır; (2) masa arkaya alınıp '
       + 'kullanıcı girişe dönük oturur — idari bir odada gelen kişiyi görmek gerekir; '
-      + '(3) kapı ile masa arasında net bir ziyaretçi alanı oluşur. Depolama sol ve '
-      + 'arka duvarda toplanır, yazıcı mevcut ankastre dolabın altına alınır. '
-      + 'Ankastre dolap bankosu ve kapı yerinde kalır — taşınmaz.',
+      + '(3) kapı ile masa arasında net bir ziyaretçi alanı oluşur; (4) masa pencereye '
+      + 'yakın ama ekran pencereye PARALEL duruyor: ne ekranda pencere yansıması ne de '
+      + 'kullanıcının gözünde karşıdan gelen parlama oluşuyor. Depolama sol ve arka '
+      + 'duvarda toplanır, radyatörün önü boş bırakılır. Ankastre dolap bankosu, '
+      + 'pencere ve kapı yerinde kalır — taşınmaz.',
     palette: null,          // Ş-1 paletini devralir
     inherits: 's1',
     wallUnitPattern: null,  // inherits
     furniture: {
       // Masa arkaya alindi; kullanici -Y yonune, yani kapiya bakarak oturuyor.
-      // Sol uc kapi supurme yayindan 7 cm disarida (denetim: npm run check --sema=s2).
-      M1: { pos: [258, 130], rot: 0 },
-      S1: { pos: [258, 200], rot: 180 },
-      W1: { pos: [225, 138], rot: 0 },
+      // Sol uc kapi supurme yayindan disarida (denetim: npm run check -- --sema=s2).
+      M1: { pos: [265, 130], rot: 0 },
+      S1: { pos: [265, 197], rot: 180 },
+      W1: { pos: [230, 138], rot: 0 },
       // Ziyaretci sandalyesi masanin onunde, giris ile masa arasindaki alanda
-      S2: { pos: [258,  55], rot: 0 },
-      // Depolama sol ve arka duvarda toplandi; D1'in kanat acilma payi 60+ cm
-      D1: { pos: [ 28, 180], rot: -90 },
-      K2: { pos: [ 95, 250], rot: 180 },
-      // Yazici, mevcut ankastre dolabin altina - kullanici sandalyeden donerek erisir
+      S2: { pos: [265,  55], rot: 0 },
+      // Depolama SOL duvarda toplandi. K2 arka duvara konulamaz: odanin tek
+      // penceresini kapatir (denetim bunu yakaladi).
+      D1: { pos: [ 28, 148], rot: -90 },
+      K2: { pos: [ 23, 230], rot: -90 },
+      // Yazici, mevcut ankastre dolabin altina - kullanici sandalyeden donerek erisir.
+      // Radyatorun (x 173-232) onu bos kalacak sekilde konumlandi.
       A1: { pos: [345, 215], rot:  90 },
-      // Portmanto giris kosesinde: gelen kisi paltosunu kapida birakiyor
       C1: { pos: [340,  30], rot:   0 },
     },
     // Masaustu duzeni yeni masaya gore; monitor +Y yonune (kullaniciya) bakar
     equipment: {
-      E1: { pos: [268, 112], rot: 0 },
-      E2: { pos: [200, 120], rot: 0 },
-      E3: { pos: [268, 148], rot: 0 },
-      E4: { pos: [300, 150], rot: 0 },
-      E5: { pos: [320, 145], rot: -6 },
-      E6: { pos: [228, 108], rot: 0 },
-      E7: { pos: [222, 128], rot: 0 },
-      E8: { pos: [242, 132], rot: 0 },
+      E1: { pos: [275, 112], rot: 0 },
+      E2: { pos: [205, 120], rot: 0 },
+      E3: { pos: [275, 148], rot: 0 },
+      E4: { pos: [312, 150], rot: 0 },
+      E5: { pos: [325, 145], rot: -6 },
+      E6: { pos: [235, 110], rot: 0 },
+      E7: { pos: [228, 130], rot: 0 },
+      E8: { pos: [244, 134], rot: 0 },
       E9: { pos: [345, 215], rot: 90 },
     },
-    // Dolap ustu esyalar dolapla birlikte tasindi; girisi tikayan yer esyalari
-    // arka kose duzenine alindi
     clutter: {
-      X1: { pos: [ 10, 161], rot: 4 },
-      X2: { pos: [ 29, 165], rot: -6 },
-      X3: { pos: [ 29, 199], rot: 102 },
-      X4: { pos: [ 42, 252], rot: 0 },
-      X5: { pos: [ 30, 232], rot: 0 },
+      X1: { pos: [ 10, 129], rot: 4 },
+      X2: { pos: [ 29, 133], rot: -6 },
+      X3: { pos: [ 29, 167], rot: 102 },
+      X4: { pos: [ 46,  86], rot: 0 },
+      X5: { pos: [ 30,  66], rot: 0 },
     },
     wallItems: {
       T3: { u: 75, z: 152 },
       T2: { u: 300, z: 198 },
     },
+    // Kullanici kapiya donuk oturunca pencere ARKASINDA kaliyor ve ekranda
+    // yansima yapiyor. Mevcut tul perde foto 05'te tek uca toplanmis durumda;
+    // pencere boyunca tamamlanmasi bu yansimayi kesiyor - maliyeti yok.
+    windows: {
+      P1: { curtain: { from: -2, to: 287, drop: 122, headroom: 3, hem: 8 } },
+    },
     metrajNote: 'Ş-1 boya kalemleri + mobilya taşıma/montaj. Yeni mobilya alımı yok; '
-      + 'mevcut parçalar yeniden konumlanır. Priz konumları gözden geçirilmeli '
-      + '(masa arkaya alındığı için arka duvarda priz gerekiyor — röleve eksiği).',
+      + 'mevcut parçalar yeniden konumlanır. Tül perde pencere boyunca tamamlanır '
+      + '(ekran yansımasını keser). Priz konumları gözden geçirilmeli: masa arkaya '
+      + 'alındığı için arka duvarda / döşemede priz gerekiyor.',
   },
 ];
 
@@ -139,5 +153,6 @@ export function resolveScheme(id) {
     equipment: { ...(base.equipment || {}), ...(s.equipment || {}) },
     clutter: { ...(base.clutter || {}), ...(s.clutter || {}) },
     wallItems: { ...(base.wallItems || {}), ...(s.wallItems || {}) },
+    windows: { ...(base.windows || {}), ...(s.windows || {}) },
   };
 }

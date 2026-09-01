@@ -3,9 +3,9 @@
 **Oda Tasarimi / Room Design** · R00 · 2026-09-01
 
 > **Ş-2 · Yeniden yerleşim** — Ş-1 paleti + mobilya yeniden konumlanıyor. Kapı tam açılıyor, kullanıcı girişi görüyor.
-> Modelin ortaya çıkardığı üç sorunu birden çözer: (1) kapı süpürme yayı tamamen boşaltılır, kanat neredeyse tam açılır; (2) masa arkaya alınıp kullanıcı girişe dönük oturur — idari bir odada gelen kişiyi görmek gerekir; (3) kapı ile masa arasında net bir ziyaretçi alanı oluşur. Depolama sol ve arka duvarda toplanır, yazıcı mevcut ankastre dolabın altına alınır. Ankastre dolap bankosu ve kapı yerinde kalır — taşınmaz.
+> Modelin ortaya çıkardığı dört sorunu birden çözer: (1) kapı süpürme yayı tamamen boşaltılır, kanat neredeyse tam açılır; (2) masa arkaya alınıp kullanıcı girişe dönük oturur — idari bir odada gelen kişiyi görmek gerekir; (3) kapı ile masa arasında net bir ziyaretçi alanı oluşur; (4) masa pencereye yakın ama ekran pencereye PARALEL duruyor: ne ekranda pencere yansıması ne de kullanıcının gözünde karşıdan gelen parlama oluşuyor. Depolama sol ve arka duvarda toplanır, radyatörün önü boş bırakılır. Ankastre dolap bankosu, pencere ve kapı yerinde kalır — taşınmaz.
 >
-> **Metraj notu:** Ş-1 boya kalemleri + mobilya taşıma/montaj. Yeni mobilya alımı yok; mevcut parçalar yeniden konumlanır. Priz konumları gözden geçirilmeli (masa arkaya alındığı için arka duvarda priz gerekiyor — röleve eksiği).
+> **Metraj notu:** Ş-1 boya kalemleri + mobilya taşıma/montaj. Yeni mobilya alımı yok; mevcut parçalar yeniden konumlanır. Tül perde pencere boyunca tamamlanır (ekran yansımasını keser). Priz konumları gözden geçirilmeli: masa arkaya alındığı için arka duvarda / döşemede priz gerekiyor.
 
 Bu dosya `src/config/room.js` verisinden **otomatik üretilir** (`npm run schedule`). Elle düzenlemeyin.
 
@@ -44,28 +44,28 @@ Bölüntü dolu panel toplamı: 5.13 m² · Kapı boşluğu: 2.46 m²
 
 | Poz | Ad | Tip | G×D×Y (cm) | Konum (x,y) | Açı | Ayak izi m² |
 |---|---|---|---|---|---|---:|
-| **M1** | Calisma masasi | Mobilya | 160×75×75 | (258, 130) | 0° | 1.20 |
-| **D1** | Cift kanatli elbise/evrak dolabi | Mobilya | 80×55×185 | (28, 180) | -90° | 0.44 |
-| **K2** | 80 cm rafli modul (kitaplik kabul edildi) | Mobilya | 80×35×185 | (95, 250) | 180° | 0.28 |
-| **S1** | Yonetici calisma koltugu | Mobilya | 62×62×112 | (258, 200) | 180° | 0.38 |
-| **S2** | Misafir sandalyesi (istiflenebilir) | Mobilya | 48×54×82 | (258, 55) | 0° | 0.26 |
+| **M1** | Calisma masasi | Mobilya | 160×75×75 | (265, 130) | 0° | 1.20 |
+| **D1** | Cift kanatli elbise/evrak dolabi | Mobilya | 80×55×185 | (28, 148) | -90° | 0.44 |
+| **K2** | 80 cm rafli modul (kitaplik kabul edildi) | Mobilya | 80×35×185 | (23, 230) | -90° | 0.28 |
+| **S1** | Yonetici calisma koltugu | Mobilya | 62×62×112 | (265, 197) | 180° | 0.38 |
+| **S2** | Misafir sandalyesi (istiflenebilir) | Mobilya | 48×54×82 | (265, 55) | 0° | 0.26 |
 | **A1** | Yazici altligi / alcak dolap | Mobilya | 90×45×62 | (345, 215) | 90° | 0.41 |
 | **C1** | Ayakli askilik | Mobilya | 38×38×178 | (340, 30) | 0° | 0.14 |
-| **W1** | Pedalli cop kovasi | Mobilya | 30×30×42 | (225, 138) | 0° | 0.09 |
-| **E1** | 24" monitor | Ekipman | 55×20×42 | (268, 112) | 0° | 0.11 |
-| **E2** | Masaustu bilgisayar | Ekipman | 20×45×42 | (200, 120) | 0° | 0.09 |
-| **E3** | Klavye | Ekipman | 44×15×3 | (268, 148) | 0° | 0.07 |
-| **E4** | Mouse | Ekipman | 7×11×4 | (300, 150) | 0° | 0.01 |
-| **E5** | Klasor / not defteri | Ekipman | 24×32×3 | (320, 145) | -6° | 0.09 |
-| **E6** | Kalemlik (hasir) | Ekipman | 11×11×20 | (228, 108) | 0° | 0.01 |
-| **E7** | Zimba / kutu | Ekipman | 12×7×4 | (222, 128) | 0° | 0.01 |
-| **E8** | Bardak altligi | Ekipman | 11×11×1 | (242, 132) | 0° | 0.01 |
+| **W1** | Pedalli cop kovasi | Mobilya | 30×30×42 | (230, 138) | 0° | 0.09 |
+| **E1** | 24" monitor | Ekipman | 55×20×42 | (275, 112) | 0° | 0.11 |
+| **E2** | Masaustu bilgisayar | Ekipman | 20×45×42 | (205, 120) | 0° | 0.09 |
+| **E3** | Klavye | Ekipman | 44×15×3 | (275, 148) | 0° | 0.07 |
+| **E4** | Mouse | Ekipman | 7×11×4 | (312, 150) | 0° | 0.01 |
+| **E5** | Klasor / not defteri | Ekipman | 24×32×3 | (325, 145) | -6° | 0.09 |
+| **E6** | Kalemlik (hasir) | Ekipman | 11×11×20 | (235, 110) | 0° | 0.01 |
+| **E7** | Zimba / kutu | Ekipman | 12×7×4 | (228, 130) | 0° | 0.01 |
+| **E8** | Bardak altligi | Ekipman | 11×11×1 | (244, 134) | 0° | 0.01 |
 | **E9** | Fotokopi / yazici | Ekipman | 58×42×44 | (345, 215) | 90° | 0.24 |
-| **X1** | Mavi klasor | Esya | 8×30×32 | (10, 161) | 4° | 0.03 |
-| **X2** | Eski CRT monitor | Esya | 34×32×28 | (29, 165) | -6° | 0.13 |
-| **X3** | Kutu oyunu | Esya | 30×22×6 | (29, 199) | 102° | 0.09 |
-| **X4** | Futbol topu | Esya | 22×22×22 | (42, 252) | 0° | 0.05 |
-| **X5** | Karton rulo | Esya | 38×12×12 | (30, 232) | 0° | 0.05 |
+| **X1** | Mavi klasor | Esya | 8×30×32 | (10, 129) | 4° | 0.03 |
+| **X2** | Eski CRT monitor | Esya | 34×32×28 | (29, 133) | -6° | 0.13 |
+| **X3** | Kutu oyunu | Esya | 30×22×6 | (29, 167) | 102° | 0.09 |
+| **X4** | Futbol topu | Esya | 22×22×22 | (46, 86) | 0° | 0.05 |
+| **X5** | Karton rulo | Esya | 38×12×12 | (30, 66) | 0° | 0.05 |
 
 > Konum değerleri elemanın **plan merkezini** verir; dönme de merkez etrafındadır.
 
@@ -87,6 +87,8 @@ Bölüntü dolu panel toplamı: 5.13 m² · Kapı boşluğu: 2.46 m²
 |---|---|---|---|
 | `yellow` | Bölüntü panel — sıcak kırık beyaz | `#e7e1d5` | RAL 9001 yakını |
 | `green` | Düşey vurgu şeridi — adaçayı | `#4f7a63` | RAL 6021 koyu |
+| `curtain` | Tül perde | `#efe9dd` | - |
+| `radiator` | Radyatör (beyaz) | `#f4f2ee` | RAL 9016 |
 | `greenLight` | Tavan bandı — açık adaçayı | `#7d9c87` | RAL 6021 |
 | `lilac` | Duvar boyası — sıcak nötr | `#dcd7ce` | RAL 9002 |
 | `offwhite` | Dolap kapağı — açık | `#efebe3` | RAL 9010 |

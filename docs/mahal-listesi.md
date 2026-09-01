@@ -84,7 +84,9 @@ Bölüntü dolu panel toplamı: 5.13 m² · Kapı boşluğu: 2.46 m²
 | Anahtar | Yüzey | Hex | RAL (yaklaşık) |
 |---|---|---|---|
 | `yellow` | Boluntu panel sarisi | `#f2c11c` | RAL 1023 benzeri |
-| `green` | Yesil dusey serit | `#3faa35` | RAL 6018 benzeri |
+| `green` | Yesil (serit + arka duvar) | `#3faa35` | RAL 6018 benzeri |
+| `curtain` | Tul perde | `#e8e2d4` | - |
+| `radiator` | Radyator (beyaz) | `#f0efec` | RAL 9016 |
 | `greenLight` | Tavan yesil bandi | `#7cc623` | RAL 6018 acik |
 | `lilac` | Duvar boyasi (lila) | `#bdb5c9` | RAL 7035 mor tonlu |
 | `offwhite` | Krem dolap kapagi | `#ded8cc` | RAL 9001 |

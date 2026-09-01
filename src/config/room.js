@@ -70,7 +70,7 @@ export const partition = {
 
 export const walls = {
   left:  { id: 'D-SOL',  finish: 'lilac',    note: 'Sivali + plastik boya (lila). Dolap ve misafir sandalyesi bu duvarda.' },
-  back:  { id: 'D-ARKA', finish: 'lilac',    note: 'ROLEVE EKSIK - fotograflarda gorunmuyor, sol duvarla ayni kabul edildi.' },
+  back:  { id: 'D-ARKA', finish: 'green',    note: 'Tamami yesil boyali; buyuk pencere ve altinda dilimli radyator (foto 05).' },
   right: { id: 'D-SAG',  finish: 'offwhite', note: 'Ust kotta ankastre dolap bankosu (sari/krem kapaklar).' },
   front: { id: 'D-ON',   finish: 'partition', note: 'Aluminyum profilli boluntu + 120 cm kapi + vasistas.' },
 };
@@ -94,6 +94,78 @@ export const door = {
   letterSlot: { height: 112, w: 22, h: 9 }, // kapaktaki metal yazi/kilit plakasi | foto
   face: 'greyLaminate',
   edgeStrip: 'beech',  // kapak kenarindaki acik ahsap fitil | foto
+};
+
+/* ---------------------------------------------------- 3b. PENCERELER */
+/**
+ * Pencereler. Duvar yuzeyi boyunca u ekseninden konumlanir; her duvarin
+ * u ekseni src/model/equipment.js -> wallFrame() ile ayni tanimi kullanir:
+ *   front: u = x     back: u = x     left: u = y     right: u = y
+ *
+ * ⚠ TUM PENCERE OLCULERI FOTOGRAF 05'TEN ORANLANDI - YERINDE OLCULMELI.
+ * Fotograf ultra genis acili oldugu icin dusey olculerde belirsizlik yuksek.
+ * Kesin olcu icin gereken 4 deger docs/roleve.md bolum 9'da listeli.
+ */
+export const windows = [
+  {
+    id: 'P1', name: 'Pencere (3 kanatli, ortadaki acilir)',
+    wall: 'back',
+    u: 58,            // duvarin sol ucundan (x=0 kosesinden) uzaklik  | foto - TAHMIN
+    width: 285,       // kasa dis genisligi                            | foto - TAHMIN
+    sill: 80,         // denizlik ust kotu                             | foto - TAHMIN
+    height: 130,      // kasa dis yuksekligi (ust kot 210)             | foto - TAHMIN
+    frameWidth: 5,    // kasa/kanat profil genisligi                   | tipik
+    frameDepth: 7,
+    sillBoard: { depth: 22, thickness: 4, overhang: 3 }, // ic denizlik | foto
+    reveal: 14,       // duvar kalinligindaki pervaz derinligi
+    /**
+     * Bolumler soldan saga (odadan bakinca), toplam = width.
+     * kind: 'fixed' sabit cam | 'sash' acilir kanat (koyu cerceve, foto 05)
+     */
+    // Soldan (x kucuk) saga. Foto 05'te perdenin arkasi gorunmuyor; oradaki iki
+    // bolum simetri varsayimiyla sabit cam kabul edildi.
+    divisions: [
+      { kind: 'fixed', width: 48 },
+      { kind: 'fixed', width: 48 },
+      { kind: 'fixed', width: 56 },
+      { kind: 'sash',  width: 81 },
+      { kind: 'fixed', width: 52 },
+    ],
+    curtain: {                    // tul perde - pencerenin sol ucunu ortuyor (foto 05)
+      from: -2, to: 100,          // pencere u ekseninde
+      drop: 122, headroom: 3,
+      hem: 8,                     // alt agirlik bandi (fotoda koyu serit)
+    },
+    note: 'Foto 05: ortadaki koyu cerceveli kanat acilir, yanlar sabit. '
+        + 'Sag ucta tul perde toplanmis duruyor. Olculer oranlama - yerinde teyit sart.',
+  },
+];
+
+/** Isitma - pencere altindaki dilimli radyator (foto 05) */
+export const radiators = [
+  {
+    id: 'R1', name: 'Dilimli (kolonlu) radyator',
+    wall: 'back',
+    u: 173,           // duvarin sol ucundan | foto - TAHMIN
+    width: 59,        // ~8 dilim            | foto - TAHMIN
+    height: 50,       // foto - TAHMIN
+    depth: 11,
+    floorGap: 10,     // dosemeden yukseklik
+    sections: 8,
+    note: 'Pencere ekseninin biraz solunda. Onune mobilya konulmamali.',
+  },
+];
+
+/**
+ * Pencereden gorunen dis baglam. Roleve degeri yok, yalnizca isik ve
+ * derinlik hissi icin: foto 05'te karsida cephesi tasli, seritli pencereli
+ * bir bina var.
+ */
+export const context = {
+  facadeDistance: 900,     // karsi binaya yaklasik mesafe (cm)
+  facadeHeight: 1400,
+  skyColor: '#c3d2e0',
+  note: 'Baglam - olculendirilmemistir.',
 };
 
 /* ------------------------------------------------------------- 4. DONATIM */
@@ -252,7 +324,9 @@ export const floor = {
 /** Fotograflardan okunan renkler. Teklif/metraj icin RAL karsiliklari not edildi. */
 export const palette = {
   yellow:      { hex: '#f2c11c', label: 'Boluntu panel sarisi',  ral: 'RAL 1023 benzeri' },
-  green:       { hex: '#3faa35', label: 'Yesil dusey serit',      ral: 'RAL 6018 benzeri' },
+  green:       { hex: '#3faa35', label: 'Yesil (serit + arka duvar)', ral: 'RAL 6018 benzeri' },
+  curtain:     { hex: '#e8e2d4', label: 'Tul perde',               ral: '-' },
+  radiator:    { hex: '#f0efec', label: 'Radyator (beyaz)',         ral: 'RAL 9016' },
   greenLight:  { hex: '#7cc623', label: 'Tavan yesil bandi',      ral: 'RAL 6018 acik' },
   lilac:       { hex: '#bdb5c9', label: 'Duvar boyasi (lila)',    ral: 'RAL 7035 mor tonlu' },
   offwhite:    { hex: '#ded8cc', label: 'Krem dolap kapagi',      ral: 'RAL 9001' },
@@ -281,6 +355,7 @@ export const viewPresets = [
   { id: 'foto02', label: 'Foto 02 · Kapı açık',      pos: [ 52, 238, 155], target: [300,  35, 115], fov: 70, doorAngle: 105 },
   { id: 'foto03', label: 'Foto 03 · Sol köşe',       pos: [288, 226, 150], target: [ 26,  35, 108], fov: 66, doorAngle: 105 },
   { id: 'masa',   label: 'Çalışma alanı',            pos: [150, 232, 138], target: [330,  80,  85], fov: 50, doorAngle: 0 },
+  { id: 'foto05', label: 'Foto 05 · Pencere duvarı',  pos: [186,  36, 152], target: [200, 262, 118], fov: 78, doorAngle: 0 },
   { id: 'kus',    label: 'Kuş bakışı', pos: [770, 710, 570], target: [185, 135,  55], fov: 34, doorAngle: 100 },
   { id: 'plan',   label: 'Plan',           pos: [185, 135, 780], target: [185, 135,   0], fov: 30, ortho: true, doorAngle: 95 },
 ];
@@ -309,6 +384,7 @@ const BASE = {
   clutter: clutter.map((f) => ({ pos: [...f.pos], rot: f.rot || 0 })),
   wallItems: wallItems.map((w) => ({ u: w.u, z: w.z })),
   wallUnitPattern: [...wallUnits.frontPattern],
+  windows: windows.map((w) => ({ curtain: { ...w.curtain } })),
 };
 
 export let activeScheme = 's0';
@@ -321,6 +397,7 @@ export function applyScheme(resolved) {
   clutter.forEach((f, i) => { f.pos = [...BASE.clutter[i].pos]; f.rot = BASE.clutter[i].rot; });
   wallItems.forEach((w, i) => { w.u = BASE.wallItems[i].u; w.z = BASE.wallItems[i].z; });
   wallUnits.frontPattern = [...BASE.wallUnitPattern];
+  windows.forEach((w, i) => { w.curtain = { ...BASE.windows[i].curtain }; });
 
   // 2) sema farkini uygula
   if (!resolved) { activeScheme = 's0'; return; }
@@ -339,6 +416,10 @@ export function applyScheme(resolved) {
   patch(equipment, resolved.equipment);
   patch(clutter, resolved.clutter);
   patch(wallItems, resolved.wallItems);
+  for (const [id, d] of Object.entries(resolved.windows || {})) {
+    const w = windows.find((x) => x.id === id);
+    if (w && d.curtain) w.curtain = { ...w.curtain, ...d.curtain };
+  }
   if (resolved.wallUnitPattern) wallUnits.frontPattern = [...resolved.wallUnitPattern];
   activeScheme = resolved.id;
 }

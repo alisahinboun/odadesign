@@ -22,7 +22,7 @@ Fotoğraf ve krokiden çıkarılan mevcut hâl. Karşılaştırma tabanı.
 
 ## Ş-1 · Sakin palet
 
-Yerleşim aynı, yalnızca yüzey renkleri değişiyor. En düşük maliyetli müdahale.
+Yerleşim aynı, yalnızca yüzey renkleri. En düşük maliyetli müdahale — ışığı geri kazandırır.
 
 | Pafta | Ad | İçerik | Dosya |
 |---|---|---|---|

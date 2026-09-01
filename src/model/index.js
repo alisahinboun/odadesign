@@ -7,6 +7,7 @@
 import * as THREE from 'three';
 import {
   room, furniture, equipment, clutter, wallItems, ceiling as ceilCfg, wallUnits, meta,
+  windows, radiators,
 } from '../config/room.js';
 import { place, group, cm } from '../lib/geom.js';
 import * as shell from './shell.js';
@@ -33,7 +34,10 @@ export const LAYERS = [
   { key: 'equipment',  label: 'Ekipman / masa üstü',   on: true },
   { key: 'wallItems',  label: 'Duvar elemanları',      on: true },
   { key: 'clutter',    label: 'Dağınık eşya',          on: true },
+  { key: 'windows',    label: 'Pencere + perde',       on: true },
+  { key: 'radiator',   label: 'Radyatör',              on: true },
   { key: 'corridor',   label: 'Koridor (bağlam)',      on: true },
+  { key: 'context',    label: 'Pencere manzarası',     on: true },
   { key: 'lights',     label: 'Işık kaynakları',       on: true },
 ];
 
@@ -51,6 +55,7 @@ export function buildRoom() {
     shell.buildCeilingBand(),
     shell.buildDoor(),
     shell.buildCorridor(),
+    shell.buildContext(),
   );
 
   /* --- ankastre ust dolaplar --- */
@@ -98,52 +103,87 @@ export function buildRoom() {
 }
 
 /* ====================================================== AYDINLATMA RIGI */
+/**
+ * Odanin isik kaynagi artik iki tane:
+ *   1) arka duvardaki BUYUK PENCERE  -> baskin gunisigi (foto 05)
+ *   2) asma tavandaki iki floresan armatur
+ * Foto 05'te karsi bina yakin ve dogrudan gunes girmiyor; bu yuzden gunisigi
+ * yumusak ve difuz, hafif soguk. Pencere hizasindaki dikey yayilim icin
+ * pencere agzina bir alan isigi (RectAreaLight yerine yonlu + dolgu) konur.
+ */
 export function buildLights(scene) {
-  const g = group('Aydinlatma', { layer: 'lights', label: 'Işık kaynakları' });
+  const g = group('Aydinlatma', { layer: 'lights', label: 'Isik kaynaklari' });
+  const win = windows.find((w) => w.wall === 'back');
 
-  const hemi = new THREE.HemisphereLight(0xccd7e6, 0x5d564c, 0.26);
+  const hemi = new THREE.HemisphereLight(0xcfdbe9, 0x5d564c, 0.22);
   hemi.position.set(cm(room.width / 2), cm(room.height + 100), cm(room.depth / 2));
   g.add(hemi);
 
-  // Tavan armaturleri -> yumusak spot
-  ceilCfg.luminaires.forEach((l, i) => {
-    const sp = new THREE.SpotLight(0xffeecf, 24, cm(520), Math.PI / 2.15, 0.95, 1.7);
+  /* --- 1. Pencereden gelen gunisigi --- */
+  const daylight = new THREE.DirectionalLight(0xdfe9f5, 1.15);
+  if (win) {
+    const cx = win.u + win.width / 2;
+    const cz = win.sill + win.height / 2;
+    daylight.position.set(cm(cx + 40), cm(cz + 180), cm(room.depth + 320));
+    daylight.target.position.set(cm(cx - 30), cm(60), cm(room.depth * 0.20));
+  } else {
+    daylight.position.set(cm(room.width / 2), cm(300), cm(room.depth + 300));
+    daylight.target.position.set(cm(room.width / 2), cm(60), cm(0));
+  }
+  daylight.castShadow = true;
+  daylight.shadow.mapSize.set(2048, 2048);
+  {
+    const c = daylight.shadow.camera;
+    c.left = -3.2; c.right = 3.2; c.top = 3.2; c.bottom = -3.2; c.near = 0.4; c.far = 16;
+  }
+  daylight.shadow.bias = -0.0006;
+  daylight.shadow.normalBias = 0.022;
+  g.add(daylight, daylight.target);
+
+  // pencere agzinda difuz dolgu: gunisigini oda derinligine tasir
+  const winFill = [];
+  if (win) {
+    const n = 3;
+    for (let i = 0; i < n; i++) {
+      const u = win.u + (win.width / (n + 1)) * (i + 1);
+      // Pencere agzinin bir miktar ICERISINDE: pencere duvarini yikamasin,
+      // isigi oda derinligine tasisin.
+      const pl = new THREE.PointLight(0xe6eef8, 2.4, cm(520), 1.9);
+      pl.position.set(cm(u), cm(win.sill + win.height * 0.62), cm(room.depth - 75));
+      g.add(pl);
+      winFill.push(pl);
+    }
+  }
+
+  /* --- 2. Tavan armaturleri --- */
+  const lamps = [];
+  ceilCfg.luminaires.forEach((l) => {
+    const sp = new THREE.SpotLight(0xffeecf, 11, cm(520), Math.PI / 2.15, 0.95, 1.7);
     sp.position.set(cm(l.pos[0]), cm(room.height - 8), cm(l.pos[1]));
     sp.target.position.set(cm(l.pos[0]), 0, cm(l.pos[1]));
     sp.castShadow = true;
-    if (sp.castShadow) {
-      sp.shadow.mapSize.set(1536, 1536);
-      sp.shadow.bias = -0.0012;
-      sp.shadow.normalBias = 0.02;
-      sp.shadow.camera.near = 0.2;
-      sp.shadow.camera.far = 8;
-    }
+    sp.shadow.mapSize.set(1536, 1536);
+    sp.shadow.bias = -0.0012;
+    sp.shadow.normalBias = 0.02;
+    sp.shadow.camera.near = 0.2;
+    sp.shadow.camera.far = 8;
     g.add(sp, sp.target);
+    lamps.push(sp);
   });
 
-  // Koridordan (kapi + vasistas) gelen gunisigi sizmasi
-  const sun = new THREE.DirectionalLight(0xfff4e0, 0.85);
-  sun.position.set(cm(60), cm(320), cm(-420));
-  sun.target.position.set(cm(room.width * 0.55), cm(70), cm(room.depth * 0.5));
-  sun.castShadow = true;
-  sun.shadow.mapSize.set(2048, 2048);
-  const dc = sun.shadow.camera;
-  dc.left = -4; dc.right = 4; dc.top = 4; dc.bottom = -4; dc.near = 0.5; dc.far = 16;
-  sun.shadow.bias = -0.0008;
-  sun.shadow.normalBias = 0.02;
-  g.add(sun, sun.target);
+  /* --- 3. Koridordan sizan isik (kapi + vasistas) --- */
+  const corridor = new THREE.DirectionalLight(0xfff4e0, 0.35);
+  corridor.position.set(cm(60), cm(300), cm(-380));
+  corridor.target.position.set(cm(room.width * 0.5), cm(80), cm(room.depth * 0.4));
+  g.add(corridor, corridor.target);
 
-  // Dolgu (golgeleri yumusatir)
-  const fill = new THREE.PointLight(0xf2ece0, 1.9, cm(400), 2.0);
-  fill.position.set(cm(room.width * 0.72), cm(200), cm(room.depth * 0.72));
+  /* --- 4. Yumusatici dolgu --- */
+  const fill = new THREE.PointLight(0xf2ece0, 1.0, cm(400), 2.0);
+  fill.position.set(cm(room.width * 0.72), cm(200), cm(room.depth * 0.35));
   g.add(fill);
 
-  const fill2 = new THREE.PointLight(0xe8ecf2, 1.2, cm(360), 2.0);
-  fill2.position.set(cm(60), cm(210), cm(room.depth * 0.7));
-  g.add(fill2);
-
   scene.add(g);
-  return { group: g, sun, hemi, fill, fill2 };
+  return { group: g, sun: daylight, corridor, hemi, fill, lamps, winFill };
 }
 
 /** Oda hacmi / alan ozeti - arayuzde ve mahal listesinde kullanilir */

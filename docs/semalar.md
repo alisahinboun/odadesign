@@ -41,10 +41,17 @@ Okul boyası paleti (RAL 1023 sarı panel + RAL 6018 yeşil şerit), mobilya old
 **Yerleşim aynı, yalnızca yüzey renkleri değişir. En düşük maliyetli müdahale.**
 
 ### Gerekçe
-Oda penceresiz; ışığını vasistastan ödünç alıyor. Doygun sarı ve yeşil hem ışığı
-yutuyor hem 10 m²lik hacmi daraltıyor. Panel yüzeyleri sıcak kırık beyaza alınıyor,
-yeşil **tek vurgu** olarak kalıyor ama okul kimliğini koruyacak şekilde adaçayı
-tonuna çekiliyor.
+> **Düzeltme (R01):** Bu şemanın ilk gerekçesi "oda penceresiz" varsayımına
+> dayanıyordu. Foto 05 bunu çürüttü — arka duvarda 285 cm genişliğinde bir pencere
+> var. Gerekçe aşağıdaki gibi yeniden yazıldı.
+
+Odanın asıl ışık kaynağı arka duvardaki pencere. Sorun ışığın yokluğu değil:
+**pencerenin bulunduğu duvarın tamamı doygun yeşile boyalı**, yani gelen ışığın
+büyük bölümü daha odaya yayılmadan bu yüzeyde yutuluyor, yansıyan az ışık da
+yeşile boyanıyor. Karşıda bina yakın olduğu için zaten difüz ve az ışık geliyor.
+
+Öneri, ışığın çarptığı ve yansıdığı yüzeyleri açık nötre almak; yeşil **tek vurgu**
+olarak kalıyor ama okul kimliğini koruyacak şekilde adaçayı tonuna çekiliyor.
 
 ### Değişen yüzeyler
 
@@ -53,12 +60,14 @@ tonuna çekiliyor.
 | Bölüntü panelleri | `#f2c11c` RAL 1023 | `#e7e1d5` sıcak kırık beyaz |
 | Düşey vurgu şeridi | `#3faa35` RAL 6018 | `#4f7a63` adaçayı |
 | Tavan bandı | `#7cc623` | `#7d9c87` açık adaçayı |
-| Sıvalı duvarlar | `#bdb5c9` lila | `#dcd7ce` sıcak nötr |
+| Sıvalı duvarlar (sol) | `#bdb5c9` lila | `#dcd7ce` sıcak nötr |
+| **Arka (pencere) duvarı** | `#3faa35` doygun yeşil | `#4f7a63` adaçayı — ışık yutmayı azaltır |
 | Ankastre dolap kapakları | sarı + krem | iki nötr ton |
 
 ### Kapsam
-Boya: bölüntü panelleri + 3 sıvalı duvar + tavan bandı.
-Ankastre dolap kapakları yeniden kaplama. **Mobilya alımı yok, taşıma yok.**
+Boya: bölüntü panelleri + sol/sağ duvar + **arka (pencere) duvarı** + tavan bandı.
+Ankastre dolap kapakları yeniden kaplama. Pencere doğraması ve radyatör yerinde
+kalır. **Mobilya alımı yok, taşıma yok.**
 
 **Denetim sonucu:** 0 hata, 1 uyarı (kapı hâlâ ~109° açılıyor — yerleşim değişmedi).
 
@@ -78,20 +87,27 @@ Modelin ortaya çıkardığı üç sorunu birden çözer:
    kişinin görülmesi beklenir. Mevcut durumda kullanıcı girişe sırtı dönük.
 3. **Net bir ziyaretçi alanı oluşur.** Kapı ile masa arasında ~92 cm derinliğinde,
    misafir sandalyesini alan bir bölge.
+4. **Ekran yansıması kesiliyor.** Kullanıcı kapıya dönünce pencere arkasında kalıyor;
+   mevcut tül perde (foto 05'te tek uca toplanmış) pencere boyunca tamamlanıyor.
+   Ek maliyeti yok — perde zaten var.
+
+> **Denetim iki hata yakaladı ve yerleşim düzeltildi.** İlk taslakta K2 modülü arka
+> duvara konulmuştu — odanın **tek penceresini kapatıyordu**. Ayrıca koltuk
+> radyatörün önüne geliyordu. İkisi de sol duvara taşınarak çözüldü.
 
 ### Yerleşim değişikliği
 
 | Poz | Mevcut (Ş‑0) | Öneri (Ş‑2) | Neden |
 |---|---|---|---|
-| M1 masa | (283, 97) 0° | **(258, 130) 0°** | Arkaya alındı; süpürme yayından 7 cm dışarıda |
-| S1 koltuk | (290, 148) 180° | **(258, 200) 180°** | Kullanıcı kapıya bakıyor, arkasında 103 cm |
-| S2 sandalye | (33, 120) −90° | **(258, 55) 0°** | Ziyaretçi alanına, masanın karşısına |
-| D1 dolap | (28, 45) −90° | **(28, 180) −90°** | Sol duvarda arkaya; girişi açtı |
-| K2 modül | (23, 202) −90° | **(95, 250) 180°** | Arka duvara alındı |
+| M1 masa | (283, 97) 0° | **(265, 130) 0°** | Arkaya alındı; süpürme yayından dışarıda |
+| S1 koltuk | (290, 148) 180° | **(265, 197) 180°** | Kullanıcı kapıya bakıyor; radyatörün önü boş |
+| S2 sandalye | (33, 120) −90° | **(265, 55) 0°** | Ziyaretçi alanına, masanın karşısına |
+| D1 dolap | (28, 45) −90° | **(28, 148) −90°** | Sol duvarda; kapı süpürme yayının dışında |
+| K2 modül | (23, 202) −90° | **(23, 230) −90°** | Sol duvarda kaldı; arka duvara konamaz (pencereyi kapatır) |
 | A1 alt dolap | (345, 210) 90° | **(345, 215) 90°** | Yerinde; yazıcıya koltuktan dönerek erişim |
 | C1 portmanto | (300, 24) 0° | **(340, 30) 0°** | Giriş köşesine — palto kapıda bırakılır |
 
-Ankastre dolap bankosu (AD1) ve kapı **taşınmaz**.
+Ankastre dolap bankosu (AD1), **pencere (P1)**, **radyatör (R1)** ve kapı **taşınmaz**.
 
 ### Kapsam
 Ş‑1 boya kalemleri + mobilya taşıma/montaj. **Yeni mobilya alımı yok.**
@@ -107,6 +123,8 @@ Ankastre dolap bankosu (AD1) ve kapı **taşınmaz**.
 | Masa – süpürme yayı payı | 1 cm | **7 cm** |
 | Masa arkası çalışma boşluğu | 136 cm | 103 cm |
 | Kullanıcı girişi görüyor mu | hayır | **evet** |
+| Pencerenin önü açık mı | evet | **evet** |
+| Ekran yansıması kontrol altında mı | hayır | **evet** (perde tamamlanır) |
 | Serbest dolaşım alanı | 6,79 m² | 6,79 m² |
 | Denetim | 0 hata, 1 uyarı | **0 hata, 0 uyarı** |
 

@@ -44,13 +44,16 @@
        text-anchor="middle" transform="rotate(-90 258.20 133.80)">106</text>
 <line x1="258.40" y1="155.00" x2="255.60" y2="155.00" stroke="#1b4f7a" stroke-width="0.18" /><line x1="258.40" y1="227.80" x2="255.60" y2="227.80" stroke="#1b4f7a" stroke-width="0.18" /><line x1="257.00" y1="155.00" x2="257.00" y2="227.80" stroke="#1b4f7a" stroke-width="0.18" /><line x1="256.00" y1="154.00" x2="258.00" y2="156.00" stroke="#1b4f7a" stroke-width="0.3" /><line x1="256.00" y1="226.80" x2="258.00" y2="228.80" stroke="#1b4f7a" stroke-width="0.3" /><text x="258.20" y="191.40" font-size="2.5" fill="#1b4f7a"
        text-anchor="middle" transform="rotate(-90 258.20 191.40)">182</text>
-<rect x="186.60" y="195.00" width="19.20" height="32.80" fill="#fbfbfa" stroke="#98a0ab" stroke-width="0.28" />
-<text x="196.20" y="192.00" font-size="2.2" fill="#98a0ab" text-anchor="middle" >S2</text>
+<rect x="189.40" y="195.00" width="19.20" height="32.80" fill="#fbfbfa" stroke="#98a0ab" stroke-width="0.28" />
+<text x="199.00" y="192.00" font-size="2.2" fill="#98a0ab" text-anchor="middle" >S2</text>
 <rect x="221.40" y="156.60" width="15.20" height="71.20" fill="#fbfbfa" stroke="#98a0ab" stroke-width="0.28" />
 <text x="229.00" y="153.60" font-size="2.2" fill="#98a0ab" text-anchor="middle" >C1</text>
-<rect x="164.20" y="197.80" width="64.00" height="30.00" fill="url(#hc)" stroke="#111318" stroke-width="0.55" />
-<circle cx="196.20" cy="192.30" r="3.10" fill="#fffdf5" stroke="#b8860b" stroke-width="0.3"/><text x="196.20" y="193.25" font-size="2.5" fill="#7a5c05" text-anchor="middle" font-weight="700">M1</text>
-<text x="196.20" y="212.80" font-size="2.3" fill="#111318" text-anchor="middle" >75</text>
+<rect x="167.00" y="197.80" width="64.00" height="30.00" fill="url(#hc)" stroke="#111318" stroke-width="0.55" />
+<circle cx="199.00" cy="192.30" r="3.10" fill="#fffdf5" stroke="#b8860b" stroke-width="0.3"/><text x="199.00" y="193.25" font-size="2.5" fill="#7a5c05" text-anchor="middle" font-weight="700">M1</text>
+<text x="199.00" y="212.80" font-size="2.3" fill="#111318" text-anchor="middle" >75</text>
+<rect x="93.20" y="153.80" width="22.00" height="74.00" fill="url(#hc)" stroke="#111318" stroke-width="0.55" />
+<circle cx="104.20" cy="148.30" r="3.10" fill="#fffdf5" stroke="#b8860b" stroke-width="0.3"/><text x="104.20" y="149.25" font-size="2.5" fill="#7a5c05" text-anchor="middle" font-weight="700">D1</text>
+<text x="104.20" y="190.80" font-size="2.3" fill="#111318" text-anchor="middle" >185</text>
 <line x1="75.00" y1="227.80" x2="89.00" y2="227.80" stroke="#1b4f7a" stroke-width="0.16" stroke-dasharray="3 2"/><path d="M 78.00 227.80 l -2.4 -2.4 l -2.4 2.4 z" fill="#1b4f7a"/><text x="79.00" y="226.20" font-size="2.4" fill="#1b4f7a" text-anchor="start" >±0.00</text>
 <line x1="75.00" y1="111.80" x2="89.00" y2="111.80" stroke="#1b4f7a" stroke-width="0.16" stroke-dasharray="3 2"/><path d="M 78.00 111.80 l -2.4 -2.4 l -2.4 2.4 z" fill="#1b4f7a"/><text x="79.00" y="110.20" font-size="2.4" fill="#1b4f7a" text-anchor="start" >+2.90 asma tavan</text>
 <line x1="75.00" y1="97.80" x2="89.00" y2="97.80" stroke="#1b4f7a" stroke-width="0.16" stroke-dasharray="3 2"/><path d="M 78.00 97.80 l -2.4 -2.4 l -2.4 2.4 z" fill="#1b4f7a"/><text x="79.00" y="96.20" font-size="2.4" fill="#1b4f7a" text-anchor="start" >+3.25 kaba tavan</text>

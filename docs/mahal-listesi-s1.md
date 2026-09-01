@@ -2,10 +2,10 @@
 
 **Oda Tasarimi / Room Design** · R00 · 2026-09-01
 
-> **Ş-1 · Sakin palet** — Yerleşim aynı, yalnızca yüzey renkleri değişiyor. En düşük maliyetli müdahale.
-> Oda penceresiz; ışığı vasistastan ödünç alıyor. Doygun sarı ve yeşil hem ışığı yutuyor hem 10 m²lik hacmi daraltıyor. Panel yüzeyleri sıcak kırık beyaza alınıyor, yeşil TEK vurgu olarak kalıyor ama okul kimliğini koruyacak şekilde adaçayı tonuna çekiliyor. Mobilya, kapı kanadı ve ankastre dolap gövdesi yerinde kalır — sadece boya ve kapak yenilenir.
+> **Ş-1 · Sakin palet** — Yerleşim aynı, yalnızca yüzey renkleri. En düşük maliyetli müdahale — ışığı geri kazandırır.
+> Odanın asıl ışık kaynağı arka duvardaki 268 cm genişliğindeki pencere (foto 05). Sorun şu: pencerenin bulunduğu duvarın TAMAMI doygun yeşile boyalı, yani gelen ışığın büyük bölümü daha odaya yayılmadan bu yüzeyde yutuluyor; yansıyan az ışık da yeşile boyanıyor. Karşıda bina yakın olduğu için zaten difüz ve az ışık geliyor. Öneri, ışığın çarptığı ve yansıdığı yüzeyleri açık nötre almak; yeşil TEK vurgu olarak kalıyor ama okul kimliğini koruyacak şekilde adaçayı tonuna çekiliyor. Mobilya, kapı kanadı, pencere doğraması ve ankastre dolap gövdesi yerinde kalır — sadece boya.
 >
-> **Metraj notu:** Boya: bölüntü panelleri + 3 sıvalı duvar + tavan bandı. Ankastre dolap kapakları yeniden kaplama. Mobilya alımı yok.
+> **Metraj notu:** Boya: bölüntü panelleri + sol/sağ duvar + ARKA (pencere) DUVARI + tavan bandı. Ankastre dolap kapakları yeniden kaplama. Pencere doğraması ve radyatör yerinde kalır. Mobilya alımı yok.
 
 Bu dosya `src/config/room.js` verisinden **otomatik üretilir** (`npm run schedule`). Elle düzenlemeyin.
 
@@ -87,6 +87,8 @@ Bölüntü dolu panel toplamı: 5.13 m² · Kapı boşluğu: 2.46 m²
 |---|---|---|---|
 | `yellow` | Bölüntü panel — sıcak kırık beyaz | `#e7e1d5` | RAL 9001 yakını |
 | `green` | Düşey vurgu şeridi — adaçayı | `#4f7a63` | RAL 6021 koyu |
+| `curtain` | Tül perde | `#efe9dd` | - |
+| `radiator` | Radyatör (beyaz) | `#f4f2ee` | RAL 9016 |
 | `greenLight` | Tavan bandı — açık adaçayı | `#7d9c87` | RAL 6021 |
 | `lilac` | Duvar boyası — sıcak nötr | `#dcd7ce` | RAL 9002 |
 | `offwhite` | Dolap kapağı — açık | `#efebe3` | RAL 9010 |

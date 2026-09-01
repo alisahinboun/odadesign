@@ -8,12 +8,12 @@
 <line x1="198.40" y1="71.00" x2="195.60" y2="71.00" stroke="#1b4f7a" stroke-width="0.18" /><line x1="198.40" y1="187.00" x2="195.60" y2="187.00" stroke="#1b4f7a" stroke-width="0.18" /><line x1="197.00" y1="71.00" x2="197.00" y2="187.00" stroke="#1b4f7a" stroke-width="0.18" /><line x1="196.00" y1="70.00" x2="198.00" y2="72.00" stroke="#1b4f7a" stroke-width="0.3" /><line x1="196.00" y1="186.00" x2="198.00" y2="188.00" stroke="#1b4f7a" stroke-width="0.3" /><text x="198.20" y="129.00" font-size="2.5" fill="#1b4f7a"
        text-anchor="middle" transform="rotate(-90 198.20 129.00)">290</text>
 <line x1="77.00" y1="197.60" x2="77.00" y2="200.40" stroke="#1b4f7a" stroke-width="0.18" /><line x1="185.00" y1="197.60" x2="185.00" y2="200.40" stroke="#1b4f7a" stroke-width="0.18" /><line x1="77.00" y1="199.00" x2="185.00" y2="199.00" stroke="#1b4f7a" stroke-width="0.18" /><line x1="76.00" y1="200.00" x2="78.00" y2="198.00" stroke="#1b4f7a" stroke-width="0.3" /><line x1="184.00" y1="200.00" x2="186.00" y2="198.00" stroke="#1b4f7a" stroke-width="0.3" /><text x="131.00" y="197.90" font-size="2.5" fill="#1b4f7a" text-anchor="middle" >270</text>
-<rect x="170.00" y="113.00" width="14.00" height="74.00" fill="#fbfaf8" stroke="#5a626e" stroke-width="0.4" />
-<circle cx="177.00" cy="108.00" r="3.10" fill="#fffdf5" stroke="#b8860b" stroke-width="0.3"/><text x="177.00" y="108.95" font-size="2.5" fill="#7a5c05" text-anchor="middle" font-weight="700">K2</text>
-<text x="177.00" y="150.00" font-size="2.1" fill="#98a0ab" text-anchor="middle" >35x185</text>
-<rect x="133.00" y="113.00" width="32.00" height="74.00" fill="#fbfaf8" stroke="#5a626e" stroke-width="0.4" />
-<circle cx="149.00" cy="108.00" r="3.10" fill="#fffdf5" stroke="#b8860b" stroke-width="0.3"/><text x="149.00" y="108.95" font-size="2.5" fill="#7a5c05" text-anchor="middle" font-weight="700">D1</text>
-<text x="149.00" y="150.00" font-size="2.1" fill="#98a0ab" text-anchor="middle" >80x185</text>
+<rect x="153.00" y="113.00" width="32.00" height="74.00" fill="#fbfaf8" stroke="#5a626e" stroke-width="0.4" />
+<circle cx="169.00" cy="108.00" r="3.10" fill="#fffdf5" stroke="#b8860b" stroke-width="0.3"/><text x="169.00" y="108.95" font-size="2.5" fill="#7a5c05" text-anchor="middle" font-weight="700">K2</text>
+<text x="169.00" y="150.00" font-size="2.1" fill="#98a0ab" text-anchor="middle" >80x185</text>
+<rect x="120.20" y="113.00" width="32.00" height="74.00" fill="#fbfaf8" stroke="#5a626e" stroke-width="0.4" />
+<circle cx="136.20" cy="108.00" r="3.10" fill="#fffdf5" stroke="#b8860b" stroke-width="0.3"/><text x="136.20" y="108.95" font-size="2.5" fill="#7a5c05" text-anchor="middle" font-weight="700">D1</text>
+<text x="136.20" y="150.00" font-size="2.1" fill="#98a0ab" text-anchor="middle" >80x185</text>
 <rect x="111.40" y="169.40" width="3.20" height="3.20" fill="#ffffff" stroke="#5a626e" stroke-width="0.4" />
 <text x="113.00" y="167.20" font-size="2.1" fill="#b8860b" text-anchor="middle" >T7  +40</text>
 <text x="77.00" y="209.00" font-size="2.1" fill="#5a626e" text-anchor="start" >Duvar elemanları:  T7 Priz (+40)</text>

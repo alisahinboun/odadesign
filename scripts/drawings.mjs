@@ -16,7 +16,7 @@ import path from 'node:path';
 import { fileURLToPath } from 'node:url';
 import {
   room, partition, door, furniture, equipment, wallItems, wallUnits,
-  ceiling as ceilCfg, floor as floorCfg, palette, meta,
+  ceiling as ceilCfg, floor as floorCfg, palette, meta, windows, radiators,
 } from '../src/config/room.js';
 import { footprint, doorSwingLimit, metrics, hingeX, leafWidth } from '../src/lib/analysis.js';
 import { schemes, resolveScheme } from '../src/config/schemes.js';
@@ -137,8 +137,8 @@ function viewMark(x, y, label) {
 /* ==================================================================== PLAN */
 function drawPlan() {
   const W = MM(room.width), D = MM(room.depth), TW = MM(room.wallThickness), PT = MM(room.partitionThickness);
-  const wMM = W + PAD * 2 + 96, hMM = D + PAD * 2 + 108;
-  const ox = PAD + 40, oy = PAD + 52;          // ic sol-on kose
+  const wMM = W + PAD * 2 + 96, hMM = D + PAD * 2 + 130;
+  const ox = PAD + 40, oy = PAD + 74;          // ic sol-on kose
   const X = (cx) => ox + MM(cx);
   const Y = (cy) => oy + D - MM(cy);           // plan: +Y yukari
   const p = [];
@@ -179,6 +179,46 @@ function drawPlan() {
       p.push(rect(x0, Y(0), w, PT, C.cut, 0.5, tint(pan.color)));
     }
     cx += pan.width;
+  }
+
+  // --- pencereler (kesit duzleminde, duvar icinde) ---
+  for (const w of windows) {
+    if (w.wall !== 'back') continue;
+    const x0 = X(w.u), ww = MM(w.width);
+    p.push(rect(x0, Y(room.depth), ww, TW, C.cut, 0.5, '#ffffff'));
+    // cam cizgisi ve bolum kayitlari
+    p.push(line(x0, Y(room.depth) + TW * 0.45, x0 + ww, Y(room.depth) + TW * 0.45, C.view, 0.45));
+    p.push(line(x0, Y(room.depth) + TW * 0.62, x0 + ww, Y(room.depth) + TW * 0.62, C.view, 0.45));
+    let du = w.u;
+    for (const d of w.divisions) {
+      p.push(line(X(du), Y(room.depth), X(du), Y(room.depth) + TW, C.cut, 0.35));
+      if (d.kind === 'sash') {
+        // acilir kanat: ic tarafa acilma isareti
+        p.push(rect(X(du), Y(room.depth) + TW * 0.40, MM(d.width), TW * 0.26, C.cut, 0.45, '#e8e8e6'));
+        p.push(text(X(du + d.width / 2), Y(room.depth) - 4.5, 'açılır', 2.0, 'middle', C.acc));
+      }
+      du += d.width;
+    }
+    p.push(line(X(du), Y(room.depth), X(du), Y(room.depth) + TW, C.cut, 0.35));
+    // ic denizlik
+    p.push(rect(x0 - MM(4), Y(room.depth) - MM(w.sillBoard.depth - room.wallThickness), ww + MM(8),
+      MM(w.sillBoard.depth - room.wallThickness), C.thin, 0.28, 'none', 'stroke-dasharray="2 1.2"'));
+    const wy = Y(room.depth) - TW - 36;      // mobilya kota satirlarinin ustunde
+    p.push(dimH(X(0), x0, wy, `${w.u}`, 1));
+    p.push(dimH(x0, x0 + ww, wy, `${w.width}`, 1));
+    p.push(dimH(x0 + ww, X(room.width), wy, `${room.width - w.u - w.width}`, 1));
+    p.push(text(x0 + ww / 2, wy - 5.5, `${w.id}  denizlik +${w.sill}  ·  üst kot ${w.sill + w.height}`,
+      2.4, 'middle', C.acc, 'font-weight="700"'));
+  }
+  // --- radyatorler ---
+  for (const r of radiators) {
+    if (r.wall !== 'back') continue;
+    p.push(rect(X(r.u), Y(room.depth) - MM(r.depth), MM(r.width), MM(r.depth), C.view, 0.4, '#eef1f3'));
+    for (let i = 1; i < r.sections; i++) {
+      p.push(line(X(r.u + (r.width / r.sections) * i), Y(room.depth) - MM(r.depth),
+        X(r.u + (r.width / r.sections) * i), Y(room.depth), C.thin, 0.18));
+    }
+    p.push(text(X(r.u + r.width / 2), Y(room.depth) - MM(r.depth) - 3, r.id, 2.2, 'middle', C.acc));
   }
 
   // ankastre ust dolap bankosu (kesik cizgi - kesit duzlemi ustunde)
@@ -257,14 +297,14 @@ function drawPlan() {
   // gorunus isaretleri
   p.push(viewMark(X(room.width / 2), Y(0) + PT + 26, 'A'));
   p.push(viewMark(X(room.width) + TW + 26, Y(room.depth / 2), 'B'));
-  p.push(viewMark(X(room.width / 2), Y(room.depth) - TW - 32, 'C'));
+  p.push(viewMark(X(room.width / 2), Y(room.depth) - TW - 54, 'C'));
   p.push(viewMark(X(0) - TW - 32, Y(room.depth / 2), 'D'));
 
   // kuzey oku benzeri: giris yonu
   p.push(text(X(room.width / 2), Y(0) + PT + 34, 'GIRIS', 2.4, 'middle', C.cut));
 
   const M = metrics();
-  p.push(text(ox - 20, oy - 42, `OFIS / IDARI ODA   ${room.width}x${room.depth} cm   Net alan ${M.alan.toFixed(2)} m²   Net yuk. ${room.height} cm`, 3.0, 'start', C.txt, 'font-weight="700"'));
+  p.push(text(ox - 20, oy - 64, `OFIS / IDARI ODA   ${room.width}x${room.depth} cm   Net alan ${M.alan.toFixed(2)} m²   Net yuk. ${room.height} cm`, 3.0, 'start', C.txt, 'font-weight="700"'));
   p.push(titleBlock(wMM, hMM, 'Yerlesim plani', 'M-01'));
   return svg(wMM, hMM, 'Yerlesim plani', p.join('\n'));
 }
@@ -354,13 +394,70 @@ function drawElevation(side, code, name) {
     p.push(dimH(U(0), U(len), Z(0) + 12, `${len}`));
   }
 
-  if (side === 'left' || side === 'back') {
+  if (side === 'back') {
+    // duvar yuzeyi yesil
+    p.push(rect(U(0), Z(room.height), L, H, C.cut, 0.5, tint('green')));
+    for (const w of windows.filter((x) => x.wall === 'back')) {
+      // C gorunusunde u ekseni ters (arka duvara odadan bakiliyor)
+      const u0 = len - (w.u + w.width);
+      p.push(rect(U(u0), Z(w.sill + w.height), MM(w.width), MM(w.height), C.cut, 0.55, '#ffffff'));
+      // bolumler saga dogru ters siralanir
+      let du = u0 + w.width;
+      for (const d of [...w.divisions]) {
+        du -= d.width;
+        const isSash = d.kind === 'sash';
+        p.push(rect(U(du) + MM(w.frameWidth), Z(w.sill + w.height - w.frameWidth), MM(d.width - w.frameWidth),
+          MM(w.height - w.frameWidth * 2), isSash ? C.cut : C.view, isSash ? 0.5 : 0.3, '#eef3f5'));
+        if (isSash) {
+          // acilma yonu (V) - ic tarafa acilir
+          p.push(line(U(du + w.frameWidth), Z(w.sill + w.frameWidth), U(du + d.width),
+            Z(w.sill + w.height / 2), C.thin, 0.22, 'stroke-dasharray="2.5 1.5"'));
+          p.push(line(U(du + w.frameWidth), Z(w.sill + w.height - w.frameWidth), U(du + d.width),
+            Z(w.sill + w.height / 2), C.thin, 0.22, 'stroke-dasharray="2.5 1.5"'));
+          p.push(text(U(du + d.width / 2), Z(w.sill + w.height / 2) + 6, 'AÇILIR', 2.3, 'middle', C.acc, 'font-weight="700"'));
+        }
+        p.push(text(U(du + d.width / 2), Z(w.sill) - 3.2, `${d.width}`, 2.1, 'middle', C.view));
+      }
+      // ic denizlik
+      p.push(rect(U(u0) - MM(4), Z(w.sill), MM(w.width + 8), MM(w.sillBoard.thickness), C.cut, 0.4, '#e6e8ea'));
+      // perde tarama
+      const c = w.curtain;
+      if (c) {
+        const cu0 = len - (w.u + c.to), cu1 = len - (w.u + c.from);
+        for (let x = cu0; x < cu1; x += 4) {
+          p.push(line(U(x), Z(w.sill + w.height - c.headroom), U(x),
+            Z(w.sill + w.height - c.headroom - c.drop), '#b9c2c6', 0.22));
+        }
+        p.push(text(U((cu0 + cu1) / 2), Z(w.sill + w.height - c.headroom) + 4.5,
+          `tül perde ${Math.round(c.to - c.from)} cm`, 2.2, 'middle', C.view));
+      }
+      p.push(dimH(U(u0), U(u0 + w.width), Z(0) + 11, `${w.width}`));
+      p.push(dimH(U(0), U(u0), Z(0) + 11, `${Math.round(u0)}`));
+      p.push(dimH(U(u0 + w.width), U(len), Z(0) + 11, `${Math.round(len - u0 - w.width)}`));
+      p.push(dimV(Z(w.sill), Z(0), U(len) + 12, `${w.sill}`, -1));
+      p.push(dimV(Z(w.sill + w.height), Z(w.sill), U(len) + 12, `${w.height}`, -1));
+      p.push(text(U(u0 + w.width / 2), Z(w.sill + w.height) - 3, `${w.id} ${w.name}`, 2.5, 'middle', C.acc, 'font-weight="700"'));
+    }
+    for (const r of radiators.filter((x) => x.wall === 'back')) {
+      const u0 = len - (r.u + r.width);
+      p.push(rect(U(u0), Z(r.floorGap + r.height), MM(r.width), MM(r.height), C.cut, 0.45, '#f2f3f4'));
+      for (let i = 1; i < r.sections; i++) {
+        p.push(line(U(u0 + (r.width / r.sections) * i), Z(r.floorGap + r.height),
+          U(u0 + (r.width / r.sections) * i), Z(r.floorGap), C.view, 0.2));
+      }
+      p.push(text(U(u0 + r.width / 2), Z(r.floorGap + r.height) - 2.6, `${r.id} ${r.sections} dilim`, 2.2, 'middle', C.acc));
+      p.push(dimV(Z(r.floorGap + r.height), Z(0), U(u0) - 8, `${r.floorGap + r.height}`, 1));
+    }
+    p.push(dimV(Z(room.height), Z(0), U(len) + 24, `${room.height}`, -1));
+    p.push(dimH(U(0), U(len), Z(0) + 20, `${len}`));
+    p.push(text(U(0), Z(room.height) + 6,
+      '⚠ Pencere ölçüleri fotoğraf oranlamasıdır — yerinde ölçülmelidir (docs/roleve.md §9).',
+      2.4, 'start', '#a4552f'));
+  }
+
+  if (side === 'left') {
     p.push(dimV(Z(room.height), Z(0), U(len) + 12, `${room.height}`, -1));
     p.push(dimH(U(0), U(len), Z(0) + 12, `${len}`));
-    if (side === 'back') {
-      p.push(text(U(len / 2), Z(room.height / 2), 'ROLEVE EKSIK — bu duvar fotograflarda gorunmuyor', 3.0, 'middle', '#a03030'));
-      p.push(text(U(len / 2), Z(room.height / 2) - 5, 'yerinde olcum gerekiyor', 2.4, 'middle', '#a03030'));
-    }
   }
 
   // bu duvarin onundeki mobilya (gorunus)
@@ -616,7 +713,7 @@ const files = [
   ['plan.svg', drawPlan()],
   ['gorunus-A-on.svg', drawElevation('front', 'A', 'On boluntu / kapi duvari')],
   ['gorunus-B-sag.svg', drawElevation('right', 'B', 'Sag duvar / ankastre dolap')],
-  ['gorunus-C-arka.svg', drawElevation('back', 'C', 'Arka duvar')],
+  ['gorunus-C-arka.svg', drawElevation('back', 'C', 'Arka duvar — pencere ve radyatör')],
   ['gorunus-D-sol.svg', drawElevation('left', 'D', 'Sol duvar')],
   ['kesit-1-1.svg', drawSection('y', 110, '1-1', 'Enine kesit — kapı duvarına bakış')],
   ['kesit-2-2.svg', drawSection('x', 300, '2-2', 'Boyuna kesit — sağ duvara bakış')],

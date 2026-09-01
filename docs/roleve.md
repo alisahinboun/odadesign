@@ -18,6 +18,7 @@
 | `reference/02-kapi-acik.jpg` | Arka‑sol köşeden sağ duvara bakış. Kapı açık, koridor görünüyor. |
 | `reference/03-sol-kose-dolap.jpg` | Sol duvar ve ön‑sol köşe. Dolap, misafir sandalyesi, ayna, top ve rulo. |
 | `reference/04-el-krokisi.jpg` | Elle çizilmiş plan krokisi + donatı ölçüleri. |
+| `reference/05-arka-duvar-pencere.jpg` | **Arka duvar.** Büyük pencere, tül perde, altında dilimli radyatör. Sağdan sola: sağ duvarın dolap bankosu, pencere duvarı, sol duvar. |
 
 ## 2. El krokisinden okunanlar — **yüksek güven**
 
@@ -98,10 +99,25 @@ kapatırdı) aynaya yer kalmazdı. Bu, dolabın konumu için en tutarlı okuma.
 9,99 m² net alanın ≈3,2 m²'sini mobilya ayak izi kaplıyor; geriye ≈6,8 m² kalıyor.
 Masa arkası çalışma boşluğu 135 cm (koltuk + geçiş için yeterli, sınırda).
 
-**T‑5 · Arka duvar (C görünüşü) röleve dışı.**
-Arka duvar (y = 270) hiçbir fotoğrafta görünmüyor. Model, sol duvarla aynı bitiş
-(lila plastik boya) kabul etti ve C görünüşü paftası bu eksikliği açıkça not ediyor.
-**Yerinde ölçüm gereklidir** — priz/kanal, radyatör veya pencere olabilir.
+**T‑5 · Arka duvar — foto 05 ile kısmen kapandı, ölçüler hâlâ tahmin.**
+Arka duvar artık biliniyor: **tamamı yeşil boyalı**, ortasında büyük bir pencere ve
+altında dilimli radyatör var. Bu, ilk röleve kabulünü (sol duvarla aynı, lila, sağır)
+tamamen geçersiz kıldı — model buna göre yeniden kuruldu.
+
+Ancak pencere ve radyatör ölçüleri fotoğraf oranlamasından çıkarıldı. Fotoğraf
+ultra geniş açılı olduğu için **düşey ölçülerde belirsizlik yüksek**: aynı kareden
+denizlik kotu için 59–85 cm arası okumalar çıkıyor. Model 80 cm kabul etti.
+
+**T‑7 · Oda penceresiz değilmiş — Ş‑1'in gerekçesi düzeltildi.**
+İlk tasarım önerisi "oda penceresiz, ışığını vasistastan ödünç alıyor" varsayımına
+dayanıyordu. Foto 05 bunu çürüttü. Gerekçe yeniden yazıldı: sorun ışığın yokluğu
+değil, **ışığın geldiği duvarın tamamının doygun yeşile boyalı olması** — gelen ışık
+daha odaya yayılmadan yutuluyor ve yansıyan az ışık yeşile boyanıyor.
+
+**T‑6 · Ekranda pencere yansıması (Ş‑2'de ortaya çıktı).**
+Kullanıcı kapıya dönük oturduğunda pencere arkasında kalıyor ve ekranda yansıma
+yapıyor. Foto 05'te tül perde tek uca toplanmış, pencerenin ancak 1/3'ünü örtüyor.
+Ş‑2 perdeyi pencere boyunca tamamlıyor — **ek maliyeti yok**, perde zaten var.
 
 ## 6. Yerinde kontrol edilecekler (kontrol listesi)
 
@@ -110,7 +126,7 @@ Arka duvar (y = 270) hiçbir fotoğrafta görünmüyor. Model, sol duvarla aynı
 - [ ] Kapı kasası dış ölçüsü (kabul: 120 × 205) ve menteşe yönü
 - [ ] Vasistas alt/üst kotları ve cam tipi (telli mi buzlu mu)
 - [ ] Ankastre üst dolapların gerçek derinliği ve modül genişliği
-- [ ] **Arka duvarın tamamı** — röleve eksik
+- [ ] Arka duvar bitişi — kabul: tamamı yeşil (foto 05 ile doğrulandı ✓)
 - [ ] Priz / anahtar / veri prizi konumları (modeldekiler temsilîdir)
 - [ ] Radyatör veya klima var mı (fotoğraflarda görünmüyor)
 - [ ] Aydınlatma armatürlerinin gerçek tipi ve konumu
@@ -130,7 +146,22 @@ Arka duvar (y = 270) hiçbir fotoğrafta görünmüyor. Model, sol duvarla aynı
 Ekran renkleri ile boya renkleri birebir örtüşmez; teklif öncesi fiziksel numune
 karşılaştırması yapılmalıdır.
 
-## 8. Sonraki adım
+## 8. ⚠️ Yerinde alınması gereken 4 ölçü (pencere)
+
+Bu dört değer alınırsa `src/config/room.js → windows[0]` içinde güncellenir ve
+plan, C görünüşü, kesitler, 3B model ve metraj birlikte düzelir.
+
+| # | Ölçü | Modeldeki kabul | Nasıl ölçülür |
+|---|---|---:|---|
+| 1 | **Denizlik üst kotu** (döşemeden) | 80 cm | Döşeme kaplamasından iç denizliğin üst yüzüne |
+| 2 | **Kasa dış yüksekliği** | 130 cm | Denizlik üstünden kasa üst dış kenarına |
+| 3 | **Kasa dış genişliği** | 285 cm | Yatay, kasa dış kenarından dış kenarına |
+| 4 | **Sol duvara mesafe** | 58 cm | Sol duvar (D görünüşü) iç yüzünden kasa sol kenarına |
+
+Bonus (varsa): kanat bölüm genişlikleri, radyatör dilim sayısı ve genişliği,
+radyatörün sol duvara mesafesi (kabul: 173 cm).
+
+## 9. Sonraki adım
 
 Röleve tamamlandı; tasarım önerileri [`semalar.md`](./semalar.md) içinde.
 Yerinde ölçüm yapıldıktan sonra `src/config/room.js` güncellenir ve

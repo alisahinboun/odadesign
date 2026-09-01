@@ -14,6 +14,7 @@
  */
 import {
   room, partition, door, furniture, equipment, clutter, wallItems, wallUnits, ceiling,
+  windows, radiators,
 } from '../src/config/room.js';
 import { footprint as rect, overlap, doorSwingLimit, metrics } from '../src/lib/analysis.js';
 import { resolveScheme, schemes } from '../src/config/schemes.js';
@@ -111,6 +112,54 @@ if (swing.blocker) {
   }
   if (swing.angle < 85) bad(`Kanat 85 dereceden az aciliyor - gecis genisligi yetersiz. Mobilyayi kaydirin.`);
 } else ok('Kanat serbest aciliyor (178 dereceye kadar engel yok).');
+
+/* --- 5b --- */
+head('5b. Pencereler ve radyator');
+for (const w of windows) {
+  const wallLen = (w.wall === 'front' || w.wall === 'back') ? room.width : room.depth;
+  const dsum = w.divisions.reduce((a, d) => a + d.width, 0);
+  dsum === w.width
+    ? ok(`${w.id} bolum toplami ${dsum} cm = kasa genisligi`)
+    : bad(`${w.id} bolum toplami ${dsum} cm, kasa genisligi ${w.width} cm - uyusmuyor.`);
+  (w.u >= 0 && w.u + w.width <= wallLen)
+    ? ok(`${w.id} duvara sigiyor (${w.u}..${w.u + w.width} / ${wallLen} cm)`)
+    : bad(`${w.id} duvar sinirini asiyor: ${w.u}..${w.u + w.width} > ${wallLen}`);
+  const top = w.sill + w.height;
+  if (top > room.height) bad(`${w.id} ust kotu ${top} > net yukseklik ${room.height}`);
+  else ok(`${w.id} ust kot ${top} cm, denizlik +${w.sill} cm`);
+  if (w.sill < 40) warn(`${w.id} denizlik kotu ${w.sill} cm - olagan disi dusuk, yerinde olculmeli`);
+  if (w.sill > 110) warn(`${w.id} denizlik kotu ${w.sill} cm - olagan disi yuksek`);
+  // pencerenin onunu kapatan mobilya
+  for (const f of furniture) {
+    const r = rect(f);
+    const along = w.wall === 'back' || w.wall === 'front' ? [r.x0, r.x1] : [r.y0, r.y1];
+    const dist = w.wall === 'back' ? room.depth - r.y1 : w.wall === 'front' ? r.y0 : 0;
+    if (w.wall !== 'back') continue;
+    const overlaps = along[1] > w.u && along[0] < w.u + w.width;
+    if (overlaps && dist < 12 && f.h > w.sill) {
+      warn(`${f.id} pencerenin (${w.id}) onunu kapatiyor - yukseklik ${f.h} > denizlik ${w.sill}`);
+    }
+  }
+}
+for (const r of radiators) {
+  const w = windows.find((x) => x.wall === r.wall);
+  const topZ = r.floorGap + r.height;
+  if (w && topZ > w.sill) bad(`${r.id} ust kotu ${topZ} > denizlik ${w.sill} - radyator pencereye giriyor.`);
+  else ok(`${r.id} ust kot ${topZ} cm, denizligin altinda`);
+  if (w && (r.u < w.u - 10 || r.u + r.width > w.u + w.width + 10)) {
+    warn(`${r.id} pencere aciklığinin disina tasiyor - yerinde kontrol edin`);
+  }
+  // radyator onu bos mu (isi yayilimi + vana erisimi)
+  const rr = { x0: r.u, x1: r.u + r.width, y0: room.depth - 40, y1: room.depth };
+  let blocked = null;
+  for (const f of furniture) {
+    const fr = rect(f);
+    if (fr.x1 > rr.x0 && fr.x0 < rr.x1 && fr.y1 > rr.y0) blocked = f.id;
+  }
+  blocked
+    ? warn(`${r.id} onunde ${blocked} var - radyator onu 40 cm bos birakilmali`)
+    : ok(`${r.id} onunde 40 cm serbest`);
+}
 
 /* --- 6 --- */
 head('6. Dolasim ve ergonomi');

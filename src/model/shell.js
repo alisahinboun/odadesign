@@ -7,6 +7,7 @@ import * as THREE from 'three';
 import { room, partition, door, walls, floor as floorCfg, ceiling as ceilCfg, palette } from '../config/room.js';
 import { mat } from '../lib/materials.js';
 import { box, boxAt, plane, group, cm } from '../lib/geom.js';
+import { buildWallWithWindows, buildContext } from './openings.js';
 
 const W = room.width, D = room.depth, H = room.height;
 const TW = room.wallThickness, PT = room.partitionThickness;
@@ -50,9 +51,17 @@ export function buildLeftWall() {
     { w: TW, d: D + TW, h: H + 3, x: -TW, y: 0, z: 0, colorName: 'lilac', wear: 0.85 });
 }
 
+/**
+ * Arka duvar. Foto 05 ile roleve tamamlandi: tamami yesil boyali, buyuk
+ * pencere ve altinda dilimli radyator var. Bosluk cevresinde parcali kurulur.
+ */
 export function buildBackWall() {
-  return paintedWall('Duvar-Arka', walls.back.note, 'wallBack',
-    { w: W + TW * 2, d: TW, h: H + 3, x: -TW, y: D, z: 0, colorName: 'lilac', wear: 0.6 });
+  const g = group('Duvar-Arka', { layer: 'wallBack', label: walls.back.note, wall: true });
+  g.add(buildWallWithWindows('back', 'green', 0.55));
+  // duvarin kose donusleri (yan duvarlarla birlesim)
+  g.add(box(TW, TW, H + 3, mat.paint('green', TW, H, 0.55), { x: -TW, y: D, z: 0, name: 'kose-sol' }));
+  g.add(box(TW, TW, H + 3, mat.paint('green', TW, H, 0.55), { x: W, y: D, z: 0, name: 'kose-sag' }));
+  return g;
 }
 
 export function buildRightWall() {
@@ -240,4 +249,5 @@ export function buildCorridor() {
   return g;
 }
 
+export { buildContext };
 export const shellDims = { W, D, H, TW, PT };

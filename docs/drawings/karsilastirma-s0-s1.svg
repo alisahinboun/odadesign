@@ -54,7 +54,7 @@
 <circle cx="82.75" cy="98.50" r="2.70" fill="#fffdf5" stroke="#b8860b" stroke-width="0.28"/>
 <text x="82.75" y="99.35" font-size="2.2" fill="#7a5c05" text-anchor="middle" font-weight="700">W1</text>
 <text x="140.50" y="45.00" font-size="4.2" fill="#b8860b" text-anchor="start" font-weight="700">Ş-1  Sakin palet</text>
-<text x="140.50" y="50.50" font-size="2.5" fill="#5d6570" text-anchor="start" >Yerleşim aynı, yalnızca yüzey renkleri değişiyor. En düşük maliyetli müdahale.</text>
+<text x="140.50" y="50.50" font-size="2.5" fill="#5d6570" text-anchor="start" >Yerleşim aynı, yalnızca yüzey renkleri. En düşük maliyetli müdahale — ışığı geri kazandırır.</text>
 <rect x="140.50" y="56.00" width="92.50" height="67.50" fill="#f7f6f3" stroke="none" stroke-width="0" />
 <rect x="138.00" y="56.00" width="2.50" height="67.50" fill="#efede9" stroke="#14161a" stroke-width="0.55" />
 <rect x="233.00" y="56.00" width="2.50" height="67.50" fill="#efede9" stroke="#14161a" stroke-width="0.55" />
@@ -136,6 +136,6 @@
 <text x="175.00" y="201.40" font-size="2.8" fill="#14161a" text-anchor="start" >yok</text>
 <line x1="22.00" y1="204.00" x2="233.00" y2="204.00" stroke="#e6e8ea" stroke-width="0.2" />
 <text x="22.00" y="209.30" font-size="2.3" fill="#a2a9b2" text-anchor="start" >▲ iyileşme     ▼ gerileme (kabul edilebilir sınırlar içinde)     işaretsiz: fark yok</text>
-<text x="22.00" y="214.80" font-size="2.5" fill="#5d6570" text-anchor="start" >Kapsam — Ş-1: Boya: bölüntü panelleri + 3 sıvalı duvar + tavan bandı. Ankastre dolap kapakları yeniden kaplama. Mobilya alımı yok.</text>
+<text x="22.00" y="214.80" font-size="2.5" fill="#5d6570" text-anchor="start" >Kapsam — Ş-1: Boya: bölüntü panelleri + sol/sağ duvar + ARKA (pencere) DUVARI + tavan bandı. Ankastre dolap kapakları yeniden kaplama. Pencere doğraması ve radyatör yerinde kalır. Mobilya alımı yok.</text>
 <text x="22.00" y="219.80" font-size="2.3" fill="#a2a9b2" text-anchor="start" >Ölçüler modelden hesaplanmıştır (src/config/room.js + schemes.js). R00 · 2026-09-01 · ölçüler cm.</text>
 </svg>
