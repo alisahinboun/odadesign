@@ -222,11 +222,18 @@ plan, C görünüşü, kesitler, 3B model ve metraj birlikte düzelir.
 | 10 | Tezgâh uzunluğu ve derinliği | 130 × 60 cm |
 | 11 | Tezgâhın ön duvara mesafesi | 140 cm |
 
+**Sağ duvar dolabı:**
+
+| # | Ölçü | Modeldeki kabul |
+|---|---|---:|
+| 15 | **Dolabın alt kotu** — döşemeye kadar mı iniyor? | 75 cm ⚠️ |
+| 16 | Dolap derinliği / bir panelin genişliği | 35 cm / 90 cm |
+
 Bonus: pencere kanat bölüm genişlikleri, radyatör dilim sayısı, radyatörün sol
 duvara mesafesi (kabul: 173 cm).
 
 ## 10. Sonraki adım
 
-Röleve tamamlandı; tasarım önerileri [`semalar.md`](./semalar.md) içinde.
+Röleve tamamlandı; tasarım önerileri [`secenekler.md`](./secenekler.md) içinde.
 Yerinde ölçüm yapıldıktan sonra `src/config/room.js` güncellenir ve
 `npm run all:schemes` ile bütün çizim ve metraj seti yeniden üretilir.

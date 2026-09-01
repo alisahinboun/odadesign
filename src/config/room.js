@@ -266,8 +266,16 @@ export const wallUnits = {
   depth: 35,             // tipik
   yStart: 0, yEnd: 270,  // duvarin tamami
   moduleWidth: 90,       // 270 / 3 panel | kullanici
-  rows: 2,               // her panelde iki sirali kapak
-  frontPattern: ['yellow', 'offwhite', 'yellow'],
+  /**
+   * Kapak renkleri. Dis dizi SIRALARI verir: [0] alt sira, [1] ust sira.
+   * Ic dizi soldan saga, yani on duvardan (y=0) arka duvara (y=270) dogru.
+   * Kullanici teyidi (foto 01): ust sira tamamen sari; alt sirada birinci
+   * kutu sari, ikinci ve ucuncu beyaz.
+   */
+  doors: [
+    ['yellow', 'offwhite', 'offwhite'],  // alt sira
+    ['yellow', 'yellow',   'yellow'],    // ust sira
+  ],
   gap: 0.4,
 };
 
@@ -412,7 +420,7 @@ const BASE = {
   equipment: equipment.map((f) => ({ pos: [...f.pos], rot: f.rot || 0 })),
   clutter: clutter.map((f) => ({ pos: [...f.pos], rot: f.rot || 0 })),
   wallItems: wallItems.map((w) => ({ u: w.u, z: w.z })),
-  wallUnitPattern: [...wallUnits.frontPattern],
+  wallUnitDoors: wallUnits.doors.map((r) => [...r]),
   doorSwing: door.swing,
   doorOpenAngle: door.openAngle,
   windows: windows.map((w) => ({ curtain: { ...w.curtain }, sillBoard: { ...w.sillBoard } })),
@@ -430,7 +438,7 @@ export function applyScheme(resolved) {
   equipment.forEach((f, i) => { f.pos = [...BASE.equipment[i].pos]; f.rot = BASE.equipment[i].rot; });
   clutter.forEach((f, i) => { f.pos = [...BASE.clutter[i].pos]; f.rot = BASE.clutter[i].rot; });
   wallItems.forEach((w, i) => { w.u = BASE.wallItems[i].u; w.z = BASE.wallItems[i].z; });
-  wallUnits.frontPattern = [...BASE.wallUnitPattern];
+  wallUnits.doors = BASE.wallUnitDoors.map((r) => [...r]);
   windows.forEach((w, i) => { w.curtain = { ...BASE.windows[i].curtain }; w.sillBoard = { ...BASE.windows[i].sillBoard }; });
   // varsayilan: yalnizca odada GERCEKTEN olanlar gorunur
   hidden.clear();
@@ -466,6 +474,6 @@ export function applyScheme(resolved) {
   }
   for (const id of resolved.show || []) hidden.delete(id);
   for (const id of resolved.hide || []) hidden.add(id);
-  if (resolved.wallUnitPattern) wallUnits.frontPattern = [...resolved.wallUnitPattern];
+  if (resolved.wallUnitDoors) wallUnits.doors = resolved.wallUnitDoors.map((r) => [...r]);
   activeScheme = resolved.id;
 }

@@ -115,7 +115,7 @@ function bubble(x, y, id) {
 
 /** Antet */
 function titleBlock(wMM, hMM, name, no, scaleTxt = '1:25') {
-  const bw = 78, bh = 30, x = wMM - PAD - bw, y = hMM - PAD - bh + 26;
+  const bw = 94, bh = 30, x = wMM - PAD - bw, y = hMM - PAD - bh + 26;
   return [
     rect(x, y, bw, bh, C.cut, 0.4, '#ffffff'),
     line(x, y + 8, x + bw, y + 8, C.cut, 0.25),
@@ -124,7 +124,9 @@ function titleBlock(wMM, hMM, name, no, scaleTxt = '1:25') {
     text(x + 3, y + 5.6, meta.project, 3.2, 'start', C.txt, 'font-weight="700"'),
     text(x + 3, y + 13, name, 2.9, 'start'),
     text(x + 3, y + 19.6, `Olcek ${scaleTxt}  ·  Olculer cm  ·  Pafta ${no}`, 2.3, 'start', C.view),
-    text(x + bw - 3, y + 5.6, `${SEMA.code} ${SEMA.name}`, 2.6, 'end',
+    // Sema adi uzun olabiliyor ("Sakin yesil + Tezgahla L kur"); proje adiyla ayni
+    // satirda cakisiyordu, kendi satirina alindi.
+    text(x + bw - 3, y + 13, `${SEMA.code} ${SEMA.name}`, 2.5, 'end',
       SEMA.kind === 'roleve' ? C.view : C.acc, 'font-weight="700"'),
     text(x + 3, y + 26.5, `${meta.revision}  ${meta.date}  ·  parametrik model: src/config/room.js`, 2.1, 'start', C.view),
   ].join('');
@@ -378,12 +380,14 @@ function drawElevation(side, code, name) {
     p.push(rect(U(wallUnits.yStart), Z(zt), MM(wallUnits.yEnd - wallUnits.yStart), MM(zt - zb), C.cut, 0.5, '#ffffff'));
     const n = Math.max(1, Math.round((wallUnits.yEnd - wallUnits.yStart) / wallUnits.moduleWidth));
     const mw = (wallUnits.yEnd - wallUnits.yStart) / n;
+    const nr = wallUnits.doors.length;
     for (let i = 0; i < n; i++) {
-      const colorName = wallUnits.frontPattern[i % wallUnits.frontPattern.length];
-      for (let r = 0; r < 2; r++) {
-        const cName = (i + r) % 2 === 0 ? colorName : (colorName === 'yellow' ? 'offwhite' : 'yellow');
-        const zz = zb + 1.8 + r * ((zt - zb - 3.6) / 2);
-        p.push(rect(U(wallUnits.yStart + i * mw + 1), Z(zz + (zt - zb - 3.6) / 2 - 0.4), MM(mw - 2), MM((zt - zb - 3.6) / 2 - 0.4),
+      for (let r = 0; r < nr; r++) {
+        const row = wallUnits.doors[r];
+        const cName = row[i % row.length];
+        const rh = (zt - zb - 3.6) / nr;
+        const zz = zb + 1.8 + r * rh;
+        p.push(rect(U(wallUnits.yStart + i * mw + 1), Z(zz + rh - 0.4), MM(mw - 2), MM(rh - 0.4),
           C.view, 0.3, tint(cName)));
       }
       p.push(text(U(wallUnits.yStart + i * mw + mw / 2), Z(zt) + 4.5, `${Math.round(mw)}`, 2.0, 'middle', C.view));
@@ -580,10 +584,11 @@ function drawSection(axis, at, code, name) {
     p.push(rect(U(0), Z(wu.zTop), L, MM(wu.zTop - wu.zBottom), C.view, 0.45, '#ffffff'));
     for (let i = 0; i < n; i++) {
       const uStart = room.depth - (wu.yStart + (i + 1) * mw);   // y -> u cevrimi
-      const colorName = wu.frontPattern[i % wu.frontPattern.length];
-      for (let r = 0; r < 2; r++) {
-        const cName = (i + r) % 2 === 0 ? colorName : (colorName === 'yellow' ? 'offwhite' : 'yellow');
-        const rh = (wu.zTop - wu.zBottom - 3.6) / 2;
+      const nr = wu.doors.length;
+      for (let r = 0; r < nr; r++) {
+        const row = wu.doors[r];
+        const cName = row[i % row.length];
+        const rh = (wu.zTop - wu.zBottom - 3.6) / nr;
         const zz = wu.zBottom + 1.8 + r * rh;
         p.push(rect(U(uStart + 1), Z(zz + rh - 0.4), MM(mw - 2), MM(rh - 0.4), C.view, 0.28,
           tint(cName)));

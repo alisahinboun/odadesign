@@ -46,14 +46,15 @@ const ITEMS = [
   { n: 5,  grup: 'Kapı duvarı', ad: 'Sol duvar ile kapı kasası arası (sarı panel)', kabul: `${P[0].width} cm` },
   { n: 6,  grup: 'Kapı duvarı', ad: 'Yeşil düşey şerit genişliği', kabul: `${P[2].width} cm` },
   { n: 7,  grup: 'Kapı duvarı', ad: 'Kapı kasası ile sağ duvar arası (sarı panel)', kabul: `${P[3].width} cm` },
-  { n: 8,  grup: 'Dolap', ad: 'Dolap hangi duvara dayalı? (sol / ön) + o duvardan mesafesi', kabul: 'sol duvar' },
+  { n: 8,  grup: 'Dolap', ad: 'Dolap hangi duvara dayalı + o duvardan mesafesi', kabul: 'sol duvar' },
   { n: 9,  grup: 'Dolap', ad: 'Aynanın sol duvara mesafesi ve genişliği', kabul: '58 cm / 34 cm' },
   { n: 10, grup: 'Tezgâh', ad: 'Sağ duvar tezgâhının uzunluğu × derinliği', kabul: `${A1.w}×${A1.d} cm` },
   { n: 11, grup: 'Tezgâh', ad: 'Tezgâhın ön duvara mesafesi', kabul: `${Math.round(A1.pos[1] - A1.w / 2)} cm` },
   { n: 12, grup: 'Radyatör', ad: 'Radyatör genişliği ve dilim sayısı', kabul: `${R.width} cm / ${R.sections}` },
   { n: 13, grup: 'Radyatör', ad: 'Radyatörün sol duvara mesafesi', kabul: `${R.u} cm` },
   { n: 14, grup: 'Genel', ad: 'Net kat yüksekliği (döşemeden asma tavana)', kabul: `${room.height} cm`, kritik: true },
-  { n: 15, grup: 'Genel', ad: 'Ankastre dolap bankosu alt kotu / derinliği', kabul: `${wallUnits.zBottom} cm / ${wallUnits.depth} cm` },
+  { n: 15, grup: 'Dolap duvarı', ad: 'Sağ duvar dolabının alt kotu', kabul: `${wallUnits.zBottom} cm`, kritik: true },
+  { n: 16, grup: 'Dolap duvarı', ad: 'Dolap derinliği ve bir panelin genişliği', kabul: `${wallUnits.depth} cm / ${wallUnits.moduleWidth} cm` },
 ];
 
 /* ------------------------------------------------------------------ plan */
@@ -116,7 +117,9 @@ g.push(text(X(room.width) + TW + 3, Y(room.depth / 2), 'SAĞ', 2.4, 'middle', C.
 /* ------------------------------------------------------------- tablo */
 const TX = PLAN_X + PW + 26;
 const ROW = 8.6;
-const tableW = 108;
+const tableW = 118;
+// kabul degeri ile kutu arasinda pay: uzun degerler ('35 cm / 90 cm') tasmasin
+const KAB = 44, BOXW = 20;
 let ty = PLAN_Y + 4;
 const t = [];
 t.push(text(TX, ty - 6, 'ÖLÇÜ FÖYÜ', 5.0, 'start', C.ink, 'font-weight="700" letter-spacing="0.4"'));
@@ -125,8 +128,8 @@ ty += 6;
 t.push(line(TX, ty, TX + tableW, ty, C.ink, 0.4));
 ty += 4.6;
 t.push(text(TX + 8, ty, 'Ne ölçülecek', 2.4, 'start', C.mid, 'font-weight="700"'));
-t.push(text(TX + tableW - 34, ty, 'modeldeki kabul', 2.2, 'start', C.mid));
-t.push(text(TX + tableW - 9, ty, 'ölçülen', 2.2, 'middle', C.mid));
+t.push(text(TX + tableW - KAB, ty, 'modeldeki kabul', 2.2, 'start', C.mid));
+t.push(text(TX + tableW - BOXW / 2, ty, 'ölçülen', 2.2, 'middle', C.mid));
 ty += 2.4;
 t.push(line(TX, ty, TX + tableW, ty, C.mid, 0.22));
 
@@ -142,13 +145,15 @@ for (const it of ITEMS) {
   t.push(tag(TX + 3.4, ty - 1.0, it.n));
   t.push(text(TX + 8.5, ty, it.ad, 2.45, 'start', it.kritik ? C.ink : '#33383f',
     it.kritik ? 'font-weight="700"' : ''));
-  t.push(text(TX + tableW - 34, ty, it.kabul, 2.3, 'start', C.mid));
-  t.push(rect(TX + tableW - 20, ty - 4.2, 20, 5.8, C.box, 0.35, '#ffffff'));
-  if (it.kritik) t.push(text(TX + tableW - 22.5, ty, '★', 2.4, 'end', C.acc));
+  t.push(text(TX + tableW - KAB, ty, it.kabul, 2.3, 'start', C.mid));
+  t.push(rect(TX + tableW - BOXW, ty - 4.2, BOXW, 5.8, C.box, 0.35, '#ffffff'));
+  if (it.kritik) t.push(text(TX + tableW - KAB - 1.5, ty, '★', 2.4, 'end', C.acc));
   t.push(line(TX, ty + 2.2, TX + tableW, ty + 2.2, '#e8eaec', 0.18));
 }
 ty += 9;
-t.push(text(TX, ty, '★ En kritik ikisi: denizlik kotu (1) ve net kat yüksekliği (14).', 2.4, 'start', C.acc));
+t.push(text(TX, ty, '★ En kritik üçü: denizlik kotu (1), net kat yüksekliği (14), dolap alt kotu (15).', 2.4, 'start', C.acc));
+ty += 4.2;
+t.push(text(TX, ty, '15 — dolap döşemeye kadar mı iniyor, yoksa tezgâhın üstünde mi başlıyor?', 2.3, 'start', C.mid));
 ty += 4.6;
 t.push(text(TX, ty, 'Bu değerler src/config/room.js içinde tek yerde tanımlı. Girildiğinde plan,', 2.3, 'start', C.mid));
 ty += 3.8;

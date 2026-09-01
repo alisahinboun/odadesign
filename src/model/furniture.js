@@ -382,15 +382,16 @@ export function buildWallUnits() {
 
   const n = Math.max(1, Math.round(len / u.moduleWidth));
   const mw = len / n;
+  // u.doors[r][i] : r=0 alt sira, i=0 on duvara en yakin modul
+  const rows = u.doors.length;
   for (let i = 0; i < n; i++) {
     const y = u.yStart + i * mw;
-    const colorName = u.frontPattern[i % u.frontPattern.length];
     // dikey ayirici
     g.add(box(u.depth, cw, h - cw * 2, mat.plain('#cfcbc2', 0.8), { x: x0, y, z: u.zBottom + cw, name: `ayirici-${i}` }));
-    // iki sirali kapak (foto: kareye yakin modul)
-    const rows = u.rows || 2, rh = (h - cw * 2 - (rows - 1) * u.gap) / rows;
+    const rh = (h - cw * 2 - (rows - 1) * u.gap) / rows;
     for (let r = 0; r < rows; r++) {
-      const cName = (i + r) % 2 === 0 ? colorName : (colorName === 'yellow' ? 'offwhite' : 'yellow');
+      const row = u.doors[r];
+      const cName = row[i % row.length];
       const z = u.zBottom + cw + r * (rh + u.gap);
       g.add(box(cw, mw - cw - u.gap, rh, mat.paint(cName, mw, rh, 0.45),
         { x: x0 - cw, y: y + cw, z, name: `kapak-${i}-${r}-${cName}` }));

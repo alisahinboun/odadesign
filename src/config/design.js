@@ -24,7 +24,7 @@ export const palettes = [
     why: 'Karşılaştırma için. Bu palet canlı ve uyarıcı — sınıf koridoru için uygun, '
        + 'ama görüşme odası için ters yönde çalışıyor.',
     palette: {},
-    wallUnitPattern: null,
+    wallUnitDoors: null,
   },
   {
     id: 'p2', code: '2', name: 'Sakin yeşil', kind: 'oneri',
@@ -41,7 +41,7 @@ export const palettes = [
       curtain:     { hex: '#efe9dd', label: 'Tül perde',                          ral: '-' },
       radiator:    { hex: '#f4f2ee', label: 'Radyatör',                           ral: 'RAL 9016' },
     },
-    wallUnitPattern: ['offwhite', 'yellow', 'offwhite'],
+    wallUnitDoors: [['yellow', 'offwhite', 'offwhite'], ['yellow', 'yellow', 'yellow']],
     is: 'Boya: bölüntü panelleri + üç duvar + pencere duvarı + tavan bandı. '
       + 'Dolap kapakları yeniden kaplanır. Mobilya alımı yok.',
   },
@@ -60,7 +60,7 @@ export const palettes = [
       curtain:     { hex: '#eef0f0', label: 'Tül perde',                     ral: '-' },
       radiator:    { hex: '#f6f7f7', label: 'Radyatör',                      ral: 'RAL 9016' },
     },
-    wallUnitPattern: ['offwhite', 'yellow', 'offwhite'],
+    wallUnitDoors: [['yellow', 'offwhite', 'offwhite'], ['yellow', 'yellow', 'yellow']],
     is: 'Boya: bölüntü panelleri + üç duvar + pencere duvarı + tavan bandı. '
       + 'Dolap kapakları yeniden kaplanır. Mobilya alımı yok.',
   },
@@ -79,7 +79,7 @@ export const palettes = [
       curtain:     { hex: '#f0e8da', label: 'Tül perde',                 ral: '-' },
       radiator:    { hex: '#f5f2ec', label: 'Radyatör',                  ral: 'RAL 9016' },
     },
-    wallUnitPattern: ['yellow', 'offwhite', 'yellow'],
+    wallUnitDoors: [['yellow', 'offwhite', 'offwhite'], ['yellow', 'yellow', 'yellow']],
     is: 'Boya: bölüntü panelleri + üç duvar + pencere duvarı + tavan bandı. '
       + 'Dolap kapakları yeniden kaplanır. Mobilya alımı yok.',
   },
@@ -228,7 +228,7 @@ export function resolveDesign(paletteId, layoutId) {
     id: `${P.id}-${L.id}`,
     paletteId: P.id, layoutId: L.id,
     palette: P.palette || {},
-    wallUnitPattern: P.wallUnitPattern || null,
+    wallUnitDoors: P.wallUnitDoors || null,
     furniture: L.furniture || {},
     equipment: L.equipment || {},
     clutter: L.clutter || {},
