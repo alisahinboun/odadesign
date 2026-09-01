@@ -32,13 +32,20 @@
 | `Dolap = 80` | **80 cm** | `D1` |
 | Üçüncü satır `… = 80` | **80 cm** ⚠️ | `K2` — *aşağıya bakınız* |
 
-### ⚠️ Krokide okunamayan satır
-Krokinin üçüncü donatı satırındaki kelime el yazısından çözülemedi (“Kanturi / Kitaplık /
-Konsol” okumaları mümkün). Model bunu **80 cm genişliğinde açık raflı bir modül
-(kitaplık)** olarak kabul etti.
-Doğru eleman farklıysa tek yapılması gereken `src/config/room.js` içinde `K2`
-kaydının `type` alanını değiştirmektir — `'bookcase'` yerine `'wardrobe'` veya
-`'credenza'` yazmak yeterlidir; plan, görünüşler ve 3B model kendiliğinden güncellenir.
+### ⚠️ Krokide okunamayan satır — ve bu elemanın odada olmadığı
+Krokinin üçüncü donatı satırındaki kelime el yazısından çözülemedi (“Kanturi /
+Kitaplık / Konsol” okumaları mümkün). Model bunu 80 cm genişliğinde açık raflı bir
+modül (kitaplık) olarak kabul etti.
+
+**Bu eleman odada YOK.** Hiçbir fotoğrafta görünmüyor; arka tarafta da olmadığı
+teyit edildi. Model bunu **tasarım programı kalemi** olarak tutuyor:
+`proposedOnly: true` ile işaretli, mevcut durum (Ş‑0) ve boya‑only önerisinde (Ş‑1)
+**gizli**, yeniden yerleşim önerisinde (Ş‑2) **yeni eleman** olarak görünür.
+
+Bu, krokinin ne olduğu konusunda bir okuma daha getiriyor: kroki büyük ihtimalle
+sadece bir röleve değil, **kısmen bir tasarım programı** — masa ve dolap zaten var,
+üçüncü 80 cm'lik kalem ise istenen yeni eleman. Doğru tür farklıysa `src/config/room.js`
+içinde `K2` kaydının `type` alanını değiştirmek yeterli.
 
 ## 3. Fotoğraflardan çıkarılanlar — **orta güven** ⚠️
 

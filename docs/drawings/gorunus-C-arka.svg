@@ -71,9 +71,6 @@
        text-anchor="middle" transform="rotate(-90 250.20 129.00)">290</text>
 <line x1="77.00" y1="205.60" x2="77.00" y2="208.40" stroke="#1b4f7a" stroke-width="0.18" /><line x1="225.00" y1="205.60" x2="225.00" y2="208.40" stroke="#1b4f7a" stroke-width="0.18" /><line x1="77.00" y1="207.00" x2="225.00" y2="207.00" stroke="#1b4f7a" stroke-width="0.18" /><line x1="76.00" y1="208.00" x2="78.00" y2="206.00" stroke="#1b4f7a" stroke-width="0.3" /><line x1="224.00" y1="208.00" x2="226.00" y2="206.00" stroke="#1b4f7a" stroke-width="0.3" /><text x="151.00" y="205.90" font-size="2.5" fill="#1b4f7a" text-anchor="middle" >370</text>
 <text x="77.00" y="77.00" font-size="2.4" fill="#a4552f" text-anchor="start" >⚠ Pencere ölçüleri fotoğraf oranlamasıdır — yerinde ölçülmelidir (docs/roleve.md §9).</text>
-<rect x="208.80" y="113.00" width="14.00" height="74.00" fill="#fbfaf8" stroke="#5a626e" stroke-width="0.4" />
-<circle cx="215.80" cy="108.00" r="3.10" fill="#fffdf5" stroke="#b8860b" stroke-width="0.3"/><text x="215.80" y="108.95" font-size="2.5" fill="#7a5c05" text-anchor="middle" font-weight="700">K2</text>
-<text x="215.80" y="150.00" font-size="2.1" fill="#98a0ab" text-anchor="middle" >35x185</text>
 <rect x="78.00" y="162.20" width="18.00" height="24.80" fill="#fbfaf8" stroke="#5a626e" stroke-width="0.4" />
 <circle cx="87.00" cy="157.20" r="3.10" fill="#fffdf5" stroke="#b8860b" stroke-width="0.3"/><text x="87.00" y="158.15" font-size="2.5" fill="#7a5c05" text-anchor="middle" font-weight="700">A1</text>
 <text x="87.00" y="174.60" font-size="2.1" fill="#98a0ab" text-anchor="middle" >45x62</text>

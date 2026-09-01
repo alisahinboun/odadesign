@@ -4,7 +4,7 @@
  * Hem src/main.js (arayuz) hem scripts/check.mjs bu modulu kullanir; boylece
  * arayuzde gorunen deger ile denetim raporu her zaman ayni hesaptan gelir.
  */
-import { room, partition, door, furniture } from '../config/room.js';
+import { room, partition, door, furniture, isVisible } from '../config/room.js';
 
 /** Donme sonrasi eksene paralel cevreleyen dikdortgen (plan) */
 export function footprint(it) {
@@ -57,7 +57,7 @@ export function doorSwingLimit(ignore = ['W1'], tol = 2.0) {
   const hx = hingeX();
   const R = leafWidth();
   const sign = door.hinge === 'left' ? 1 : -1;
-  const rects = furniture.filter((f) => !ignore.includes(f.id)).map(footprint);
+  const rects = furniture.filter((f) => isVisible(f) && !ignore.includes(f.id)).map(footprint);
   for (let a = 1; a <= 178; a++) {
     const t = (a * Math.PI) / 180;
     for (let s = 8; s <= R; s += 1.5) {
@@ -83,7 +83,7 @@ export function metrics() {
     cevre,
     duvarAlani: cevre * (room.height / 100),
     // net dolasim alani = alan - mobilya ayak izi
-    doluAlan: furniture.reduce((a, f) => {
+    doluAlan: furniture.filter(isVisible).reduce((a, f) => {
       const r = footprint(f);
       return a + ((r.x1 - r.x0) * (r.y1 - r.y0)) / 10000;
     }, 0),

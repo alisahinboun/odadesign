@@ -12,7 +12,7 @@ import fs from 'node:fs';
 import path from 'node:path';
 import { fileURLToPath } from 'node:url';
 import {
-  room, partition, door, furniture, palette, wallUnits, meta, applyScheme,
+  room, partition, door, furniture, palette, wallUnits, meta, applyScheme, isVisible, windows,
 } from '../src/config/room.js';
 import { schemes, resolveScheme } from '../src/config/schemes.js';
 import { footprint, doorSwingLimit, metrics, hingeX, leafWidth } from '../src/lib/analysis.js';
@@ -64,7 +64,9 @@ function snapshot(scheme) {
     dolu: M.doluAlan, serbest: M.alan - M.doluAlan,
     behind, gap,
     facesDoor: (desk.rot || 0) === 0 && desk.pos[1] > room.depth * 0.4,
-    rects: furniture.map((f) => ({ it: { ...f }, r: footprint(f) })),
+    rects: furniture.filter(isVisible).map((f) => ({ it: { ...f }, r: footprint(f) })),
+    sillDepth: windows[0]?.sillBoard?.depth ?? 0,
+    curtainCover: windows[0] ? Math.min(100, Math.round(((windows[0].curtain.to - windows[0].curtain.from) / windows[0].width) * 100)) : 0,
     panels: partition.panels.map((p) => ({ ...p, fill: p.kind === 'door' ? null : tint(p.color === 'green' ? 'green' : 'yellow') })),
     wallFill: tint('lilac', 0.55),
   };
@@ -132,11 +134,12 @@ const A = snapshot(schemes.find((s) => s.id === leftId));
 applyScheme(resolveScheme(rightId));
 const B = snapshot(schemes.find((s) => s.id === rightId));
 
+const ROWS = 10;
 const PW = MM(room.width), PD = MM(room.depth);
 const GAP = 26, MARGIN = 22;
 const wMM = MARGIN * 2 + PW * 2 + GAP;
 const TABLE_TOP = MARGIN + 34 + PD + 20;
-const hMM = TABLE_TOP + 92;
+const hMM = TABLE_TOP + 34 + ROWS * 7.4;
 const oxA = MARGIN, oxB = MARGIN + PW + GAP, oy = MARGIN + 34;
 
 const body = [];
@@ -173,7 +176,10 @@ const rows = [
    `${A.behind} cm`, `${B.behind} cm${B.behind >= 100 ? '' : '  ⚠'}`, cmp(A.behind, B.behind)],
   ['Mobilya ayak izi', `${A.dolu.toFixed(2)} m²`, `${B.dolu.toFixed(2)} m²`, cmp(A.dolu, B.dolu, false)],
   ['Serbest dolaşım alanı', `${A.serbest.toFixed(2)} m²`, `${B.serbest.toFixed(2)} m²`, cmp(A.serbest, B.serbest)],
-  ['Yeni mobilya alımı', '—', B.scheme.kind === 'roleve' ? '—' : 'yok', 0],
+  ['Pencere önü açık mı', 'evet', 'evet', 0],
+  ['Tül perde pencereyi kapatma', `%${A.curtainCover}`, `%${B.curtainCover}`, cmp(A.curtainCover, B.curtainCover)],
+  ['İç denizlik derinliği', `${A.sillDepth} cm`, `${B.sillDepth} cm${B.sillDepth > A.sillDepth ? ' (raf)' : ''}`, cmp(A.sillDepth, B.sillDepth)],
+  ['Yeni mobilya alımı', '—', B.scheme.kind === 'roleve' ? '—' : '1 × 80 cm modül', 0],
 ];
 body.push(text(MARGIN, TABLE_TOP - 5, 'ÖLÇÜLEBİLİR FARK', 3.2, 'start', C.cut, 'font-weight="700" letter-spacing="0.4"'));
 const cw = [wMM * 0.34, wMM * 0.26, wMM * 0.26];

@@ -199,14 +199,24 @@ export const furniture = [
         + 'kalir ve foto 03teki ayna oraya asilir.',
   },
   {
-    id: 'K2', tag: 'Modul', name: '80 cm rafli modul (kitaplik kabul edildi)',
+    id: 'K2', tag: 'Modul', name: '80 cm rafli modul (YENI - krokide istenen)',
     type: 'bookcase',
     w: 80, d: 35, h: 185,          // kroki: ucuncu satir "... = 80"
-    pos: [23, 202], rot: -90,      // arka-sol kose, sirti sol duvarda
+    pos: [23, 202], rot: -90,      // sol duvar, arka bolge
     shelves: 5,
     materials: { body: 'beech', back: 'beechDark' },
-    note: 'KROKI OKUNAMADI: ucuncu satirdaki 80 cm lik eleman. Kitaplik kabul edildi; '
-        + 'farkli ise type ("wardrobe" | "bookcase" | "credenza") ve name alanlarini degistirin.',
+    /**
+     * ⚠ BU ELEMAN ODADA YOK. Fotograflarin hicbirinde gorunmuyor; kullanici da
+     * arkada boyle bir sey olmadigini teyit etti. Krokinin ucuncu satirindaki
+     * okunamayan "... = 80" kaydindan turetildi ve TASARIM PROGRAMI kalemi
+     * olarak modelde tutuluyor: mevcut durum semasinda (S-0) ve boya-only
+     * onerisinde (S-1) GIZLI, yeniden yerlesim onerisinde (S-2) yeni eleman
+     * olarak GORUNUR.
+     */
+    proposedOnly: true,
+    note: 'ODADA YOK — krokideki okunamayan 80 cm lik kalemden turetilen YENI eleman. '
+        + 'Yalnizca S-2 onerisinde gorunur. Turu (kitaplik/dolap/kredenza) belirsiz; '
+        + 'type alanini degistirmek yeterli.',
   },
   {
     id: 'S1', tag: 'Koltuk', name: 'Yonetici calisma koltugu',
@@ -377,6 +387,12 @@ export const meta = {
  * Once mevcut duruma (S-0) donulur, sonra sema farki uygulanir - semalar
  * arasinda gecis yaparken birikme olmaz.
  */
+/** Semaya gore gizlenen elemanlar. buildRoom, denetim, cizim ve metraj bunu okur. */
+export const hidden = new Set();
+export const isVisible = (it) => !hidden.has(it.id);
+/** Yalnizca aktif semada bulunan mobilyalar */
+export const activeFurniture = () => furniture.filter(isVisible);
+
 const BASE = {
   palette: JSON.parse(JSON.stringify(palette)),
   furniture: furniture.map((f) => ({ pos: [...f.pos], rot: f.rot || 0 })),
@@ -384,7 +400,7 @@ const BASE = {
   clutter: clutter.map((f) => ({ pos: [...f.pos], rot: f.rot || 0 })),
   wallItems: wallItems.map((w) => ({ u: w.u, z: w.z })),
   wallUnitPattern: [...wallUnits.frontPattern],
-  windows: windows.map((w) => ({ curtain: { ...w.curtain } })),
+  windows: windows.map((w) => ({ curtain: { ...w.curtain }, sillBoard: { ...w.sillBoard } })),
 };
 
 export let activeScheme = 's0';
@@ -397,7 +413,10 @@ export function applyScheme(resolved) {
   clutter.forEach((f, i) => { f.pos = [...BASE.clutter[i].pos]; f.rot = BASE.clutter[i].rot; });
   wallItems.forEach((w, i) => { w.u = BASE.wallItems[i].u; w.z = BASE.wallItems[i].z; });
   wallUnits.frontPattern = [...BASE.wallUnitPattern];
-  windows.forEach((w, i) => { w.curtain = { ...BASE.windows[i].curtain }; });
+  windows.forEach((w, i) => { w.curtain = { ...BASE.windows[i].curtain }; w.sillBoard = { ...BASE.windows[i].sillBoard }; });
+  // varsayilan: yalnizca odada GERCEKTEN olanlar gorunur
+  hidden.clear();
+  for (const f of [...furniture, ...equipment, ...clutter]) if (f.proposedOnly) hidden.add(f.id);
 
   // 2) sema farkini uygula
   if (!resolved) { activeScheme = 's0'; return; }
@@ -418,8 +437,12 @@ export function applyScheme(resolved) {
   patch(wallItems, resolved.wallItems);
   for (const [id, d] of Object.entries(resolved.windows || {})) {
     const w = windows.find((x) => x.id === id);
-    if (w && d.curtain) w.curtain = { ...w.curtain, ...d.curtain };
+    if (!w) continue;
+    if (d.curtain) w.curtain = { ...w.curtain, ...d.curtain };
+    if (d.sillBoard) w.sillBoard = { ...w.sillBoard, ...d.sillBoard };
   }
+  for (const id of resolved.show || []) hidden.delete(id);
+  for (const id of resolved.hide || []) hidden.add(id);
   if (resolved.wallUnitPattern) wallUnits.frontPattern = [...resolved.wallUnitPattern];
   activeScheme = resolved.id;
 }

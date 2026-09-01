@@ -7,7 +7,7 @@
 import * as THREE from 'three';
 import {
   room, furniture, equipment, clutter, wallItems, ceiling as ceilCfg, wallUnits, meta,
-  windows, radiators,
+  windows, radiators, isVisible,
 } from '../config/room.js';
 import { place, group, cm } from '../lib/geom.js';
 import * as shell from './shell.js';
@@ -63,7 +63,7 @@ export function buildRoom() {
 
   /* --- mobilya --- */
   const fg = group('Mobilya', { layer: 'furniture', label: 'Mobilya' });
-  for (const it of furniture) {
+  for (const it of furniture.filter(isVisible)) {
     const b = builders[it.type];
     if (!b) { console.warn('Bilinmeyen mobilya tipi:', it.type); continue; }
     const g = b(it);
@@ -74,7 +74,7 @@ export function buildRoom() {
 
   /* --- ekipman (mobilya ustune oturur) --- */
   const eg = group('Ekipman', { layer: 'equipment', label: 'Ekipman' });
-  for (const it of equipment) {
+  for (const it of equipment.filter(isVisible)) {
     const b = equipBuilders[it.type];
     if (!b) { console.warn('Bilinmeyen ekipman tipi:', it.type); continue; }
     const g = b(it);
@@ -85,7 +85,7 @@ export function buildRoom() {
 
   /* --- dagınık esya --- */
   const cg = group('Esya', { layer: 'clutter', label: 'Dağınık eşya' });
-  for (const it of clutter) {
+  for (const it of clutter.filter(isVisible)) {
     const b = equipBuilders[it.type];
     if (!b) continue;
     const g = b(it);

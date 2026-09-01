@@ -24,9 +24,10 @@ export const schemes = [
     kind: 'roleve',
     summary: 'Fotoğraf ve krokiden çıkarılan mevcut hâl. Karşılaştırma tabanı.',
     rationale:
-      'Okul boyası paleti (sarı panel + yeşil şerit), mobilya olduğu yerde. '
-      + 'Kapı kanadı S2 sandalyesine çarptığı için ~109° açılıyor; masanın arkasında '
-      + '60 cm ölü alan var ve kullanıcı girişe sırtı dönük oturuyor.',
+      'Okul boyası paleti (sarı panel + yeşil şerit + tamamı yeşil pencere duvarı), '
+      + 'mobilya olduğu yerde. Kapı kanadı S2 sandalyesine çarptığı için ~109° '
+      + 'açılıyor ve kullanıcı girişe sırtı dönük oturuyor. Krokide istenen 80 cm\'lik '
+      + 'raflı modül (K2) odada YOK — mevcut durumda gösterilmez.',
     palette: {},
     furniture: {},
     wallUnitPattern: null,
@@ -124,12 +125,30 @@ export const schemes = [
       T3: { u: 75, z: 152 },
       T2: { u: 300, z: 198 },
     },
-    // Kullanici kapiya donuk oturunca pencere ARKASINDA kaliyor ve ekranda
-    // yansima yapiyor. Mevcut tul perde foto 05'te tek uca toplanmis durumda;
-    // pencere boyunca tamamlanmasi bu yansimayi kesiyor - maliyeti yok.
+    /* ---------------------- ARKA (PENCERE) DUVARI TASARIMI ----------------------
+     * Odanin en degerli yuzeyi bu duvar: tek isik kaynagi burada. Uc mudahale,
+     * hicbiri dogramaya veya radyatore dokunmuyor:
+     *
+     *  1) Duvar acik notre boyaniyor (S-1 paletinden gelir). Isik artik yutulmuyor.
+     *  2) Ic denizlik 22 -> 38 cm derinlestiriliyor: pencere alti KULLANILABILIR
+     *     bir raf/tezgah oluyor. Yer kaplamiyor, yalnizca denizlik tahtasi
+     *     yenileniyor. Radyator denizligin altinda kaldigi icin isi yayilimi
+     *     engellenmiyor (denizlik radyatorun onune sarkmiyor: 38 cm < parapet
+     *     derinligi degil, duvardan olculuyor ve radyator 11 cm derinlikte).
+     *  3) Tul perde pencere boyunca tamamlaniyor - ekran yansimasini kesiyor,
+     *     perde zaten var, ek maliyeti yok.
+     *
+     * Duvarin onune HICBIR yuksek eleman konulmuyor; denetim bunu kontrol eder.
+     */
     windows: {
-      P1: { curtain: { from: -2, to: 287, drop: 122, headroom: 3, hem: 8 } },
+      P1: {
+        curtain:   { from: -2, to: 287, drop: 122, headroom: 3, hem: 8 },
+        sillBoard: { depth: 38, thickness: 4, overhang: 3 },
+      },
     },
+    // Krokide istenen 80 cm lik modul YENI eleman olarak devreye giriyor,
+    // pencereyi kapatmayacak sekilde sol duvara yerlesiyor.
+    show: ['K2'],
     metrajNote: 'Ş-1 boya kalemleri + mobilya taşıma/montaj. Yeni mobilya alımı yok; '
       + 'mevcut parçalar yeniden konumlanır. Tül perde pencere boyunca tamamlanır '
       + '(ekran yansımasını keser). Priz konumları gözden geçirilmeli: masa arkaya '
@@ -154,5 +173,7 @@ export function resolveScheme(id) {
     clutter: { ...(base.clutter || {}), ...(s.clutter || {}) },
     wallItems: { ...(base.wallItems || {}), ...(s.wallItems || {}) },
     windows: { ...(base.windows || {}), ...(s.windows || {}) },
+    show: [...(base.show || []), ...(s.show || [])],
+    hide: [...(base.hide || []), ...(s.hide || [])],
   };
 }

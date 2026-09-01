@@ -16,7 +16,7 @@ import path from 'node:path';
 import { fileURLToPath } from 'node:url';
 import {
   room, partition, door, furniture, equipment, wallItems, wallUnits,
-  ceiling as ceilCfg, floor as floorCfg, palette, meta, windows, radiators,
+  ceiling as ceilCfg, floor as floorCfg, palette, meta, windows, radiators, isVisible,
 } from '../src/config/room.js';
 import { footprint, doorSwingLimit, metrics, hingeX, leafWidth } from '../src/lib/analysis.js';
 import { schemes, resolveScheme } from '../src/config/schemes.js';
@@ -228,7 +228,7 @@ function drawPlan() {
     `transform="rotate(-90 ${X(room.width - wallUnits.depth / 2).toFixed(2)} ${Y(wallUnits.yEnd / 2).toFixed(2)})"`));
 
   // mobilya
-  for (const it of furniture) {
+  for (const it of furniture.filter(isVisible)) {
     const r = footprint(it);
     const rx = X(r.x0), ry = Y(r.y1), rw = MM(r.x1 - r.x0), rh = MM(r.y1 - r.y0);
     p.push(rect(rx, ry, rw, rh, C.view, 0.4, '#ffffff'));
@@ -242,7 +242,7 @@ function drawPlan() {
     p.push(bubble(X(it.pos[0]), Y(it.pos[1]), it.id));
   }
   // masa ustu ekipman (ince)
-  for (const it of equipment) {
+  for (const it of equipment.filter(isVisible)) {
     const r = footprint(it);
     p.push(rect(X(r.x0), Y(r.y1), MM(r.x1 - r.x0), MM(r.y1 - r.y0), C.thin, 0.18, 'none', 'stroke-dasharray="1.2 1"'));
   }
@@ -463,7 +463,7 @@ function drawElevation(side, code, name) {
   // bu duvarin onundeki mobilya (gorunus)
   const proj = { front: (r) => [r.x0, r.x1, r.y0], back: (r) => [len - r.x1, len - r.x0, room.depth - r.y1],
                  left: (r) => [r.y0, r.y1, r.x0], right: (r) => [room.depth - r.y1, room.depth - r.y0, room.width - r.x1] };
-  const items = [...furniture].sort((a, b) => {
+  const items = furniture.filter(isVisible).sort((a, b) => {
     const ra = footprint(a), rb = footprint(b);
     return proj[side](rb)[2] - proj[side](ra)[2];
   });
@@ -618,7 +618,7 @@ function drawSection(axis, at, code, name) {
   }
 
   // --- mobilya: kesme cizgisini kesenler KESITTE, arkada kalanlar gorunuste ---
-  const items = furniture.map((it) => ({ it, r: footprint(it) }));
+  const items = furniture.filter(isVisible).map((it) => ({ it, r: footprint(it) }));
   const beyond = [], cut = [];
   for (const o of items) {
     if (axis === 'y') {
@@ -696,7 +696,7 @@ function drawGridPlan(kind) {
     p.push(text(ox, oy - 6, `ASMA TAVAN PLANI — ${tile[0]}x${tile[1]} plaka, T24 tasiyici, alt kot +${room.height} cm`, 3.0, 'start', C.txt, 'font-weight="700"'));
   } else {
     p.push(text(ox, oy - 6, `DOSEME KAPLAMA PLANI — ${tile[0]}x${tile[1]} karo (${floorCfg.finish})`, 3.0, 'start', C.txt, 'font-weight="700"'));
-    for (const it of furniture) {
+    for (const it of furniture.filter(isVisible)) {
       const r = footprint(it);
       p.push(rect(X(r.x0), Y(r.y1), MM(r.x1 - r.x0), MM(r.y1 - r.y0), C.thin, 0.2, 'none', 'stroke-dasharray="2 1.4"'));
     }

@@ -17,6 +17,7 @@ import {
   windows, radiators,
 } from '../src/config/room.js';
 import { footprint as rect, overlap, doorSwingLimit, metrics } from '../src/lib/analysis.js';
+import { isVisible } from '../src/config/room.js';
 import { resolveScheme, schemes } from '../src/config/schemes.js';
 import { applyScheme } from '../src/config/room.js';
 
@@ -50,7 +51,8 @@ partition.transomTop > room.height && bad(`Vasistas ust kotu ${partition.transom
 
 /* --- 2 --- */
 head('2. Oda siniri');
-const rects = furniture.map(rect);
+const VIS = furniture.filter(isVisible);
+const rects = VIS.map(rect);
 let outside = 0;
 for (const r of rects) {
   if (r.x0 < -0.6 || r.x1 > room.width + 0.6 || r.y0 < -0.6 || r.y1 > room.depth + 0.6) {
@@ -58,8 +60,8 @@ for (const r of rects) {
     outside++;
   }
 }
-outside === 0 && ok(`${rects.length} mobilya da oda siniri icinde`);
-for (const f of furniture) {
+outside === 0 && ok(`${rects.length} mobilya da oda siniri icinde` + (furniture.length - VIS.length ? ` (${furniture.length - VIS.length} eleman bu semada yok)` : ''));
+for (const f of VIS) {
   if (f.h > room.height) bad(`${f.id} yuksekligi ${f.h} > net yukseklik ${room.height}`);
 }
 
@@ -85,7 +87,7 @@ clash === 0 && ok('Istenmeyen cakisma yok');
 /* --- 4 --- */
 head('4. Ekipman tasiyicilari');
 let hostBad = 0;
-for (const e of [...equipment, ...clutter]) {
+for (const e of [...equipment, ...clutter].filter(isVisible)) {
   if (!e.onTop) continue;
   const host = furniture.find((f) => f.id === e.onTop);
   if (!host) { bad(`${e.id} tasiyicisi ${e.onTop} bulunamadi`); continue; }
@@ -127,10 +129,21 @@ for (const w of windows) {
   const top = w.sill + w.height;
   if (top > room.height) bad(`${w.id} ust kotu ${top} > net yukseklik ${room.height}`);
   else ok(`${w.id} ust kot ${top} cm, denizlik +${w.sill} cm`);
+  if (w.sillBoard.depth > room.wallThickness + 6) {
+    const proj = w.sillBoard.depth - room.wallThickness;
+    const rad = radiators.find((r) => r.wall === w.wall);
+    const radProj = rad ? rad.depth + 4 : 0;
+    proj >= radProj
+      ? ok(`${w.id} ic denizlik ${w.sillBoard.depth} cm (odaya ${proj} cm cikinti) - raf olarak kullanilabilir`)
+      : ok(`${w.id} ic denizlik ${w.sillBoard.depth} cm`);
+    if (rad && proj > radProj + 14) {
+      warn(`${w.id} denizligi radyatorun ${(proj - radProj).toFixed(0)} cm onune sarkiyor - isi yayilimini kisitlar`);
+    }
+  }
   if (w.sill < 40) warn(`${w.id} denizlik kotu ${w.sill} cm - olagan disi dusuk, yerinde olculmeli`);
   if (w.sill > 110) warn(`${w.id} denizlik kotu ${w.sill} cm - olagan disi yuksek`);
   // pencerenin onunu kapatan mobilya
-  for (const f of furniture) {
+  for (const f of VIS) {
     const r = rect(f);
     const along = w.wall === 'back' || w.wall === 'front' ? [r.x0, r.x1] : [r.y0, r.y1];
     const dist = w.wall === 'back' ? room.depth - r.y1 : w.wall === 'front' ? r.y0 : 0;
@@ -152,7 +165,7 @@ for (const r of radiators) {
   // radyator onu bos mu (isi yayilimi + vana erisimi)
   const rr = { x0: r.u, x1: r.u + r.width, y0: room.depth - 40, y1: room.depth };
   let blocked = null;
-  for (const f of furniture) {
+  for (const f of VIS) {
     const fr = rect(f);
     if (fr.x1 > rr.x0 && fr.x0 < rr.x1 && fr.y1 > rr.y0) blocked = f.id;
   }

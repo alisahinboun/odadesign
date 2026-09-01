@@ -51,9 +51,6 @@
 <rect x="95.20" y="203.00" width="22.00" height="32.00" fill="#ffffff" stroke="#5a626e" stroke-width="0.4" />
 <line x1="95.20" y1="203.00" x2="95.20" y2="235.00" stroke="#98a0ab" stroke-width="0.9" />
 <circle cx="106.20" cy="219.00" r="3.10" fill="#fffdf5" stroke="#b8860b" stroke-width="0.3"/><text x="106.20" y="219.95" font-size="2.5" fill="#7a5c05" text-anchor="middle" font-weight="700">D1</text>
-<rect x="97.20" y="140.20" width="14.00" height="32.00" fill="#ffffff" stroke="#5a626e" stroke-width="0.4" />
-<line x1="97.20" y1="140.20" x2="97.20" y2="172.20" stroke="#98a0ab" stroke-width="0.9" />
-<circle cx="104.20" cy="156.20" r="3.10" fill="#fffdf5" stroke="#b8860b" stroke-width="0.3"/><text x="104.20" y="157.15" font-size="2.5" fill="#7a5c05" text-anchor="middle" font-weight="700">K2</text>
 <rect x="198.60" y="165.40" width="24.80" height="24.80" fill="#ffffff" stroke="#5a626e" stroke-width="0.4" />
 <line x1="198.60" y1="190.20" x2="223.40" y2="190.20" stroke="#98a0ab" stroke-width="0.9" />
 <circle cx="211.00" cy="177.80" r="3.10" fill="#fffdf5" stroke="#b8860b" stroke-width="0.3"/><text x="211.00" y="178.75" font-size="2.5" fill="#7a5c05" text-anchor="middle" font-weight="700">S1</text>

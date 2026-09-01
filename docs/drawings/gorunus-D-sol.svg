@@ -11,9 +11,6 @@
 <rect x="115.40" y="154.20" width="19.20" height="32.80" fill="#fbfaf8" stroke="#5a626e" stroke-width="0.4" />
 <circle cx="125.00" cy="149.20" r="3.10" fill="#fffdf5" stroke="#b8860b" stroke-width="0.3"/><text x="125.00" y="150.15" font-size="2.5" fill="#7a5c05" text-anchor="middle" font-weight="700">S2</text>
 <text x="125.00" y="170.60" font-size="2.1" fill="#98a0ab" text-anchor="middle" >48x82</text>
-<rect x="141.80" y="113.00" width="32.00" height="74.00" fill="#fbfaf8" stroke="#5a626e" stroke-width="0.4" />
-<circle cx="157.80" cy="108.00" r="3.10" fill="#fffdf5" stroke="#b8860b" stroke-width="0.3"/><text x="157.80" y="108.95" font-size="2.5" fill="#7a5c05" text-anchor="middle" font-weight="700">K2</text>
-<text x="157.80" y="150.00" font-size="2.1" fill="#98a0ab" text-anchor="middle" >80x185</text>
 <rect x="79.00" y="113.00" width="32.00" height="74.00" fill="#fbfaf8" stroke="#5a626e" stroke-width="0.4" />
 <circle cx="95.00" cy="108.00" r="3.10" fill="#fffdf5" stroke="#b8860b" stroke-width="0.3"/><text x="95.00" y="108.95" font-size="2.5" fill="#7a5c05" text-anchor="middle" font-weight="700">D1</text>
 <text x="95.00" y="150.00" font-size="2.1" fill="#98a0ab" text-anchor="middle" >80x185</text>

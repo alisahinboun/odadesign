@@ -103,14 +103,30 @@ Modelin ortaya çıkardığı üç sorunu birden çözer:
 | S1 koltuk | (290, 148) 180° | **(265, 197) 180°** | Kullanıcı kapıya bakıyor; radyatörün önü boş |
 | S2 sandalye | (33, 120) −90° | **(265, 55) 0°** | Ziyaretçi alanına, masanın karşısına |
 | D1 dolap | (28, 45) −90° | **(28, 148) −90°** | Sol duvarda; kapı süpürme yayının dışında |
-| K2 modül | (23, 202) −90° | **(23, 230) −90°** | Sol duvarda kaldı; arka duvara konamaz (pencereyi kapatır) |
+| K2 modül | **odada yok** | **(23, 230) −90°** | Krokide istenen 80 cm'lik yeni eleman. Arka duvara konamaz (pencereyi kapatır) |
 | A1 alt dolap | (345, 210) 90° | **(345, 215) 90°** | Yerinde; yazıcıya koltuktan dönerek erişim |
 | C1 portmanto | (300, 24) 0° | **(340, 30) 0°** | Giriş köşesine — palto kapıda bırakılır |
 
 Ankastre dolap bankosu (AD1), **pencere (P1)**, **radyatör (R1)** ve kapı **taşınmaz**.
 
+### Arka (pencere) duvarı tasarımı
+
+Odanın en değerli yüzeyi bu duvar — tek ışık kaynağı burada. Üç müdahale, hiçbiri
+doğramaya veya radyatöre dokunmuyor:
+
+| # | Müdahale | Neden | Maliyet |
+|---|---|---|---|
+| 1 | Duvar açık nötre boyanıyor | Işık artık yüzeyde yutulmuyor, odaya yayılıyor | boya |
+| 2 | İç denizlik 22 → **38 cm** derinleştiriliyor | Pencere altı kullanılabilir bir raf/tezgâh oluyor; yer kaplamıyor | denizlik tahtası |
+| 3 | Tül perde pencere boyunca tamamlanıyor | Ekran yansımasını kesiyor | **yok** — perde zaten var |
+
+Duvarın önüne hiçbir yüksek eleman konulmuyor; `npm run check` bunu denetler.
+Denizlik radyatörün önüne sarkmıyor (odaya çıkıntısı 28 cm, radyatör derinliği
+11 cm) — ısı yayılımı engellenmiyor.
+
 ### Kapsam
-Ş‑1 boya kalemleri + mobilya taşıma/montaj. **Yeni mobilya alımı yok.**
+Ş‑1 boya kalemleri + iç denizlik yenileme + mobilya taşıma/montaj.
+**Yeni mobilya:** krokide istenen 1 × 80 cm raflı modül (K2). Diğer parçalar mevcut.
 
 > ⚠️ **Priz konumları gözden geçirilmeli.** Masa arkaya alındığı için arka duvarda
 > priz gerekiyor; arka duvar röleve dışı (bkz. `roleve.md`, T‑5).

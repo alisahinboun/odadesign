@@ -140,7 +140,12 @@ mevcut durum ve iki öneri tanımlı:
 
 Ş‑2, pencereyi de hesaba katar: depolama arka duvara konulamaz (odanın tek
 penceresini kapatır), radyatörün önü boş bırakılır, tül perde ekran yansımasını
-kesecek şekilde pencere boyunca tamamlanır.
+kesecek şekilde pencere boyunca tamamlanır ve **iç denizlik 38 cm'e derinleştirilip
+pencere altı kullanılabilir bir rafa dönüştürülür.**
+
+Şemalar eleman **gizleyebilir/ekleyebilir**: krokide istenen 80 cm'lik modül (K2)
+odada yok, bu yüzden Ş‑0 ve Ş‑1'de gösterilmez; Ş‑2'de yeni eleman olarak girer.
+Bir kalemi `proposedOnly: true` ile işaretlemek yeterli.
 
 Ayrıntı, gerekçe ve karşılaştırma tablosu: [`docs/semalar.md`](docs/semalar.md)
 

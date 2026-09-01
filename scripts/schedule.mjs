@@ -10,10 +10,12 @@ import { fileURLToPath } from 'node:url';
 import {
   room, partition, door, furniture, equipment, clutter, wallItems, wallUnits,
   ceiling as ceilCfg, floor as floorCfg, palette, meta,
+  isVisible,
 } from '../src/config/room.js';
 import { footprint, metrics, doorSwingLimit } from '../src/lib/analysis.js';
 import { schemes, resolveScheme } from '../src/config/schemes.js';
-import { applyScheme } from '../src/config/room.js';
+import { applyScheme   isVisible,
+} from '../src/config/room.js';
 
 /* ------------------------------------------------------------- sema secimi */
 /** node scripts/X.mjs --sema=s2   (varsayilan s0 = mevcut durum) */
@@ -55,7 +57,8 @@ const rows = (arr, kind) => arr.map((it) => {
     not: it.note ? it.note.replace(/\s+/g, ' ') : '',
   };
 });
-const all = [...rows(furniture, 'Mobilya'), ...rows(equipment, 'Ekipman'), ...rows(clutter, 'Esya')];
+const VIS = (a) => a.filter(isVisible);
+const all = [...rows(VIS(furniture), 'Mobilya'), ...rows(VIS(equipment), 'Ekipman'), ...rows(VIS(clutter), 'Esya')];
 
 const md = `# Mahal ve Donatı Listesi — ${SEMA.code} ${SEMA.name}
 
@@ -128,7 +131,7 @@ ${all.filter((r) => r.not).map((r) => `- **${r.poz}** — ${r.not}`).join('\n')}
 fs.writeFileSync(path.join(OUT, `mahal-listesi${SUFFIX}.md`), md);
 
 const csv = ['poz;ad;tip;genislik_cm;derinlik_cm;yukseklik_cm;x_cm;y_cm;aci_derece;ayak_izi_m2',
-  ...[...furniture, ...equipment, ...clutter].map((it) => {
+  ...[...VIS(furniture), ...VIS(equipment), ...VIS(clutter)].map((it) => {
     const r = footprint(it);
     const kind = furniture.includes(it) ? 'Mobilya' : equipment.includes(it) ? 'Ekipman' : 'Esya';
     return [it.id, it.name, kind, it.w, it.d, it.h, it.pos[0], it.pos[1], it.rot || 0,
