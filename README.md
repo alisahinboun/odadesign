@@ -167,7 +167,8 @@ Bir şema seçildiğinde **her şey** onu izler: 3B model, ölçü kotaları, 9 
 
 **OBJ** — geometri + UV, malzemesiz; eski iş akışları için.
 **SVG çizimler** — `docs/drawings/*.svg` dosyaları AutoCAD, Illustrator, Affinity
-ve Inkscape ile açılır; 1:25 ölçekte, ölçüler cm.
+ve Inkscape ile açılır; 1:25 ölçekte (karşılaştırma paftası 1:40), ölçüler cm.
+Hangi paftanın ne içerdiği: [`docs/drawings/00-pafta-listesi.md`](docs/drawings/00-pafta-listesi.md)
 
 ---
 
@@ -204,8 +205,9 @@ docs/
   semalar.md            tasarım şemaları: gerekçe, değişiklik ve karşılaştırma
   mahal-listesi.md      metraj + donatı listesi (üretilen)
   donati-listesi.csv    Excel için (üretilen)
-  drawings/*.svg        plan · A/B/C/D görünüş · 1-1/2-2 kesit · tavan · döşeme
-                        (şema başına 9 pafta, üretilen)
+  drawings/
+    00-pafta-listesi.md indeks: hangi pafta ne içeriyor (üretilen)
+    *.svg               şema başına 9 pafta + 2 karşılaştırma paftası (üretilen)
 reference/              kaynak fotoğraflar + el krokisi
 ```
 
