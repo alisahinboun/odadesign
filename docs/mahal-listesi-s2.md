@@ -5,7 +5,7 @@
 > **Ş-2 · Yeniden yerleşim** — Ş-1 paleti + mobilya yeniden konumlanıyor. Kapı tam açılıyor, kullanıcı girişi görüyor.
 > Modelin ortaya çıkardığı dört sorunu birden çözer: (1) kapı süpürme yayı tamamen boşaltılır, kanat neredeyse tam açılır; (2) masa arkaya alınıp kullanıcı girişe dönük oturur — idari bir odada gelen kişiyi görmek gerekir; (3) kapı ile masa arasında net bir ziyaretçi alanı oluşur; (4) masa pencereye yakın ama ekran pencereye PARALEL duruyor: ne ekranda pencere yansıması ne de kullanıcının gözünde karşıdan gelen parlama oluşuyor. Depolama sol ve arka duvarda toplanır, radyatörün önü boş bırakılır. Ankastre dolap bankosu, pencere ve kapı yerinde kalır — taşınmaz.
 >
-> **Metraj notu:** Ş-1 boya kalemleri + mobilya taşıma/montaj. Yeni mobilya alımı yok; mevcut parçalar yeniden konumlanır. Tül perde pencere boyunca tamamlanır (ekran yansımasını keser). Priz konumları gözden geçirilmeli: masa arkaya alındığı için arka duvarda / döşemede priz gerekiyor.
+> **Metraj notu:** Ş-1 boya kalemleri + mobilya taşıma/montaj. Yeni mobilya: krokide istenen 1 × 80 cm raflı modül (K2). Marangozluk: sağ duvar tezgâhı 130 → 90 cm kısaltılır (masanın arkaya alınabilmesi için) ve iç denizlik 38 cm derinliğinde yenilenir. Tül perde pencere boyunca tamamlanır (ekran yansımasını keser). Priz konumları gözden geçirilmeli: masa arkaya alındığı için arka duvarda / döşemede priz gerekiyor.
 
 Bu dosya `src/config/room.js` verisinden **otomatik üretilir** (`npm run schedule`). Elle düzenlemeyin.
 
@@ -18,8 +18,8 @@ Bu dosya `src/config/room.js` verisinden **otomatik üretilir** (`npm run schedu
 | Net hacim | 28.97 m³ |
 | Çevre | 12.80 m |
 | Brüt duvar yüzeyi | 37.12 m² |
-| Mobilya ayak izi | 3.20 m² (%32) |
-| Serbest dolaşım alanı | 6.79 m² |
+| Mobilya ayak izi | 3.34 m² (%33) |
+| Serbest dolaşım alanı | 6.65 m² |
 | Kapı kanadı azami açıklık | ~178° |
 
 ## 2. Yüzey metrajı
@@ -46,10 +46,10 @@ Bölüntü dolu panel toplamı: 5.13 m² · Kapı boşluğu: 2.46 m²
 |---|---|---|---|---|---|---:|
 | **M1** | Calisma masasi | Mobilya | 160×75×75 | (265, 130) | 0° | 1.20 |
 | **D1** | Cift kanatli elbise/evrak dolabi | Mobilya | 80×55×185 | (28, 148) | -90° | 0.44 |
-| **K2** | 80 cm rafli modul (kitaplik kabul edildi) | Mobilya | 80×35×185 | (23, 230) | -90° | 0.28 |
+| **K2** | 80 cm rafli modul (YENI - krokide istenen) | Mobilya | 80×35×185 | (23, 230) | -90° | 0.28 |
 | **S1** | Yonetici calisma koltugu | Mobilya | 62×62×112 | (265, 197) | 180° | 0.38 |
 | **S2** | Misafir sandalyesi (istiflenebilir) | Mobilya | 48×54×82 | (265, 55) | 0° | 0.26 |
-| **A1** | Yazici altligi / alcak dolap | Mobilya | 90×45×62 | (345, 215) | 90° | 0.41 |
+| **A1** | Sag duvar tezgahi (yazici + evrak) | Mobilya | 90×60×72 | (340, 225) | 90° | 0.54 |
 | **C1** | Ayakli askilik | Mobilya | 38×38×178 | (340, 30) | 0° | 0.14 |
 | **W1** | Pedalli cop kovasi | Mobilya | 30×30×42 | (230, 138) | 0° | 0.09 |
 | **E1** | 24" monitor | Ekipman | 55×20×42 | (275, 112) | 0° | 0.11 |
@@ -60,7 +60,8 @@ Bölüntü dolu panel toplamı: 5.13 m² · Kapı boşluğu: 2.46 m²
 | **E6** | Kalemlik (hasir) | Ekipman | 11×11×20 | (235, 110) | 0° | 0.01 |
 | **E7** | Zimba / kutu | Ekipman | 12×7×4 | (228, 130) | 0° | 0.01 |
 | **E8** | Bardak altligi | Ekipman | 11×11×1 | (244, 134) | 0° | 0.01 |
-| **E9** | Fotokopi / yazici | Ekipman | 58×42×44 | (345, 215) | 90° | 0.24 |
+| **E9** | Fotokopi / yazici | Ekipman | 58×42×44 | (340, 208) | 90° | 0.24 |
+| **E10** | Kupa (odul) | Ekipman | 13×13×27 | (340, 258) | 0° | 0.02 |
 | **X1** | Mavi klasor | Esya | 8×30×32 | (10, 129) | 4° | 0.03 |
 | **X2** | Eski CRT monitor | Esya | 34×32×28 | (29, 133) | -6° | 0.13 |
 | **X3** | Kutu oyunu | Esya | 30×22×6 | (29, 167) | 102° | 0.09 |
@@ -80,6 +81,7 @@ Bölüntü dolu panel toplamı: 5.13 m² · Kapı boşluğu: 2.46 m²
 | **T5** | Anahtar (aydinlatma) | A / ön | 237 cm | +122 cm | 8×8 cm |
 | **T6** | Priz | B / sağ | 140 cm | +40 cm | 8×8 cm |
 | **T7** | Priz | D / sol | 90 cm | +40 cm | 8×8 cm |
+| **T8** | Mantar pano | B / sağ | 195 cm | +150 cm | 70×52 cm |
 
 ## 5. Renk / malzeme paleti
 
@@ -109,8 +111,8 @@ Bölüntü dolu panel toplamı: 5.13 m² · Kapı boşluğu: 2.46 m²
 
 - **M1** — Kroki notu: Masa = 160x75. On duvara paralel, kullanici +Y tarafinda oturur. ONEMLI: masanin sol ucu kapi kanadinin acilma yayina 1-2 cm mesafede; kapi pratikte ~150 dereceden fazla acilamaz (bkz. docs/roleve.md, tespit T-3).
 - **D1** — Sirti sol duvarda. Boylece on duvardaki sari panelin (x 55-95) ustu bos kalir ve foto 03teki ayna oraya asilir.
-- **K2** — KROKI OKUNAMADI: ucuncu satirdaki 80 cm lik eleman. Kitaplik kabul edildi; farkli ise type ("wardrobe" | "bookcase" | "credenza") ve name alanlarini degistirin.
-- **A1** — Arka-sag kosede, uzerinde fotokopi/yazici var (foto 01 sag kenar).
+- **K2** — ODADA YOK — krokideki okunamayan 80 cm lik kalemden turetilen YENI eleman. Yalnizca S-2 onerisinde gorunur. Turu (kitaplik/dolap/kredenza) belirsiz; type alanini degistirmek yeterli.
+- **A1** — Foto 05: alcak bir kredenza degil, MASA YUKSEKLIGINDE surekli bir tezgah. On ucunda fotokopi/yazici, pencere ucunda kupa ve ustunde mantar pano var. M1 masasi ile birlikte L olusturur; ikisi arasinda 5 cm bosluk birakildi. Uzunluk fotograftan oranlandi - yerinde olculmeli.
 
 ---
 Ölçülerin kaynağı ve güven düzeyi için: [`docs/roleve.md`](./roleve.md)

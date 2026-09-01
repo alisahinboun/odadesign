@@ -59,7 +59,15 @@ export const partition = {
   frameWidth: 5,        // aluminyum dikme/kayit genisligi         | foto
   baseHeight: 12,       // gri metal supurgelik / kick plate       | foto
 
-  // Sol koseden (x=0) baslayarak panel dizilimi. Toplam 370 olmali.
+  /**
+   * Sol koseden (x=0) baslayarak panel dizilimi. Toplam room.width olmali.
+   *
+   * ⚠ KROKI CELISKISI: krokinin UST kenarinda kapinin iki yanina "120cm" ve
+   * "150cm" yaziyor. 120 + 120 (kapi) + 150 = 390, oysa ALT kenar 20 + 350 = 370.
+   * 20 cm'lik fark el krokisinde bir kaydirma. Model 370'i ve 120 cm kapiyi esas
+   * aldi; farki panel genisliklerine dagitti (P1 95 / P2 35 / P3 120). Yani bu
+   * uc deger krokiden DOGRUDAN okunmus degil - yerinde olculmeli.
+   */
   panels: [
     { id: 'P1', kind: 'solid', width: 95,  color: 'yellow' },  // aynanin oldugu panel
     { id: 'D1', kind: 'door',  width: 120 },                   // kroki: "120cm kapi"
@@ -222,7 +230,7 @@ export const furniture = [
     id: 'S1', tag: 'Koltuk', name: 'Yonetici calisma koltugu',
     type: 'officeChair',
     w: 62, d: 62, h: 112,
-    pos: [290, 148], rot: 180,     // masaya donuk (-Y), masanin altina itilmis
+    pos: [275, 150], rot: 180,     // masaya donuk (-Y); A1 tezgahinin onunu kapatmaz, masanin altina itilmis
     materials: { upholstery: 'blackLeather', base: 'chrome' },
   },
   {
@@ -233,12 +241,15 @@ export const furniture = [
     materials: { upholstery: 'blackFabric', frame: 'steelDark' },
   },
   {
-    id: 'A1', tag: 'Alt dolap', name: 'Yazici altligi / alcak dolap',
+    id: 'A1', tag: 'Tezgah', name: 'Sag duvar tezgahi (yazici + evrak)',
     type: 'credenza',
-    w: 90, d: 45, h: 62,
-    pos: [345, 210], rot: 90,      // sag duvarda, odaya donuk (-X)
+    w: 130, d: 60, h: 72,
+    pos: [340, 205], rot: 90,      // sag duvar boyunca, pencere duvarina kadar
     materials: { body: 'beech', top: 'beechDark' },
-    note: 'Arka-sag kosede, uzerinde fotokopi/yazici var (foto 01 sag kenar).',
+    note: 'Foto 05: alcak bir kredenza degil, MASA YUKSEKLIGINDE surekli bir tezgah. '
+        + 'On ucunda fotokopi/yazici, pencere ucunda kupa ve ustunde mantar pano var. '
+        + 'M1 masasi ile birlikte L olusturur; ikisi arasinda 5 cm bosluk birakildi. '
+        + 'Uzunluk fotograftan oranlandi - yerinde olculmeli.',
   },
   {
     id: 'C1', tag: 'Portmanto', name: 'Ayakli askilik',
@@ -280,7 +291,9 @@ export const equipment = [
   { id: 'E6', name: 'Kalemlik (hasir)',     type: 'penPot',   w: 11, d: 11, h: 20, pos: [268,  73], rot: 0,   onTop: 'M1' },
   { id: 'E7', name: 'Zimba / kutu',         type: 'smallBox', w: 12, d: 7,  h: 4,  pos: [249,  75], rot: -8,  onTop: 'M1' },
   { id: 'E8', name: 'Bardak altligi',       type: 'coaster',  w: 11, d: 11, h: 1,  pos: [243,  97], rot: 0,   onTop: 'M1' },
-  { id: 'E9', name: 'Fotokopi / yazici',    type: 'printer',  w: 58, d: 42, h: 44, pos: [345, 210], rot: 90,  onTop: 'A1' },
+  { id: 'E9', name: 'Fotokopi / yazici',    type: 'printer',  w: 58, d: 42, h: 44, pos: [340, 175], rot: 90,  onTop: 'A1' },
+  // Foto 05: tezgahin pencere ucunda duran kupa
+  { id: 'E10', name: 'Kupa (odul)',         type: 'trophy',   w: 13, d: 13, h: 27, pos: [340, 250], rot: 0,   onTop: 'A1' },
 ];
 
 /** Dolap ustundeki esyalar (foto 01/03) */
@@ -308,6 +321,7 @@ export const wallItems = [
   { id: 'T5', name: 'Anahtar (aydinlatma)',     type: 'switch',  wall: 'front', u: 237, z: 122, w: 8,  h: 8 },
   { id: 'T6', name: 'Priz',                     type: 'socket',  wall: 'right', u: 140, z:  40, w: 8,  h: 8 },
   { id: 'T7', name: 'Priz',                     type: 'socket',  wall: 'left',  u:  90, z:  40, w: 8,  h: 8 },
+  { id: 'T8', name: 'Mantar pano',              type: 'pinboard', wall: 'right', u: 195, z: 150, w: 70, h: 52, note: 'Tezgahin uzerinde, pencereye yakin (foto 05)' },
 ];
 
 /* ------------------------------------------- 7. TAVAN / DOSEME / TESISAT */
@@ -395,7 +409,7 @@ export const activeFurniture = () => furniture.filter(isVisible);
 
 const BASE = {
   palette: JSON.parse(JSON.stringify(palette)),
-  furniture: furniture.map((f) => ({ pos: [...f.pos], rot: f.rot || 0 })),
+  furniture: furniture.map((f) => ({ pos: [...f.pos], rot: f.rot || 0, w: f.w, d: f.d, h: f.h })),
   equipment: equipment.map((f) => ({ pos: [...f.pos], rot: f.rot || 0 })),
   clutter: clutter.map((f) => ({ pos: [...f.pos], rot: f.rot || 0 })),
   wallItems: wallItems.map((w) => ({ u: w.u, z: w.z })),
@@ -408,7 +422,10 @@ export let activeScheme = 's0';
 export function applyScheme(resolved) {
   // 1) mevcut duruma don
   for (const [k, v] of Object.entries(BASE.palette)) palette[k] = { ...v };
-  furniture.forEach((f, i) => { f.pos = [...BASE.furniture[i].pos]; f.rot = BASE.furniture[i].rot; });
+  furniture.forEach((f, i) => {
+    const b = BASE.furniture[i];
+    f.pos = [...b.pos]; f.rot = b.rot; f.w = b.w; f.d = b.d; f.h = b.h;
+  });
   equipment.forEach((f, i) => { f.pos = [...BASE.equipment[i].pos]; f.rot = BASE.equipment[i].rot; });
   clutter.forEach((f, i) => { f.pos = [...BASE.clutter[i].pos]; f.rot = BASE.clutter[i].rot; });
   wallItems.forEach((w, i) => { w.u = BASE.wallItems[i].u; w.z = BASE.wallItems[i].z; });
@@ -427,6 +444,8 @@ export function applyScheme(resolved) {
       if (!it) continue;
       if (d.pos) it.pos = [...d.pos];
       if (d.rot !== undefined) it.rot = d.rot;
+      // olcu degisikligi (semaya ozel imalat kalemi olur - metraja yazilmali)
+      for (const k of ['w', 'd', 'h']) if (d[k] !== undefined) it[k] = d[k];
       if (d.u !== undefined) it.u = d.u;
       if (d.z !== undefined) it.z = d.z;
     }

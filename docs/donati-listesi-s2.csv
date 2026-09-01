@@ -1,10 +1,10 @@
 poz;ad;tip;genislik_cm;derinlik_cm;yukseklik_cm;x_cm;y_cm;aci_derece;ayak_izi_m2
 M1;Calisma masasi;Mobilya;160;75;75;265;130;0;1.200
 D1;Cift kanatli elbise/evrak dolabi;Mobilya;80;55;185;28;148;-90;0.440
-K2;80 cm rafli modul (kitaplik kabul edildi);Mobilya;80;35;185;23;230;-90;0.280
+K2;80 cm rafli modul (YENI - krokide istenen);Mobilya;80;35;185;23;230;-90;0.280
 S1;Yonetici calisma koltugu;Mobilya;62;62;112;265;197;180;0.384
 S2;Misafir sandalyesi (istiflenebilir);Mobilya;48;54;82;265;55;0;0.259
-A1;Yazici altligi / alcak dolap;Mobilya;90;45;62;345;215;90;0.405
+A1;Sag duvar tezgahi (yazici + evrak);Mobilya;90;60;72;340;225;90;0.540
 C1;Ayakli askilik;Mobilya;38;38;178;340;30;0;0.144
 W1;Pedalli cop kovasi;Mobilya;30;30;42;230;138;0;0.090
 E1;24" monitor;Ekipman;55;20;42;275;112;0;0.110
@@ -15,7 +15,8 @@ E5;Klasor / not defteri;Ekipman;24;32;3;325;145;-6;0.093
 E6;Kalemlik (hasir);Ekipman;11;11;20;235;110;0;0.012
 E7;Zimba / kutu;Ekipman;12;7;4;228;130;0;0.008
 E8;Bardak altligi;Ekipman;11;11;1;244;134;0;0.012
-E9;Fotokopi / yazici;Ekipman;58;42;44;345;215;90;0.244
+E9;Fotokopi / yazici;Ekipman;58;42;44;340;208;90;0.244
+E10;Kupa (odul);Ekipman;13;13;27;340;258;0;0.017
 X1;Mavi klasor;Esya;8;30;32;10;129;4;0.031
 X2;Eski CRT monitor;Esya;34;32;28;29;133;-6;0.131
 X3;Kutu oyunu;Esya;30;22;6;29;167;102;0.094

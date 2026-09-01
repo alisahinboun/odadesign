@@ -63,7 +63,7 @@ export const schemes = [
     furniture: {},
     metrajNote: 'Boya: bölüntü panelleri + sol/sağ duvar + ARKA (pencere) DUVARI + '
       + 'tavan bandı. Ankastre dolap kapakları yeniden kaplama. Pencere doğraması ve '
-      + 'radyatör yerinde kalır. Mobilya alımı yok.',
+      + 'radyatör, tezgâh ve mantar pano yerinde kalır. Mobilya alımı yok.',
   },
 
   /* ---------------------------------------------------------------- S-2 */
@@ -97,9 +97,10 @@ export const schemes = [
       // penceresini kapatir (denetim bunu yakaladi).
       D1: { pos: [ 28, 148], rot: -90 },
       K2: { pos: [ 23, 230], rot: -90 },
-      // Yazici, mevcut ankastre dolabin altina - kullanici sandalyeden donerek erisir.
-      // Radyatorun (x 173-232) onu bos kalacak sekilde konumlandi.
-      A1: { pos: [345, 215], rot:  90 },
+      // Tezgah 130 -> 90 cm kisaltiliyor. Masa arkaya alindigi icin sag duvarin
+      // orta bolumu bosalmali; bu, kucuk bir marangozluk kalemi (metraja yazildi).
+      // Yazici tezgahin uzerinde kaliyor, kullanici sandalyeden donerek erisir.
+      A1: { pos: [340, 225], rot:  90, w: 90, d: 60, h: 72 },
       C1: { pos: [340,  30], rot:   0 },
     },
     // Masaustu duzeni yeni masaya gore; monitor +Y yonune (kullaniciya) bakar
@@ -112,7 +113,8 @@ export const schemes = [
       E6: { pos: [235, 110], rot: 0 },
       E7: { pos: [228, 130], rot: 0 },
       E8: { pos: [244, 134], rot: 0 },
-      E9: { pos: [345, 215], rot: 90 },
+      E9: { pos: [340, 208], rot: 90 },
+      E10: { pos: [340, 258], rot: 0 },
     },
     clutter: {
       X1: { pos: [ 10, 129], rot: 4 },
@@ -149,10 +151,12 @@ export const schemes = [
     // Krokide istenen 80 cm lik modul YENI eleman olarak devreye giriyor,
     // pencereyi kapatmayacak sekilde sol duvara yerlesiyor.
     show: ['K2'],
-    metrajNote: 'Ş-1 boya kalemleri + mobilya taşıma/montaj. Yeni mobilya alımı yok; '
-      + 'mevcut parçalar yeniden konumlanır. Tül perde pencere boyunca tamamlanır '
-      + '(ekran yansımasını keser). Priz konumları gözden geçirilmeli: masa arkaya '
-      + 'alındığı için arka duvarda / döşemede priz gerekiyor.',
+    metrajNote: 'Ş-1 boya kalemleri + mobilya taşıma/montaj. Yeni mobilya: krokide '
+      + 'istenen 1 × 80 cm raflı modül (K2). Marangozluk: sağ duvar tezgâhı 130 → 90 cm '
+      + 'kısaltılır (masanın arkaya alınabilmesi için) ve iç denizlik 38 cm derinliğinde '
+      + 'yenilenir. Tül perde pencere boyunca tamamlanır (ekran yansımasını keser). '
+      + 'Priz konumları gözden geçirilmeli: masa arkaya alındığı için arka duvarda / '
+      + 'döşemede priz gerekiyor.',
   },
 ];
 

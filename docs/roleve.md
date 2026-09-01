@@ -18,7 +18,7 @@
 | `reference/02-kapi-acik.jpg` | Arka‑sol köşeden sağ duvara bakış. Kapı açık, koridor görünüyor. |
 | `reference/03-sol-kose-dolap.jpg` | Sol duvar ve ön‑sol köşe. Dolap, misafir sandalyesi, ayna, top ve rulo. |
 | `reference/04-el-krokisi.jpg` | Elle çizilmiş plan krokisi + donatı ölçüleri. |
-| `reference/05-arka-duvar-pencere.jpg` | **Arka duvar.** Büyük pencere, tül perde, altında dilimli radyatör. Sağdan sola: sağ duvarın dolap bankosu, pencere duvarı, sol duvar. |
+| `reference/05-arka-duvar-pencere.jpg` | **Arka duvar.** Büyük pencere, tül perde, altında dilimli radyatör. Karenin **solu = odanın sağ duvarı** (tezgâh, yazıcı, mantar pano, kupa, üstte ankastre dolap bankosu ve çerçeveli belge); **sağı = odanın sol duvarı** (lila, sandalye). |
 
 ## 2. El krokisinden okunanlar — **yüksek güven**
 
@@ -153,7 +153,45 @@ yapıyor. Foto 05'te tül perde tek uca toplanmış, pencerenin ancak 1/3'ünü 
 Ekran renkleri ile boya renkleri birebir örtüşmez; teklif öncesi fiziksel numune
 karşılaştırması yapılmalıdır.
 
-## 8. ⚠️ Yerinde alınması gereken 4 ölçü (pencere)
+## 8. Beş fotoğrafın topluca yeniden okunması (R01 denetimi)
+
+Tüm fotoğraflar birlikte tekrar karşılaştırıldı. Bulgular:
+
+### Düzeltilen — gerçek hata
+**Sağ duvardaki eleman alçak bir kredenza değil, masa yüksekliğinde sürekli bir
+tezgâh.** Model onu 90 × 45 × 62 cm'lik bir "yazıcı altlığı" olarak tutuyordu.
+Fotoğraf 05 net gösteriyor: sağ duvar boyunca **masa yüksekliğinde (≈72 cm) bir
+tezgâh** var, ön ucunda fotokopi/yazıcı, pencere ucunda kupa, altında açık raflarda
+dosya/dergi, üstünde mantar pano. **130 × 60 × 72** olarak düzeltildi; M1 masası ile
+birlikte L oluşturuyor.
+
+### Eklenen — modelde hiç yoktu
+| Poz | Eleman | Kaynak |
+|---|---|---|
+| **T8** | Mantar pano (70 × 52), tezgâhın üzerinde | Foto 05 |
+| **E10** | Kupa/ödül, tezgâhın pencere ucunda | Foto 05 |
+| — | Tezgâhın altındaki açık raf ve içindeki dosyalar | Foto 05 |
+
+### ⚠️ Krokide aritmetik tutmuyor
+Krokinin **üst** kenarında kapının iki yanına `120cm` ve `150cm` yazıyor:
+120 + 120 (kapı) + 150 = **390**. Krokinin **alt** kenarı ise 20 + 350 = **370**.
+Arada **20 cm** fark var — el krokisinde bir kaydırma.
+
+Model 370'i ve 120 cm kapıyı esas aldı, farkı panel genişliklerine dağıttı
+(P1 95 / P2 35 / P3 120). Yani **bu üç panel genişliği krokiden doğrudan okunmuş
+değil** — aşağıdaki listeye eklendi.
+
+### Çözülemeyen — fotoğraflar çelişiyor
+**Dolabın hangi duvara dayandığı ve aynanın önündeki boşluk.**
+Foto 01 ve 02'de dolap ile kapı kasası arasında geniş bir sarı panel var ve ayna
+oraya asılı. Ölçeklenmiş okuma ~100 cm veriyor; modeldeki yerleşim (dolap sol
+duvarda, sırtı x=0'da) yalnızca 40 cm bırakıyor. İki fotoğraf da ultra geniş açılı
+ve dolap kare kenarında kaldığı için gerilmiş. **Dolabın sol duvara mı yoksa ön
+duvara mı dayandığı bu kareden kesin çıkarılamıyor.**
+
+Bu, D görünüşünü ve aynanın konumunu etkiliyor. Aşağıdaki listeye eklendi.
+
+## 9. ⚠️ Yerinde alınması gereken ölçüler
 
 Bu dört değer alınırsa `src/config/room.js → windows[0]` içinde güncellenir ve
 plan, C görünüşü, kesitler, 3B model ve metraj birlikte düzelir.
@@ -165,10 +203,32 @@ plan, C görünüşü, kesitler, 3B model ve metraj birlikte düzelir.
 | 3 | **Kasa dış genişliği** | 285 cm | Yatay, kasa dış kenarından dış kenarına |
 | 4 | **Sol duvara mesafe** | 58 cm | Sol duvar (D görünüşü) iç yüzünden kasa sol kenarına |
 
-Bonus (varsa): kanat bölüm genişlikleri, radyatör dilim sayısı ve genişliği,
-radyatörün sol duvara mesafesi (kabul: 173 cm).
+**Ön duvar (bölüntü) — kroki çelişkisi yüzünden:**
 
-## 9. Sonraki adım
+| # | Ölçü | Modeldeki kabul |
+|---|---|---:|
+| 5 | Sol duvar ile kapı kasası arası sarı panel (P1) | 95 cm |
+| 6 | Yeşil düşey şerit genişliği (P2) | 35 cm |
+| 7 | Kapı kasası ile sağ duvar arası sarı panel (P3) | 120 cm |
+
+**Dolap ve ayna:**
+
+| # | Ölçü | Modeldeki kabul |
+|---|---|---:|
+| 8 | Dolap hangi duvara dayanıyor + sol/ön duvara mesafesi | sol duvar, ön duvardan 5 cm |
+| 9 | Aynanın sol duvara mesafesi ve genişliği | 58–92 cm, 34 cm |
+
+**Sağ duvar tezgâhı:**
+
+| # | Ölçü | Modeldeki kabul |
+|---|---|---:|
+| 10 | Tezgâh uzunluğu ve derinliği | 130 × 60 cm |
+| 11 | Tezgâhın ön duvara mesafesi | 140 cm |
+
+Bonus: pencere kanat bölüm genişlikleri, radyatör dilim sayısı, radyatörün sol
+duvara mesafesi (kabul: 173 cm).
+
+## 10. Sonraki adım
 
 Röleve tamamlandı; tasarım önerileri [`semalar.md`](./semalar.md) içinde.
 Yerinde ölçüm yapıldıktan sonra `src/config/room.js` güncellenir ve

@@ -21,8 +21,10 @@ for (const s of schemes) {
         console.log(out.trim().split('\n').filter((l) => l.includes('✓')).map((l) => '  ' + l.trim()).join('\n'));
       }
     } catch (e) {
-      console.log(`  \x1b[31m✗ ${script} hata verdi\x1b[0m`);
-      console.log((e.stdout || '').split('\n').filter((l) => l.includes('✗')).join('\n'));
+      // Hatanin kendisi yazdirilmali; sadece "hata verdi" demek sorunu gizliyor.
+      console.log(`  \x1b[31m✗ ${script} HATA\x1b[0m`);
+      const out = ((e.stdout || '') + '\n' + (e.stderr || '')).trim();
+      console.log(out.split('\n').slice(0, 6).map((l) => '      ' + l).join('\n'));
       fail++;
     }
   }
@@ -71,5 +73,5 @@ fs.writeFileSync(path.join(DIR, '00-pafta-listesi.md'), md);
 const n = fs.readdirSync(DIR).filter((f) => f.endsWith('.svg')).length;
 console.log(`\n  ✓ docs/drawings/00-pafta-listesi.md  (${n} pafta)`);
 
-console.log(fail === 0 ? '\n\x1b[32mTum semalar temiz.\x1b[0m\n' : `\n\x1b[31m${fail} semada sorun var.\x1b[0m\n`);
+console.log(fail === 0 ? '\n\x1b[32mTum semalar temiz.\x1b[0m\n' : `\n\x1b[31m${fail} adimda sorun var - yukaridaki HATA satirlarina bakin.\x1b[0m\n`);
 process.exit(fail ? 1 : 0);

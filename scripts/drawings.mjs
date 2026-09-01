@@ -317,8 +317,8 @@ function drawElevation(side, code, name) {
   const H = MM(room.height);
   const len = (side === 'front' || side === 'back') ? room.width : room.depth;
   const L = MM(len);
-  const wMM = L + PAD * 2 + 72, hMM = H + PAD * 2 + 74;
-  const ox = PAD + 22, oy = PAD + 16;
+  const wMM = L + PAD * 2 + 72, hMM = H + PAD * 2 + 96;
+  const ox = PAD + 22, oy = PAD + 34;
   const U = (u) => ox + MM(u);            // duvar boyunca
   const Z = (z) => oy + H - MM(z);        // kot
   const p = [];
@@ -385,9 +385,9 @@ function drawElevation(side, code, name) {
         p.push(rect(U(wallUnits.yStart + i * mw + 1), Z(zz + (zt - zb - 3.6) / 2 - 0.4), MM(mw - 2), MM((zt - zb - 3.6) / 2 - 0.4),
           C.view, 0.3, tint(cName)));
       }
-      p.push(text(U(wallUnits.yStart + i * mw + mw / 2), Z(zt) - 2.5, `${Math.round(mw)}`, 2.0, 'middle', C.view));
+      p.push(text(U(wallUnits.yStart + i * mw + mw / 2), Z(zt) + 4.5, `${Math.round(mw)}`, 2.0, 'middle', C.view));
     }
-    p.push(dimH(U(wallUnits.yStart), U(wallUnits.yEnd), Z(zt) - 8, `${wallUnits.yEnd - wallUnits.yStart}`));
+    p.push(dimH(U(wallUnits.yStart), U(wallUnits.yEnd), Z(zb) + 7, `${wallUnits.yEnd - wallUnits.yStart}`, -1));
     p.push(dimV(Z(zt), Z(zb), U(len) + 12, `${zt - zb}`, -1));
     p.push(dimV(Z(zb), Z(0), U(len) + 12, `${zb}`, -1));
     p.push(dimV(Z(room.height), Z(0), U(len) + 24, `${room.height}`, -1));
@@ -450,7 +450,7 @@ function drawElevation(side, code, name) {
     }
     p.push(dimV(Z(room.height), Z(0), U(len) + 24, `${room.height}`, -1));
     p.push(dimH(U(0), U(len), Z(0) + 20, `${len}`));
-    p.push(text(U(0), Z(room.height) + 6,
+    p.push(text(ox - 14, PAD + 14,
       '⚠ Pencere ölçüleri fotoğraf oranlamasıdır — yerinde ölçülmelidir (docs/roleve.md §9).',
       2.4, 'start', '#a4552f'));
   }
@@ -497,7 +497,7 @@ function drawElevation(side, code, name) {
       2.1, 'start', C.view));
   }
 
-  p.push(text(ox, oy - 6, `${code} GORUNUSU — ${name}`, 3.2, 'start', C.txt, 'font-weight="700"'));
+  p.push(text(ox - 14, PAD + 8, `${code} GORUNUSU — ${name}`, 3.2, 'start', C.txt, 'font-weight="700"'));
   p.push(titleBlock(wMM, hMM, `${code} gorunusu — ${name}`, `M-${code === 'A' ? '02' : code === 'B' ? '03' : code === 'C' ? '04' : '05'}`));
   return svg(wMM, hMM, `${code} gorunusu`, p.join('\n'));
 }

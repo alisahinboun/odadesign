@@ -167,6 +167,33 @@ export function printer(it) {
   return g;
 }
 
+/** Kupa / odul - foto 05, tezgahin pencere ucunda */
+export function trophy(it) {
+  const g = group(`${it.id} ${it.name}`, { layer: 'equipment', label: it.name, item: it });
+  const { w, h } = it;
+  const gold = mat.metal('steelLight', 0.18);
+  const goldM = new THREE.MeshStandardMaterial({ color: 0xc9a227, roughness: 0.22, metalness: 0.95, envMapIntensity: 1.5 });
+  const base = mat.wood('beechDark', 12, 6, 0.35);
+  const cx = w / 2, cy = w / 2;
+  g.add(box(w, w, h * 0.16, base, { x: 0, y: 0, z: 0, name: 'kaide' }));
+  g.add(cyl(w * 0.16, w * 0.22, h * 0.22, goldM, { x: cx, y: cy, z: h * 0.16 + h * 0.11, seg: 16 }));
+  // kase
+  const cup = new THREE.Mesh(new THREE.CylinderGeometry(cm(w * 0.42), cm(w * 0.16), cm(h * 0.40), 20, 1, true), goldM);
+  cup.position.set(cm(cx), cm(h * 0.38 + h * 0.20), cm(cy));
+  cup.castShadow = true;
+  g.add(cup);
+  g.add(cyl(w * 0.42, w * 0.42, 1.2, goldM, { x: cx, y: cy, z: h * 0.78, seg: 20 }));
+  // kulplar
+  for (const sx of [-1, 1]) {
+    const hd = new THREE.Mesh(new THREE.TorusGeometry(cm(w * 0.18), cm(0.6), 6, 14, Math.PI), goldM);
+    hd.position.set(cm(cx + sx * w * 0.42), cm(h * 0.60), cm(cy));
+    hd.rotation.y = Math.PI / 2;
+    hd.rotation.z = sx > 0 ? -Math.PI / 2 : Math.PI / 2;
+    g.add(hd);
+  }
+  return g;
+}
+
 /* ================================================ DOLAP USTU / YER ESYASI */
 export function binder3d(it) {
   const g = group(`${it.id} ${it.name}`, { layer: 'clutter', label: it.name, item: it });
@@ -315,6 +342,17 @@ export function buildWallItem(it) {
       inner.add(plateAt(4, 34, 0.8, mat.plain(palette.yellow.hex, 0.75), 0, fh / 2 + 16));
       break;
     }
+    case 'pinboard': {
+      // Mantar pano: acik ahsap cerceve + mantar yuzey + birkac not (foto 05)
+      const bw = it.w, bh = it.h, fr = 3.0, t = 2.4;
+      inner.add(plate(bw, bh, t, mat.wood('beech', bw, bh, 0.4)));
+      inner.add(plate(bw - fr * 2, bh - fr * 2, t + 0.8, mat.plain('#c9a978', 0.95)));
+      const notes = [[-0.22, 0.18, 16, 11], [0.14, 0.06, 13, 9], [-0.05, -0.22, 18, 8]];
+      for (const [nx, ny, nw, nh] of notes) {
+        inner.add(plateAt(nw, nh, 0.3, mat.plain('#f6f4ec', 0.9), nx * bw, ny * bh, t + 0.8));
+      }
+      break;
+    }
     case 'switch': {
       inner.add(plate(it.w, it.h, 1.0, mat.plain('#f2f1ee', 0.5)));
       inner.add(plate(it.w - 2.4, it.h - 2.4, 0.6, mat.plain('#e6e5e1', 0.4), 1.0));
@@ -342,6 +380,6 @@ export function buildWallItem(it) {
 }
 
 export const equipBuilders = {
-  monitor, pcTower, keyboard, mouse, binder, penPot, smallBox, coaster, printer,
+  monitor, pcTower, keyboard, mouse, binder, penPot, smallBox, coaster, printer, trophy,
   binder3d, crt, boardGame, ball, tube,
 };

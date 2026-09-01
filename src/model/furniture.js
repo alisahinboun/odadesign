@@ -269,11 +269,21 @@ export function credenza(it) {
   g.add(box(cw, d, h - pl - cw, body, { x: 0, y: 0, z: pl }));
   g.add(box(cw, d, h - pl - cw, body, { x: w - cw, y: 0, z: pl }));
   g.add(box(w, 0.8, h - pl - cw, body, { x: 0, y: 0.2, z: pl }));
-  const dw = (w - 2 * cw - 0.4) / 2;
-  for (let i = 0; i < 2; i++) {
+  // Foto 05: bir bolumu kapakli, bir bolumu ACIK RAF (dosya/dergi duruyor)
+  const n = Math.max(2, Math.round(w / 65));
+  const dw = (w - 2 * cw - (n - 1) * 0.4) / n;
+  for (let i = 0; i < n; i++) {
     const x = cw + i * (dw + 0.4);
-    g.add(box(dw, cw, h - pl - cw * 2, mat.wood('beech', dw, h, 0.5), { x, y: d - cw, z: pl + cw, name: `kanat-${i + 1}` }));
-    handle(g, { x: x + dw - 8, y: d + 0.6, z: h - 18, w: 9 });
+    if (i % 2 === 0) {
+      g.add(box(dw, cw, h - pl - cw * 2, mat.wood('beech', dw, h, 0.5), { x, y: d - cw, z: pl + cw, name: `kanat-${i + 1}` }));
+      handle(g, { x: x + dw - 8, y: d + 0.6, z: h - 18, w: 9 });
+    } else {
+      // acik raf + icinde dosyalar
+      const mid = pl + (h - pl - cw) / 2;
+      g.add(box(dw, d - 2, cw, mat.wood('beech', dw, d, 0.5), { x, y: 1, z: mid, name: `raf-${i + 1}` }));
+      books(g, { x: x + 1, y: 4, z: mid + cw, len: dw - 2, depth: d - 10, height: h - mid - cw - 4, seedN: 40 + i });
+      books(g, { x: x + 1, y: 4, z: pl + cw, len: dw - 2, depth: d - 10, height: mid - pl - cw - 3, seedN: 60 + i });
+    }
   }
   return g;
 }

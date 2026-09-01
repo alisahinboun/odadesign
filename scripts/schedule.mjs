@@ -9,13 +9,11 @@ import path from 'node:path';
 import { fileURLToPath } from 'node:url';
 import {
   room, partition, door, furniture, equipment, clutter, wallItems, wallUnits,
-  ceiling as ceilCfg, floor as floorCfg, palette, meta,
-  isVisible,
+  ceiling as ceilCfg, floor as floorCfg, palette, meta, windows, radiators,
+  isVisible, applyScheme,
 } from '../src/config/room.js';
 import { footprint, metrics, doorSwingLimit } from '../src/lib/analysis.js';
 import { schemes, resolveScheme } from '../src/config/schemes.js';
-import { applyScheme   isVisible,
-} from '../src/config/room.js';
 
 /* ------------------------------------------------------------- sema secimi */
 /** node scripts/X.mjs --sema=s2   (varsayilan s0 = mevcut durum) */
