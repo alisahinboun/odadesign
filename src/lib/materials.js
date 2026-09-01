@@ -136,4 +136,25 @@ export const mat = {
     new THREE.MeshStandardMaterial({ color: hex, emissive: hex, emissiveIntensity: i, roughness: 1 })),
 };
 
+/**
+ * DUVAR KAGIDI DILIMI.
+ * Duvar kagidi tekrar etmez, dolap yuzeyi boyunca tek parca akar. Her kapak
+ * dokunun kendi dikdortgenini gosterir; bu yuzden ortak dokunun bir KOPYASI
+ * alinip offset/repeat ile o pencereye ayarlanir (goruntu paylasilir, ucuz).
+ * u0/v0 sol-ALT koseden olculur (CanvasTexture flipY=true).
+ */
+mat.mural = (u0, v0, du, dv, px = 2048) =>
+  M(`mural${px}:${u0.toFixed(4)},${v0.toFixed(4)},${du.toFixed(4)},${dv.toFixed(4)}`, () => {
+    const t = new THREE.CanvasTexture(T.muralTexture(px));
+    t.colorSpace = THREE.SRGBColorSpace;
+    t.wrapS = t.wrapT = THREE.ClampToEdgeWrapping;
+    t.anisotropy = 8;
+    t.offset.set(u0, v0);
+    t.repeat.set(du, dv);
+    t.needsUpdate = true;
+    return new THREE.MeshStandardMaterial({
+      map: t, roughness: 0.78, metalness: 0, envMapIntensity: 0.5,
+    });
+  });
+
 export { rep, tx, CM };

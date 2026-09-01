@@ -387,10 +387,15 @@ function drawElevation(side, code, name) {
         const cName = row[i % row.length];
         const rh = (zt - zb - 3.6) / nr;
         const zz = zb + 1.8 + r * rh;
+        // Duvar kagidi acikken kapak rengi degil, kagidin baskin tonu gosterilir
         p.push(rect(U(wallUnits.yStart + i * mw + 1), Z(zz + rh - 0.4), MM(mw - 2), MM(rh - 0.4),
-          C.view, 0.3, tint(cName)));
+          C.view, 0.3, wallUnits.mural ? '#dfe6da' : tint(cName)));
       }
       p.push(text(U(wallUnits.yStart + i * mw + mw / 2), Z(zt) + 4.5, `${Math.round(mw)}`, 2.0, 'middle', C.view));
+    }
+    if (wallUnits.mural) {
+      p.push(text(U((wallUnits.yStart + wallUnits.yEnd) / 2), Z(zt) - 8,
+        'KAPAKLARA TROPIK DUVAR KAGIDI (tek parca, 3 panel boyunca surekli)', 2.6, 'middle', C.acc));
     }
     p.push(dimH(U(wallUnits.yStart), U(wallUnits.yEnd), Z(zb) + 7, `${wallUnits.yEnd - wallUnits.yStart}`, -1));
     p.push(dimV(Z(zt), Z(zb), U(len) + 12, `${zt - zb}`, -1));

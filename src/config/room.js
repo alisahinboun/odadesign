@@ -277,6 +277,12 @@ export const wallUnits = {
     ['yellow', 'yellow',   'yellow'],    // ust sira
   ],
   gap: 0.4,
+  /**
+   * Kapaklara tropik duvar kagidi kaplanmis hali. Arayuzden acilip kapatilir
+   * (Renkler bolumu). Acikken kapak renkleri devre disi kalir; desen 3 panel
+   * boyunca TEK PARCA akar, her kapak kendi dilimini gosterir.
+   */
+  mural: false,
 };
 
 /* ----------------------------------------------- 5. EKIPMAN / MASA USTU */
@@ -422,6 +428,7 @@ const BASE = {
   clutter: clutter.map((f) => ({ pos: [...f.pos], rot: f.rot || 0 })),
   wallItems: wallItems.map((w) => ({ u: w.u, z: w.z })),
   wallUnitDoors: wallUnits.doors.map((r) => [...r]),
+  wallUnitMural: wallUnits.mural,
   doorSwing: door.swing,
   doorOpenAngle: door.openAngle,
   windows: windows.map((w) => ({ curtain: { ...w.curtain }, sillBoard: { ...w.sillBoard } })),
@@ -440,6 +447,7 @@ export function applyScheme(resolved) {
   clutter.forEach((f, i) => { f.pos = [...BASE.clutter[i].pos]; f.rot = BASE.clutter[i].rot; });
   wallItems.forEach((w, i) => { w.u = BASE.wallItems[i].u; w.z = BASE.wallItems[i].z; });
   wallUnits.doors = BASE.wallUnitDoors.map((r) => [...r]);
+  wallUnits.mural = BASE.wallUnitMural;
   windows.forEach((w, i) => { w.curtain = { ...BASE.windows[i].curtain }; w.sillBoard = { ...BASE.windows[i].sillBoard }; });
   // varsayilan: yalnizca odada GERCEKTEN olanlar gorunur
   hidden.clear();
@@ -476,5 +484,6 @@ export function applyScheme(resolved) {
   for (const id of resolved.show || []) hidden.delete(id);
   for (const id of resolved.hide || []) hidden.add(id);
   if (resolved.wallUnitDoors) wallUnits.doors = resolved.wallUnitDoors.map((r) => [...r]);
+  if (resolved.wallUnitMural !== undefined) wallUnits.mural = !!resolved.wallUnitMural;
   activeScheme = resolved.id;
 }

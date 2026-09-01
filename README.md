@@ -83,6 +83,17 @@ sürümden daha iyi çalışır:
 | **3B model indirme (GLB / OBJ)** | ❌ tarayıcı izin vermiyor | ✅ |
 | **Odada yürüme (G) — fare kilidi** | kısıtlı | ✅ tam |
 
+### Dolaba duvar kâğıdı
+
+Sağ duvardaki dolap kapaklarına tropik bir duvar kâğıdı kaplanmış hâli
+panelden **açılıp kapatılabilir** (Dolaba duvar kâğıdı bölümü). Desen dış bir
+görsel değil, `src/lib/textures.js → muralTexture()` içinde `<canvas>` üzerine
+**çizilir** — tek dosyalık dağıtımın bozulmaması için. Kâğıt tekrar etmez:
+270 × 213 cm'lik dolap yüzeyi boyunca tek parça akar, her kapak kendi dilimini
+gösterir (`mat.mural(u0, v0, du, dv)`), gerçekte de duvar kâğıdı böyle kesilir.
+Kapatınca kapaklar sarı-beyaz hâline döner; ölçüler, yerleşim ve denetim
+sonuçları değişmez. B görünüşü paftası da açık/kapalı hâli yansıtır.
+
 ### Telefonda
 
 Arayüz telefon ve tablette ayrı çalışır:

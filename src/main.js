@@ -574,7 +574,15 @@ function setDesign(pId, lId) {
   if (pId === curPalette && lId === curLayout) return;
   curPalette = pId; curLayout = lId;
   applyScheme(resolveDesign(pId, lId));
+  rebuildModel();
+}
 
+/**
+ * Modeli bastan kurar. Palet/yerlesim degisiminde ve dolap kapaklarina
+ * duvar kagidi acilip kapanirken kullanilir. Kamera, katman durumu ve kapi
+ * acisi korunur - iki hali ayni bakis acisindan karsilastirabilmek icin.
+ */
+function rebuildModel() {
   // Once eski agac sahneden cikarilip serbest birakilir, SONRA malzeme/doku
   // onbellegi temizlenir - boylece hicbir malzeme kullanimdayken atilmaz.
   scene.remove(modelRoot, dimPlan, dimElev);
@@ -594,6 +602,10 @@ function setDesign(pId, lId) {
   indexLayers(lights.group);
   layerMap.set('dimPlan', [dimPlan]);
   layerMap.set('dimElev', [dimElev]);
+
+  // Konsoldan/testten erisim: modelRoot her kurulusta YENI bir nesne, global
+  // guncellenmezse eski agaca bakilir (daha once yanlis sonuca yol acti).
+  window.modelRoot = modelRoot;
 
   SWING = doorSwingLimit();
   MET = metrics();
@@ -759,6 +771,7 @@ function buildUI() {
   el.scroll.appendChild(secLayers());
   el.scroll.appendChild(secTools());
   el.scroll.appendChild(secSchedule());
+  el.scroll.appendChild(secMural());
   el.scroll.appendChild(secFinishes());
   el.scroll.appendChild(secExport());
   el.scroll.appendChild(secNotes());
@@ -1143,6 +1156,33 @@ function focusItem(it) {
   selected = { item: it, host: host || null, name: it.name };
   if (host) { selBox.setFromObject(host); selBox.visible = true; } else selBox.visible = false;
   updateReadout();
+}
+
+/**
+ * Sag duvardaki dolap kapaklarina tropik duvar kagidi. Acilip kapanabilir;
+ * secili palet ve yerlesimden bagimsiz calisir, yani her kombinasyonla
+ * denenebilir.
+ */
+function secMural() {
+  const d = sec('Dolaba duvar kâğıdı', wallUnits.mural);
+  const r = document.createElement('div');
+  r.className = 'row';
+  r.innerHTML = `<input type="checkbox" id="mural" ${wallUnits.mural ? 'checked' : ''}>
+    <label for="mural"><b>Kapaklara duvar kâğıdı kapla</b></label>`;
+  d.body.appendChild(r);
+  r.querySelector('input').onchange = (e) => {
+    wallUnits.mural = e.target.checked;
+    rebuildModel();
+  };
+  const n = document.createElement('p');
+  n.className = 'note';
+  n.innerHTML = `Masanın sağındaki sarı-beyaz dolap kapaklarını tropik desenle
+    kaplar. Desen <b>tek parça</b> akar: 3 panel boyunca kesintisiz devam eder,
+    her kapak kendi bölümünü gösterir — gerçekte de duvar kâğıdı böyle kesilir.
+    Kapak araları ve parmak kanalları görünmeye devam eder.<br>
+    Kapatınca kapaklar sarı-beyaz hâline döner; ölçüler ve yerleşim değişmez.`;
+  d.body.appendChild(n);
+  return d;
 }
 
 function secFinishes() {

@@ -7,7 +7,7 @@
 import * as THREE from 'three';
 import { palette, wallUnits, room } from '../config/room.js';
 import { mat } from '../lib/materials.js';
-import { box, boxAt, roundedBox, cyl, sphere, group, cm } from '../lib/geom.js';
+import { box, boxAt, roundedBox, cyl, sphere, plane, group, cm } from '../lib/geom.js';
 
 /* ------------------------------------------------------------- yardimci */
 const BOOK_COLORS = [
@@ -393,10 +393,31 @@ export function buildWallUnits() {
       const row = u.doors[r];
       const cName = row[i % row.length];
       const z = u.zBottom + cw + r * (rh + u.gap);
-      g.add(box(cw, mw - cw - u.gap, rh, mat.paint(cName, mw, rh, 0.45),
-        { x: x0 - cw, y: y + cw, z, name: `kapak-${i}-${r}-${cName}` }));
+      const dw = mw - cw - u.gap;            // kapak genisligi (plan Y boyunca)
+      const face = u.mural
+        ? mat.plain('#e7e0d2', 0.8)          // duvar kagidi ayri bir yuzey olarak gelir
+        : mat.paint(cName, mw, rh, 0.45);
+      g.add(box(cw, dw, rh, face,
+        { x: x0 - cw, y: y + cw, z, name: `kapak-${i}-${r}-${u.mural ? 'kagit' : cName}` }));
+      if (u.mural) {
+        /**
+         * Duvar kagidi kapagin ONUNE ince bir yuzey olarak konur. Kutunun
+         * yuzune kaplamak da mumkun ama BoxGeometry'nin -X yuzundeki UV yonu
+         * ters; ayri bir duzlemde eslestirme birebir kontrol edilebiliyor.
+         * Dilim: dokunun sol-alt kosesi dolap yuzeyinin on-alt kosesidir.
+         */
+        g.add(plane(dw, rh, mat.mural(
+          (y + cw - u.yStart) / len, (z - u.zBottom) / h, dw / len, rh / h,
+        ), {
+          x: x0 - cw - 0.25,
+          y: y + cw + dw / 2,
+          z: z + rh / 2,
+          rotY: -Math.PI / 2,
+          name: `kagit-${i}-${r}`,
+        }));
+      }
       // parmak kanali (kulp yok, foto'da kulp gorunmuyor)
-      g.add(box(0.9, mw - cw - u.gap - 6, 1.2, mat.plain('#8f8b83', 0.8), { x: x0 - cw - 0.9, y: y + cw + 3, z: z + (r === 0 ? rh - 2.4 : 1.2) }));
+      g.add(box(0.9, dw - 6, 1.2, mat.plain('#8f8b83', 0.8), { x: x0 - cw - 1.15, y: y + cw + 3, z: z + (r === 0 ? rh - 2.4 : 1.2) }));
     }
   }
   return g;
