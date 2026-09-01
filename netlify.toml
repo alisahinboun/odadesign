@@ -1,0 +1,26 @@
+# Netlify yayin ayari.
+#
+# Iki yol var:
+#  1. HIZLI  — app.netlify.com/drop adresine `dist` klasorunu surukleyin.
+#              Bu dosyaya gerek yok, dist/index.html tek basina calisir.
+#  2. BAGLI  — Netlify'i bu GitHub deposuna baglayin. Bu dosya sayesinde
+#              hicbir ayar girmenize gerek kalmaz; her push'ta yeniden kurar.
+[build]
+  command = "npm run build"
+  publish = "dist"
+
+[build.environment]
+  NODE_VERSION = "20"
+
+# Tek sayfa; hangi adrese gidilirse gidilsin index.html donsun.
+[[redirects]]
+  from = "/*"
+  to = "/index.html"
+  status = 200
+
+# Model tek dosyada gomulu, disariya veri gitmiyor. Yine de temel basliklar:
+[[headers]]
+  for = "/*"
+  [headers.values]
+    X-Content-Type-Options = "nosniff"
+    Referrer-Policy = "no-referrer"

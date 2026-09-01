@@ -53,6 +53,42 @@ e‑posta ile gönderilebilir veya USB'den açılabilir.
 
 ---
 
+## Başkasıyla paylaşmak — Netlify
+
+`dist/index.html` **tek başına çalışan** bir dosya: dışarıdan sadece yazı
+tipini çekiyor, onu da çekemezse yedek yazı tipiyle açılıyor. Sunucu tarafında
+hiçbir şey gerekmiyor.
+
+**En hızlısı (2 dakika):**
+
+1. `npm install && npm run build`
+2. [app.netlify.com/drop](https://app.netlify.com/drop) adresini açın
+3. `dist` klasörünü sayfaya sürükleyin
+
+Adres hemen çıkar (`rastgele-isim.netlify.app`). Hesap açmadan da olur ama
+hesap açarsanız adres kalıcı olur ve adı değiştirilebilir.
+
+**Depoya bağlamak (her push'ta kendi güncellensin):** Netlify'de
+*Add new site → Import an existing project* → bu depoyu seçin. Ayar sormaz;
+[`netlify.toml`](netlify.toml) komutu (`npm run build`) ve klasörü (`dist`)
+zaten söylüyor. Yalnızca hangi daldan yayınlanacağını seçin.
+
+**Netlify'de neler çalışır:** hepsi. Üstelik iki şey claude.ai'deki gömülü
+sürümden daha iyi çalışır:
+
+| | Gömülü sayfa | Netlify |
+|---|---|---|
+| Eşya taşıma, ölçme, renk/yerleşim, gizle‑göster | ✅ | ✅ |
+| Resim indirme (PNG) | ✅ onay kutusuyla | ✅ doğrudan |
+| **3B model indirme (GLB / OBJ)** | ❌ tarayıcı izin vermiyor | ✅ |
+| **Odada yürüme (G) — fare kilidi** | kısıtlı | ✅ tam |
+
+**Dikkat:** Netlify adresi **herkese açıktır**; adresi bilen görür. Arama
+motorlarına düşmesini istemiyorsanız `dist/` içine `robots.txt` koyun
+(`User-agent: *` / `Disallow: /`); gerçek şifre koruması ücretli planda.
+
+---
+
 ## Modeli nasıl değiştirirsiniz
 
 Tüm proje **tek bir dosyadan** beslenir:

@@ -21,6 +21,10 @@ let dlProbe = null;
 export function downloadsNS() {
   if (dlProbe) return dlProbe;
   dlProbe = (async () => {
+    // Yayinlanan sayfa her zaman bir iframe icinde calisir. Netlify / kendi
+    // sunucunuz / dosyadan acma durumunda iframe yok, dolayisiyla beklemeye
+    // gerek yok: klasik indirme baglantisi zaten calisiyor.
+    if (window.self === window.top) return null;
     for (let i = 0; i < 40; i++) {
       if (window.claude && typeof window.claude.use === 'function') break;
       await new Promise((r) => setTimeout(r, 50));
