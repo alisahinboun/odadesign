@@ -348,10 +348,12 @@ function setScheme(id) {
   if (id === currentScheme) return;
   currentScheme = id;
   applyScheme(resolveScheme(id));
-  clearMaterialCache();
 
+  // Once eski agac sahneden cikarilip serbest birakilir, SONRA malzeme/doku
+  // onbellegi temizlenir - boylece hicbir malzeme kullanimdayken atilmaz.
   scene.remove(modelRoot, dimPlan, dimElev);
   disposeTree(modelRoot); disposeTree(dimPlan); disposeTree(dimElev);
+  clearMaterialCache();
 
   modelRoot = buildRoom();
   dimPlan = buildPlanDimensions();
