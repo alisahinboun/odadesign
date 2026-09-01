@@ -212,14 +212,28 @@ addEventListener('keydown', (e) => {
   if (e.code === 'KeyM') { measure.on = !measure.on; measure.pts = []; updateReadout(); buildUI(); }
 });
 addEventListener('keyup', (e) => walk.keys.delete(e.code));
+/**
+ * Yurume modunda bakis. Pointer lock varsa fare serbest hareketle bakar;
+ * gomulu (iframe) gosterimde pointer lock engellenebildigi icin sol tusa
+ * basili surukleyerek bakma da desteklenir.
+ */
+let dragLook = false;
 renderer.domElement.addEventListener('mousemove', (e) => {
-  if (!walk.on || document.pointerLockElement !== renderer.domElement) return;
-  walk.yaw -= e.movementX * 0.0022;
-  walk.pitch = Math.max(-1.35, Math.min(1.35, walk.pitch - e.movementY * 0.0022));
+  if (!walk.on) return;
+  const locked = document.pointerLockElement === renderer.domElement;
+  if (!locked && !dragLook) return;
+  const mx = locked ? e.movementX : e.movementX || 0;
+  const my = locked ? e.movementY : e.movementY || 0;
+  walk.yaw -= mx * 0.0022;
+  walk.pitch = Math.max(-1.35, Math.min(1.35, walk.pitch - my * 0.0022));
 });
-renderer.domElement.addEventListener('click', () => {
-  if (walk.on && document.pointerLockElement !== renderer.domElement) renderer.domElement.requestPointerLock?.();
+renderer.domElement.addEventListener('mousedown', (e) => {
+  if (walk.on && e.button === 0) {
+    dragLook = true;
+    if (!document.pointerLockElement) renderer.domElement.requestPointerLock?.();
+  }
 });
+addEventListener('mouseup', () => { dragLook = false; });
 
 const BOUNDS = { x0: 22, x1: room.width - 22, y0: 22, y1: room.depth - 22 };
 function stepWalk(dt) {
@@ -311,7 +325,7 @@ el.toggle.onclick = () => el.panel.classList.remove('hidden');
 
 const M = roomMetrics();
 const SWING = doorSwingLimit();
-el.sub.textContent = `${room.width}x${room.depth}x${room.height} cm · ${M.alan.toFixed(2)} m² · ${meta.revision}`;
+el.sub.textContent = `${room.width} × ${room.depth} × ${room.height} cm  ·  ${M.alan.toFixed(2)} m²  ·  ${meta.revision}`;
 
 function updateReadout() {
   if (measure.on) {
@@ -323,7 +337,7 @@ function updateReadout() {
       el.readout.innerHTML = `<div class="big">${d.toFixed(1)} cm</div>
         <div class="sm">ΔX ${dx.toFixed(1)} · ΔY(kot) ${dy.toFixed(1)} · ΔZ ${dz.toFixed(1)} cm</div>`;
     } else {
-      el.readout.innerHTML = `<div class="sm">Ölçmek için <b>iki nokta</b> tıklayın.</div>`;
+      el.readout.innerHTML = '<div class="sm w">Ölçmek için iki noktaya tıklayın.</div>';
     }
     el.readout.style.display = 'block';
     return;
@@ -331,10 +345,10 @@ function updateReadout() {
   if (selected) {
     const it = selected.item;
     el.readout.innerHTML = it
-      ? `<div class="big" style="font-size:14px">${it.id} · ${it.name}</div>
-         <div class="sm">${it.w}×${it.d}×${it.h} cm${it.pos ? ` · konum (${it.pos[0]}, ${it.pos[1]}) cm · ${it.rot || 0}°` : ''}</div>
-         ${it.note ? `<div class="sm" style="margin-top:5px;color:#d8c88a">${it.note}</div>` : ''}`
-      : `<div class="sm"><b>${selected.name}</b></div>`;
+      ? `<div class="nm"><span class="poz">${it.id}</span>${it.name}</div>
+         <div class="sm">${it.w}×${it.d}×${it.h} cm${it.pos ? `   ·   (${it.pos[0]}, ${it.pos[1]})   ·   ${it.rot || 0}°` : ''}</div>
+         ${it.note ? `<div class="sm w" style="margin-top:6px">${it.note}</div>` : ''}`
+      : `<div class="sm">${selected.name}</div>`;
     el.readout.style.display = 'block';
     return;
   }
@@ -350,27 +364,29 @@ function buildUI() {
     b.onclick = () => { usePreset(p); };
     el.topbar.appendChild(b);
   }
+  const sp = document.createElement('div'); sp.className = 'sep'; el.topbar.appendChild(sp);
   const bw = document.createElement('button');
-  bw.textContent = walk.on ? '⏹ Yürümeyi bitir (Esc)' : '🚶 Odada yürü (G)';
+  bw.textContent = walk.on ? 'Yürümeyi bitir  Esc' : 'Odada yürü  G';
   bw.className = walk.on ? 'act' : '';
   bw.onclick = () => setWalk(!walk.on);
   el.topbar.appendChild(bw);
 
   const bm = document.createElement('button');
-  bm.textContent = measure.on ? '📐 Ölçüm açık (M)' : '📐 Ölç (M)';
+  bm.textContent = measure.on ? 'Ölçüm açık  M' : 'Ölç  M';
   bm.className = measure.on ? 'act' : '';
   bm.onclick = () => { measure.on = !measure.on; measure.pts = []; drawMeasure(); updateReadout(); buildUI(); };
   el.topbar.appendChild(bm);
 
   el.hint.innerHTML = walk.on
-    ? '<b>W A S D</b> yürü · <b>Shift</b> koş · fare ile bak · <b>Esc</b> çık'
+    ? '<kbd>W</kbd><kbd>A</kbd><kbd>S</kbd><kbd>D</kbd> yürü · <kbd>Shift</kbd> koş · fare ile (veya sol tuşa basılı sürükleyerek) bak · <kbd>Esc</kbd> çık'
     : measure.on
-      ? '<b>İki noktaya tıklayın</b> — aradaki gerçek mesafe cm olarak okunur.'
-      : '<b>Sol tuş</b> döndür · <b>tekerlek</b> yakınlaş · <b>sağ tuş</b> kaydır · bir parçaya <b>tıklayın</b> ölçüsünü görün · <b>G</b> yürü · <b>M</b> ölç';
+      ? '<b>İki noktaya tıklayın</b> — aradaki gerçek mesafe cm olarak okunur. <kbd>M</kbd> ile kapatın.'
+      : 'Sol tuş <b>döndür</b> · tekerlek <b>yakınlaş</b> · sağ tuş <b>kaydır</b> · bir parçaya <b>tıklayın</b> ölçüsünü görün · <kbd>G</kbd> odada yürü · <kbd>M</kbd> ölç';
 
   /* ---- yan panel ---- */
   el.scroll.innerHTML = '';
   el.scroll.appendChild(secMetrics());
+  el.scroll.appendChild(secFindings());
   el.scroll.appendChild(secLayers());
   el.scroll.appendChild(secTools());
   el.scroll.appendChild(secSchedule());
@@ -389,50 +405,102 @@ function sec(title, open = false) {
   return d;
 }
 
+/**
+ * Mahal bilgileri. Her satirin yaninda olcunun KAYNAGI rozet olarak durur:
+ *   K = el krokisinden okundu (yuksek guven)
+ *   F = fotograftan oranlandi (orta guven - yerinde dogrulanmali)
+ *   T = sektor kabulu / hesaplanan
+ * Ic mimarin hangi sayiya guvenebilecegini tek bakista gormesi icin.
+ */
+const SRC = { k: ['k', 'kroki'], f: ['f', 'foto'], t: ['t', 'kabul'] };
+const badge = (kind) => `<span class="src ${SRC[kind][0]}" title="${
+  kind === 'k' ? 'El krokisinden okundu — yüksek güven'
+  : kind === 'f' ? 'Fotoğraftan oranlandı — yerinde doğrulanmalı'
+  : 'Sektör kabulü veya modelden hesaplandı'}">${SRC[kind][1]}</span>`;
+
 function secMetrics() {
   const d = sec('Mahal bilgileri', true);
+  const r = (label, val, kind, hi) =>
+    `<tr class="${hi ? 'hi' : ''}"><td>${label}${kind ? badge(kind) : ''}</td><td>${val}</td></tr>`;
   d.body.innerHTML = `<table class="kv">
-    <tr><td>Net alan</td><td>${M.alan.toFixed(2)} m²</td></tr>
-    <tr><td>Net hacim</td><td>${M.hacim.toFixed(2)} m³</td></tr>
-    <tr><td>Net yükseklik</td><td>${room.height} cm</td></tr>
-    <tr><td>Çevre</td><td>${M.cevre.toFixed(2)} m</td></tr>
-    <tr><td>Duvar yüzeyi (brüt)</td><td>${M.duvarAlani.toFixed(2)} m²</td></tr>
-    <tr><td>Mobilya ayak izi</td><td>${metrics().doluAlan.toFixed(2)} m² (%${(metrics().doluAlan / M.alan * 100).toFixed(0)})</td></tr>
-    <tr><td>Serbest dolaşım</td><td>${(M.alan - metrics().doluAlan).toFixed(2)} m²</td></tr>
-    <tr><td>Kapı</td><td>${door.width}×${door.height} cm</td></tr>
-    <tr><td>Vasistas</td><td>${partition.transomTop - partition.sillHeight} cm yük.</td></tr>
-    <tr><td>Döşeme kaplaması</td><td>${floorCfg.tile[0]}×${floorCfg.tile[1]} karo</td></tr>
-    <tr><td>Asma tavan</td><td>${ceilCfg.tile[0]}×${ceilCfg.tile[1]} plaka</td></tr>
+    ${r('Net ölçüler', `${room.width}×${room.depth}`, 'k')}
+    ${r('Net yükseklik', `${room.height} cm`, 'f')}
+    ${r('Net alan', `${M.alan.toFixed(2)} m²`, 't', true)}
+    ${r('Net hacim', `${M.hacim.toFixed(2)} m³`, 't')}
+    ${r('Çevre', `${M.cevre.toFixed(2)} m`, 't')}
+    ${r('Mobilya ayak izi', `${metrics().doluAlan.toFixed(2)} m²`, 't')}
+    ${r('Serbest dolaşım', `${(M.alan - metrics().doluAlan).toFixed(2)} m²`, 't', true)}
+    ${r('Kapı', `${door.width}×${door.height} cm`, 'k')}
+    ${r('Kapı azami açıklık', `~${SWING.angle}°`, 't', true)}
+    ${r('Vasistas yüksekliği', `${partition.transomTop - partition.sillHeight} cm`, 'f')}
+    ${r('Üst dolap kotu', `${wallUnits.zBottom}–${wallUnits.zTop}`, 'f')}
+    ${r('Döşeme karosu', `${floorCfg.tile[0]}×${floorCfg.tile[1]}`, 'f')}
+    ${r('Asma tavan plakası', `${ceilCfg.tile[0]}×${ceilCfg.tile[1]}`, 't')}
   </table>
-  <p class="note warn">Ölçüler el krokisi + fotoğraf yorumundan türetilmiştir. Uygulama
-  öncesi yerinde kontrol edilmelidir — bkz. <code>docs/roleve.md</code>.</p>`;
+  <div class="callout"><p class="note"><b>Bu bir yerinde röleve değildir.</b>
+  3 fotoğraf ve 1 el krokisinden çıkarılmıştır. <span class="src f">foto</span>
+  işaretli ölçüler imalat öncesi yerinde doğrulanmalıdır —
+  <code>docs/roleve.md</code>.</p></div>`;
+  return d;
+}
+
+/** Modelden cikan tasarim tespitleri - fotografta gorulmeyen, olculebilen sonuclar */
+function secFindings() {
+  const d = sec('Tespitler');
+  const desk = furniture.find((f) => f.id === 'M1');
+  const items = [
+    ['T-1', 'Kapı tam açılamıyor',
+     `Kanat çarpmadan <b>~${SWING.angle}°</b> açılıyor; sınırlayan eleman
+      <b>${SWING.blocker || '—'}</b>. Fotoğraf 02 ve 03'te kanadın duvara tam
+      yaslanmamış olması bu tespiti doğruluyor.`],
+    ['T-2', 'Masa süpürme yayının sınırında',
+     `<b>M1</b> masasının sol‑ön köşesi menteşe ekseninden ≈120 cm uzakta,
+      kanat yarıçapı 112 cm. Masa 10 cm daha sola alınırsa kapı çarpar.`],
+    ['T-3', 'Dolabın yeri aynanın yerini belirliyor',
+     `<b>D1</b> ön duvara değil <b>sol duvara</b> sırtını veriyor. Aksi halde
+      95 cm'lik sarı panelin 80 cm'ini kapatır, foto 03'teki aynaya yer kalmazdı.`],
+    ['T-4', 'Dolaşım alanı sınırda',
+     `Mobilya ayak izi ${metrics().doluAlan.toFixed(1)} m², kalan
+      ${(M.alan - metrics().doluAlan).toFixed(1)} m². Masa arkası çalışma boşluğu
+      ${Math.round(room.depth - (desk.pos[1] + desk.d / 2))} cm — yeterli, sınırda.`],
+    ['T-5', 'Arka duvar röleve dışı',
+     `Arka duvar (y=${room.depth}) hiçbir fotoğrafta görünmüyor. Sol duvarla aynı
+      kabul edildi. <b>Yerinde ölçüm gerekiyor.</b>`],
+  ];
+  for (const [no, title, body] of items) {
+    const f = document.createElement('div');
+    f.className = 'find';
+    f.innerHTML = `<h4><span>${no}</span>${title}</h4><p>${body}</p>`;
+    d.body.appendChild(f);
+  }
   return d;
 }
 
 function secLayers() {
   const d = sec('Katmanlar', true);
   const all = [...LAYERS,
-    { key: 'dimPlan', label: 'ÖLÇÜ: plan kotaları', on: false },
-    { key: 'dimElev', label: 'ÖLÇÜ: düşey kotalar', on: false }];
+    { key: 'dimPlan', label: 'Ölçü kotaları — plan', on: false },
+    { key: 'dimElev', label: 'Ölçü kotaları — düşey', on: false }];
+  const wrap = document.createElement('div'); wrap.className = 'rows';
   for (const l of all) {
     const r = document.createElement('div'); r.className = 'row';
     const id = 'ly-' + l.key;
     r.innerHTML = `<input type="checkbox" id="${id}" ${layerState[l.key] !== false ? 'checked' : ''}>
       <label for="${id}">${l.label}</label>`;
     r.querySelector('input').onchange = (e) => { layerState[l.key] = e.target.checked; applyLayers(); };
-    d.body.appendChild(r);
+    wrap.appendChild(r);
   }
+  d.body.appendChild(wrap);
   const r2 = document.createElement('div'); r2.className = 'row';
-  r2.style.marginTop = '8px';
   r2.innerHTML = `<input type="checkbox" id="cut" ${cutaway ? 'checked' : ''}>
-    <label for="cut"><b>Otomatik kesit</b> (kameraya bakan duvarı gizle)</label>`;
+    <label for="cut"><b>Otomatik kesit</b> — kameraya bakan duvarı gizle</label>`;
   r2.querySelector('input').onchange = (e) => { cutaway = e.target.checked; applyLayers(); };
   d.body.appendChild(r2);
   return d;
 }
 
 function secTools() {
-  const d = sec('Kapı / aydınlatma');
+  const d = sec('Kapı ve aydınlatma');
   d.body.innerHTML = `
     <div class="row"><label>Kapı açıklığı: <b id="dv">${Math.round(doorAngle)}°</b></label></div>
     <input type="range" id="dr" min="0" max="170" value="${Math.round(doorAngle)}">
@@ -456,7 +524,7 @@ function secTools() {
 }
 
 function secSchedule() {
-  const d = sec('Donatı listesi', true);
+  const d = sec('Donatı listesi');
   const rows = [
     ...furniture.map((f) => ({ ...f, grp: 'Mobilya' })),
     ...equipment.map((f) => ({ ...f, tag: 'Ekipman', grp: 'Ekipman' })),
@@ -464,11 +532,11 @@ function secSchedule() {
   ];
   const t = document.createElement('table');
   t.className = 'sch';
-  t.innerHTML = `<thead><tr><th>Poz / Ad</th><th style="text-align:right">G×D×Y (cm)</th></tr></thead>`;
+  t.innerHTML = '<thead><tr><th>Poz &amp; ad</th><th>G×D×Y cm</th></tr></thead>';
   const tb = document.createElement('tbody');
   for (const r of rows) {
     const tr = document.createElement('tr');
-    tr.innerHTML = `<td><span class="tag">${r.id}</span>${r.name}</td>
+    tr.innerHTML = `<td><span class="poz">${r.id}</span>${r.name}</td>
                     <td class="n">${r.w}×${r.d}×${r.h}</td>`;
     tr.onclick = () => focusItem(r);
     tb.appendChild(tr);
@@ -500,7 +568,7 @@ function focusItem(it) {
 }
 
 function secFinishes() {
-  const d = sec('Malzeme / renk paleti');
+  const d = sec('Malzeme paleti');
   for (const [k, v] of Object.entries(palette)) {
     const s = document.createElement('div'); s.className = 'sw';
     s.innerHTML = `<i style="background:${v.hex}"></i><b>${v.label}</b><em>${v.hex}</em>`;
@@ -515,7 +583,7 @@ function secFinishes() {
 }
 
 function secExport() {
-  const d = sec('İhracat', true);
+  const d = sec('Dışa aktarım', true);
   const wrap = document.createElement('div');
   wrap.innerHTML = `<div class="grid2">
       <button class="btn pri" id="ex-glb">GLB indir</button>
@@ -526,7 +594,23 @@ function secExport() {
     <p class="note"><b>GLB</b>: SketchUp, Blender, 3ds&nbsp;Max, Rhino, Twinmotion, Enscape ve
     Revit (glTF eklentisi) ile açılır. Ölçek 1 birim = 1 metre.<br>
     <b>OBJ</b>: geometri + UV, malzemesiz.<br>
-    2B teknik çizimler için: <code>npm run drawings</code> → <code>docs/drawings/*.svg</code></p>`;
+    2B teknik çizimler: <code>npm run drawings</code> → <code>docs/drawings/*.svg</code></p>`;
+  if (window.self !== window.top) {
+    // Gomulu (iframe) gosterimde tarayici indirmeyi engeller; olu dugme
+    // birakmamak icin butonlar devre disi birakilir ve nedeni yazilir.
+    for (const b of wrap.querySelectorAll('.btn')) {
+      b.disabled = true;
+      b.style.opacity = '.45';
+      b.style.cursor = 'not-allowed';
+      b.title = 'Gömülü görünümde tarayıcı indirmeye izin vermiyor';
+    }
+    const w = document.createElement('div');
+    w.className = 'callout';
+    w.innerHTML = '<p class="note"><b>Gömülü görünümde indirme çalışmaz.</b> '
+      + 'GLB / OBJ / PNG almak için projeyi klonlayıp <code>npm install &amp;&amp; npm run dev</code> '
+      + 'ile kendi tarayıcınızda açın.</p>';
+    d.body.appendChild(w);
+  }
   d.body.appendChild(wrap);
   wrap.querySelector('#ex-glb').onclick = async (e) => {
     e.target.textContent = 'Hazırlanıyor…';
@@ -545,17 +629,19 @@ function secExport() {
 }
 
 function secNotes() {
-  const d = sec('Röleve notları / varsayımlar');
+  const d = sec('Kaynak ve yöntem');
   d.body.innerHTML = `<p class="note">
-    <b>Krokiden okunanlar (yüksek güven):</b> oda 370×270 cm · kapı 120 cm ·
-    masa 160×75 · dolap 80 · üçüncü 80 cm'lik eleman.<br><br>
-    <b>Fotoğraftan tahmin (orta güven):</b> net yükseklik 290 cm · vasistas alt kotu 205 cm ·
-    dolapların kot ve derinlikleri · tüm mobilya konumları.<br><br>
-    <b>Röleve eksiği:</b> arka duvar (y=270) hiçbir fotoğrafta görünmüyor; sol duvarla
-    aynı kabul edildi. Kroki üçüncü satırındaki 80 cm'lik elemanın adı okunamadı,
-    kitaplık kabul edildi.<br><br>
-    Her ölçü <code>src/config/room.js</code> içinde tek yerde tanımlıdır; değiştirdiğinizde
-    3B model, kotalar ve 2B çizimler birlikte güncellenir.</p>`;
+    Model <b>3 fotoğraf</b> ve <b>1 el krokisinden</b> kuruldu.
+    <span class="src k">kroki</span> yüksek güven ·
+    <span class="src f">foto</span> orantı tahmini ·
+    <span class="src t">kabul</span> sektör kabulü veya modelden hesaplanan.</p>
+  <p class="note"><b>Krokiden okunanlar:</b> oda 370×270 · kapı 120 · masa 160×75 ·
+    dolap 80 · üçüncü 80 cm'lik eleman (adı okunamadı, kitaplık kabul edildi).</p>
+  <p class="note"><b>Tek doğruluk kaynağı:</b> her ölçü <code>src/config/room.js</code>
+    içinde bir kez tanımlı. Bir değeri değiştirdiğinizde 3B model, ölçü kotaları,
+    2B teknik çizimler ve metraj listesi birlikte güncellenir.</p>
+  <p class="note"><code>npm run check</code> panel toplamını, mobilya çakışmalarını,
+    kapı süpürme açısını ve dolaşım boşluklarını denetler.</p>`;
   return d;
 }
 

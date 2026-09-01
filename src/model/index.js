@@ -20,21 +20,21 @@ function topOf(id) {
 }
 
 export const LAYERS = [
-  { key: 'floor',      label: 'Doseme',                on: true },
-  { key: 'ceiling',    label: 'Asma tavan + armatur',  on: true },
-  { key: 'partition',  label: 'On boluntu (kapi duvari)', on: true },
-  { key: 'door',       label: 'Kapi kanadi',           on: true },
+  { key: 'floor',      label: 'Döşeme',                on: true },
+  { key: 'ceiling',    label: 'Asma tavan + armatür',  on: true },
+  { key: 'partition',  label: 'Ön bölüntü (kapı duvarı)', on: true },
+  { key: 'door',       label: 'Kapı kanadı',           on: true },
   { key: 'wallLeft',   label: 'Sol duvar',             on: true },
   { key: 'wallBack',   label: 'Arka duvar',            on: true },
-  { key: 'wallRight',  label: 'Sag duvar',             on: true },
-  { key: 'greenBand',  label: 'Tavan yesil bandi',     on: true },
-  { key: 'wallUnits',  label: 'Ankastre ust dolaplar', on: true },
+  { key: 'wallRight',  label: 'Sağ duvar',             on: true },
+  { key: 'greenBand',  label: 'Tavan yeşil bandı',     on: true },
+  { key: 'wallUnits',  label: 'Ankastre üst dolaplar', on: true },
   { key: 'furniture',  label: 'Mobilya',               on: true },
-  { key: 'equipment',  label: 'Ekipman / masa ustu',   on: true },
-  { key: 'wallItems',  label: 'Duvar elemanlari',      on: true },
-  { key: 'clutter',    label: 'Dagınık esya',          on: true },
-  { key: 'corridor',   label: 'Koridor (baglam)',      on: true },
-  { key: 'lights',     label: 'Isik kaynaklari',       on: true },
+  { key: 'equipment',  label: 'Ekipman / masa üstü',   on: true },
+  { key: 'wallItems',  label: 'Duvar elemanları',      on: true },
+  { key: 'clutter',    label: 'Dağınık eşya',          on: true },
+  { key: 'corridor',   label: 'Koridor (bağlam)',      on: true },
+  { key: 'lights',     label: 'Işık kaynakları',       on: true },
 ];
 
 export function buildRoom() {
@@ -79,7 +79,7 @@ export function buildRoom() {
   root.add(eg);
 
   /* --- dagınık esya --- */
-  const cg = group('Esya', { layer: 'clutter', label: 'Dagınık esya' });
+  const cg = group('Esya', { layer: 'clutter', label: 'Dağınık eşya' });
   for (const it of clutter) {
     const b = equipBuilders[it.type];
     if (!b) continue;
@@ -90,7 +90,7 @@ export function buildRoom() {
   root.add(cg);
 
   /* --- duvar elemanlari --- */
-  const wg = group('Duvar-Elemanlari', { layer: 'wallItems', label: 'Duvar elemanlari' });
+  const wg = group('Duvar-Elemanlari', { layer: 'wallItems', label: 'Duvar elemanları' });
   for (const it of wallItems) wg.add(buildWallItem(it));
   root.add(wg);
 
@@ -99,7 +99,7 @@ export function buildRoom() {
 
 /* ====================================================== AYDINLATMA RIGI */
 export function buildLights(scene) {
-  const g = group('Aydinlatma', { layer: 'lights', label: 'Isik kaynaklari' });
+  const g = group('Aydinlatma', { layer: 'lights', label: 'Işık kaynakları' });
 
   const hemi = new THREE.HemisphereLight(0xd2dcea, 0x6f685d, 0.34);
   hemi.position.set(cm(room.width / 2), cm(room.height + 100), cm(room.depth / 2));

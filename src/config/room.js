@@ -277,12 +277,12 @@ export const palette = {
  * doorAngle: o gorunumde kapinin gosterilecegi aci (foto ile ayni durum).
  */
 export const viewPresets = [
-  { id: 'foto01', label: 'Foto 01 - Genel gorunum',  pos: [352, 262, 160], target: [120,  40, 120], fov: 88, doorAngle: 0 },
-  { id: 'foto02', label: 'Foto 02 - Kapi acik',      pos: [ 40, 250, 155], target: [300,  30, 115], fov: 74, doorAngle: 105 },
-  { id: 'foto03', label: 'Foto 03 - Sol kose',       pos: [300, 240, 150], target: [ 20,  30, 105], fov: 68, doorAngle: 105 },
-  { id: 'masa',   label: 'Calisma alani',            pos: [150, 232, 138], target: [330,  80,  85], fov: 50, doorAngle: 0 },
-  { id: 'kus',    label: 'Kus bakisi (aksonometri)', pos: [770, 710, 570], target: [185, 135,  55], fov: 34, doorAngle: 100 },
-  { id: 'plan',   label: 'Plan (tepeden)',           pos: [185, 135, 780], target: [185, 135,   0], fov: 30, ortho: true, doorAngle: 95 },
+  { id: 'foto01', label: 'Foto 01 · Genel görünüm',  pos: [352, 262, 160], target: [120,  40, 120], fov: 88, doorAngle: 0 },
+  { id: 'foto02', label: 'Foto 02 · Kapı açık',      pos: [ 40, 250, 155], target: [300,  30, 115], fov: 74, doorAngle: 105 },
+  { id: 'foto03', label: 'Foto 03 · Sol köşe',       pos: [300, 240, 150], target: [ 20,  30, 105], fov: 68, doorAngle: 105 },
+  { id: 'masa',   label: 'Çalışma alanı',            pos: [150, 232, 138], target: [330,  80,  85], fov: 50, doorAngle: 0 },
+  { id: 'kus',    label: 'Kuş bakışı', pos: [770, 710, 570], target: [185, 135,  55], fov: 34, doorAngle: 100 },
+  { id: 'plan',   label: 'Plan',           pos: [185, 135, 780], target: [185, 135,   0], fov: 30, ortho: true, doorAngle: 95 },
 ];
 
 export const meta = {
