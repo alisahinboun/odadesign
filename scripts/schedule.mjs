@@ -63,7 +63,7 @@ const md = `# Mahal ve Donatı Listesi — ${SEMA.code} ${SEMA.name}
 
 > **${SEMA.code} · ${SEMA.name}** — ${SEMA.summary}
 > ${SEMA.rationale}
-${SEMA.metrajNote ? `>\n> **Metraj notu:** ${SEMA.metrajNote}` : ''}
+${SEMA.metrajNote ? `>\n> **Metraj notu:** ${SEMA.metrajNote}\n` : ''}
 Bu dosya \`src/config/room.js\` verisinden **otomatik üretilir** (\`npm run schedule\`). Elle düzenlemeyin.
 
 ## 1. Mahal metrikleri

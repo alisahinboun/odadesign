@@ -6,6 +6,7 @@
 > Oda penceresiz; ışığı vasistastan ödünç alıyor. Doygun sarı ve yeşil hem ışığı yutuyor hem 10 m²lik hacmi daraltıyor. Panel yüzeyleri sıcak kırık beyaza alınıyor, yeşil TEK vurgu olarak kalıyor ama okul kimliğini koruyacak şekilde adaçayı tonuna çekiliyor. Mobilya, kapı kanadı ve ankastre dolap gövdesi yerinde kalır — sadece boya ve kapak yenilenir.
 >
 > **Metraj notu:** Boya: bölüntü panelleri + 3 sıvalı duvar + tavan bandı. Ankastre dolap kapakları yeniden kaplama. Mobilya alımı yok.
+
 Bu dosya `src/config/room.js` verisinden **otomatik üretilir** (`npm run schedule`). Elle düzenlemeyin.
 
 ## 1. Mahal metrikleri

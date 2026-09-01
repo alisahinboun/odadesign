@@ -72,7 +72,8 @@ Ankastre dolap kapakları yeniden kaplama. **Mobilya alımı yok, taşıma yok.*
 Modelin ortaya çıkardığı üç sorunu birden çözer:
 
 1. **Kapı süpürme yayı tamamen boşaltılır.** Mevcut durumda S2 misafir sandalyesi
-   kanadı ~109°de durduruyor; Ş‑2'de kanat 178°ye kadar açılıyor.
+   kanadı ~109°de durduruyor; Ş‑2'de yayda hiç mobilya kalmıyor (hesaplanan
+   azami açıklık 178°, yani kanat pratikte tam açılıyor).
 2. **Kullanıcı girişe dönük oturur.** Masa arkaya alınır; idari bir odada gelen
    kişinin görülmesi beklenir. Mevcut durumda kullanıcı girişe sırtı dönük.
 3. **Net bir ziyaretçi alanı oluşur.** Kapı ile masa arasında ~92 cm derinliğinde,

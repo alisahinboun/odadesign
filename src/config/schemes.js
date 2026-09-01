@@ -68,7 +68,7 @@ export const schemes = [
     summary: 'Ş-1 paleti + mobilya yeniden konumlanıyor. Kapı tam açılıyor, kullanıcı girişi görüyor.',
     rationale:
       'Modelin ortaya çıkardığı üç sorunu birden çözer: (1) kapı süpürme yayı '
-      + 'tamamen boşaltılır, kanat 175°ye kadar açılır; (2) masa arkaya alınıp '
+      + 'tamamen boşaltılır, kanat neredeyse tam açılır; (2) masa arkaya alınıp '
       + 'kullanıcı girişe dönük oturur — idari bir odada gelen kişiyi görmek gerekir; '
       + '(3) kapı ile masa arasında net bir ziyaretçi alanı oluşur. Depolama sol ve '
       + 'arka duvarda toplanır, yazıcı mevcut ankastre dolabın altına alınır. '

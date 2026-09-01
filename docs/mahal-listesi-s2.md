@@ -3,9 +3,10 @@
 **Oda Tasarimi / Room Design** · R00 · 2026-09-01
 
 > **Ş-2 · Yeniden yerleşim** — Ş-1 paleti + mobilya yeniden konumlanıyor. Kapı tam açılıyor, kullanıcı girişi görüyor.
-> Modelin ortaya çıkardığı üç sorunu birden çözer: (1) kapı süpürme yayı tamamen boşaltılır, kanat 175°ye kadar açılır; (2) masa arkaya alınıp kullanıcı girişe dönük oturur — idari bir odada gelen kişiyi görmek gerekir; (3) kapı ile masa arasında net bir ziyaretçi alanı oluşur. Depolama sol ve arka duvarda toplanır, yazıcı mevcut ankastre dolabın altına alınır. Ankastre dolap bankosu ve kapı yerinde kalır — taşınmaz.
+> Modelin ortaya çıkardığı üç sorunu birden çözer: (1) kapı süpürme yayı tamamen boşaltılır, kanat neredeyse tam açılır; (2) masa arkaya alınıp kullanıcı girişe dönük oturur — idari bir odada gelen kişiyi görmek gerekir; (3) kapı ile masa arasında net bir ziyaretçi alanı oluşur. Depolama sol ve arka duvarda toplanır, yazıcı mevcut ankastre dolabın altına alınır. Ankastre dolap bankosu ve kapı yerinde kalır — taşınmaz.
 >
 > **Metraj notu:** Ş-1 boya kalemleri + mobilya taşıma/montaj. Yeni mobilya alımı yok; mevcut parçalar yeniden konumlanır. Priz konumları gözden geçirilmeli (masa arkaya alındığı için arka duvarda priz gerekiyor — röleve eksiği).
+
 Bu dosya `src/config/room.js` verisinden **otomatik üretilir** (`npm run schedule`). Elle düzenlemeyin.
 
 ## 1. Mahal metrikleri
