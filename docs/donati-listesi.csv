@@ -1,23 +1,23 @@
 poz;ad;tip;genislik_cm;derinlik_cm;yukseklik_cm;x_cm;y_cm;aci_derece;ayak_izi_m2
-M1;Calisma masasi;Mobilya;160;75;75;283;97;0;1.200
-D1;Cift kanatli elbise/evrak dolabi;Mobilya;80;55;185;28;45;-90;0.440
-S1;Yonetici calisma koltugu;Mobilya;62;62;112;275;150;180;0.384
-S2;Misafir sandalyesi (istiflenebilir);Mobilya;48;54;82;33;120;-90;0.259
-A1;Sag duvar tezgahi (yazici + evrak);Mobilya;130;60;72;340;205;90;0.780
-C1;Ayakli askilik;Mobilya;38;38;178;300;24;0;0.144
-W1;Pedalli cop kovasi;Mobilya;30;30;42;243;100;0;0.090
-E1;24" monitor;Ekipman;55;20;42;296;76;-10;0.169
-E2;Masaustu bilgisayar;Ekipman;20;45;42;345;88;4;0.107
+M1;Çalışma masası;Mobilya;160;75;75;283;97;0;1.200
+D1;Çift kanatlı dolap;Mobilya;80;55;185;28;45;-90;0.440
+S1;Çalışma koltuğu;Mobilya;62;62;112;275;150;180;0.384
+S2;Misafir sandalyesi;Mobilya;48;54;82;33;120;-90;0.259
+A1;Sağ duvar tezgâhı;Mobilya;130;60;72;340;205;90;0.780
+C1;Ayaklı askılık (portmanto);Mobilya;38;38;178;300;24;0;0.144
+W1;Pedallı çöp kovası;Mobilya;30;30;42;243;100;0;0.090
+E1;24" ekran;Ekipman;55;20;42;296;76;-10;0.169
+E2;Masaüstü bilgisayar;Ekipman;20;45;42;345;88;4;0.107
 E3;Klavye;Ekipman;44;15;3;292;116;-8;0.096
 E4;Mouse;Ekipman;7;11;4;330;120;-8;0.010
-E5;Klasor / not defteri;Ekipman;24;32;3;237;107;-6;0.093
-E6;Kalemlik (hasir);Ekipman;11;11;20;268;73;0;0.012
-E7;Zimba / kutu;Ekipman;12;7;4;249;75;-8;0.011
-E8;Bardak altligi;Ekipman;11;11;1;243;97;0;0.012
-E9;Fotokopi / yazici;Ekipman;58;42;44;340;175;90;0.244
-E10;Kupa (odul);Ekipman;13;13;27;340;250;0;0.017
-X1;Mavi klasor;Esya;8;30;32;10;26;4;0.031
-X2;Eski CRT monitor;Esya;34;32;28;29;30;-6;0.131
+E5;Klasör / not defteri;Ekipman;24;32;3;237;107;-6;0.093
+E6;Kalemlik;Ekipman;11;11;20;268;73;0;0.012
+E7;Zımba / kutu;Ekipman;12;7;4;249;75;-8;0.011
+E8;Bardak altlığı;Ekipman;11;11;1;243;97;0;0.012
+E9;Fotokopi / yazıcı;Ekipman;58;42;44;340;175;90;0.244
+E10;Kupa (ödül);Ekipman;13;13;27;340;250;0;0.017
+X1;Mavi klasör;Esya;8;30;32;10;26;4;0.031
+X2;Eski CRT ekran;Esya;34;32;28;29;30;-6;0.131
 X3;Kutu oyunu;Esya;30;22;6;29;64;102;0.094
 X4;Futbol topu;Esya;22;22;22;78;36;0;0.048
 X5;Karton rulo;Esya;38;12;12;76;11;4;0.057

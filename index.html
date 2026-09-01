@@ -100,6 +100,15 @@ table.sch tr:hover td{background:var(--raise);color:var(--txt)}
 table.sch td.n{text-align:right;font-family:var(--mono);font-variant-numeric:tabular-nums;
   color:var(--txt-3);white-space:nowrap}
 table.sch tr:hover td.n{color:var(--acc)}
+table.sch th.eye,table.sch td.eye{width:20px;padding-right:6px;text-align:left}
+table.sch td.eye input{width:13px;height:13px;accent-color:var(--acc);cursor:pointer;
+  margin:0;vertical-align:middle}
+table.sch tr.grp{cursor:default}
+table.sch tr.grp td{color:var(--txt-3);font-size:10px;letter-spacing:.09em;
+  text-transform:uppercase;font-weight:600;padding-top:10px;border-bottom:none}
+table.sch tr.grp:hover td{background:none;color:var(--txt-3)}
+table.sch tr.off td{opacity:.38}
+table.sch tr.off td.eye{opacity:1}
 .poz{display:inline-block;font-family:var(--mono);font-size:10px;font-weight:600;
   color:var(--acc);background:var(--acc-dim);background:rgba(242,193,28,.11);
   border:1px solid rgba(242,193,28,.28);border-radius:2px;padding:0 4px;margin-right:6px}
@@ -178,7 +187,7 @@ button.scheme.on .kind{border-color:rgba(242,193,28,.35);color:var(--acc)}
   border:1px solid var(--line);border-radius:2px;padding:0 3px;background:var(--sink)}
 
 /* ------------------------------------------------------- olcum okumasi */
-#readout{position:fixed;right:342px;top:12px;z-index:11;background:rgba(29,27,34,.96);
+#readout{position:fixed;right:342px;bottom:12px;z-index:11;background:rgba(29,27,34,.96);
   border:1px solid var(--acc);border-radius:4px;padding:9px 13px;font-size:12px;
   display:none;backdrop-filter:blur(8px);max-width:290px;box-shadow:var(--shadow)}
 #readout .big{font-family:var(--mono);font-size:21px;font-weight:600;color:var(--acc);
@@ -187,6 +196,19 @@ button.scheme.on .kind{border-color:rgba(242,193,28,.35);color:var(--acc)}
 #readout .sm{color:var(--txt-3);font-size:10.5px;margin-top:3px;line-height:1.5;
   font-family:var(--mono)}
 #readout .sm.w{color:#d5b58c;font-family:var(--ui);font-size:10.5px}
+
+/* ------------------------------------------------------------- olcum */
+#mlab{position:fixed;inset:0;z-index:10;pointer-events:none}
+#mlab .ml{position:absolute;transform:translate(-50%,-50%);white-space:nowrap;
+  font-family:var(--mono);font-size:11px;font-weight:600;line-height:1;
+  padding:3px 6px;border-radius:3px;letter-spacing:.01em}
+#mlab .ml.no{background:#ffd23f;color:#231f10;width:16px;height:16px;padding:0;
+  border-radius:50%;display:flex;align-items:center;justify-content:center;
+  box-shadow:0 0 0 2px rgba(29,27,34,.75)}
+#mlab .ml.dist{background:#ffd23f;color:#231f10;font-size:13px;padding:4px 8px;
+  transform:translate(-50%,-140%);box-shadow:0 2px 8px rgba(0,0,0,.45)}
+#mlab .ml.pre{background:rgba(29,27,34,.9);color:#cdc7b4;
+  transform:translate(-50%,-140%);border:1px solid #6b6656}
 
 #toggle{position:fixed;right:12px;top:12px;z-index:12;width:32px;height:32px;
   background:rgba(29,27,34,.92);border:1px solid var(--line);border-radius:4px;

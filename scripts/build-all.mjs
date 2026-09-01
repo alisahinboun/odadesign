@@ -13,11 +13,11 @@ let fail = 0;
  * anlamli olanlar uretilir: mevcut hal + her paletin onerilen yerlesimle esi.
  */
 const COMBOS = [
-  ['p1', 'y1'],   // su anki hali
+  ['p1', 'y1'],   // su anki hali - karsilastirma tabani
   ['p2', 'y1'],   // sadece boya degisirse
-  ['p2', 'y2'],   // sakin yesil + gorusme kosesi
-  ['p3', 'y2'],   // acik mavi-gri + gorusme kosesi
-  ['p4', 'y3'],   // toprak tonlari + kapi disa acilan yerlesim
+  ['p2', 'y2'],   // sakin yesil + masayi geri cek (en ucuz mudahale)
+  ['p3', 'y3'],   // acik mavi-gri + tezgahla L
+  ['p4', 'y4'],   // toprak tonlari + masayi cek + dolabi arkaya al
 ];
 
 for (const [pid, lid] of COMBOS) {

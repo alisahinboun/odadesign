@@ -19,13 +19,13 @@ import {
 } from './config/room.js';
 import { buildRoom, buildLights, LAYERS, roomMetrics } from './model/index.js';
 import { buildPlanDimensions, buildElevationDimensions } from './viewer/dimensions.js';
-import { exportGLB, exportOBJ, exportPNG } from './export/gltf.js';
+import { exportGLB, exportOBJ, exportPNG, downloadsNS } from './export/gltf.js';
 import { createPipeline } from './viewer/render.js';
 import { createDragController } from './viewer/drag.js';
 import { cm } from './lib/geom.js';
-import { doorSwingLimit, metrics } from './lib/analysis.js';
+import { doorSwingLimit, metrics, deskClearance, doorSight } from './lib/analysis.js';
 import { palettes, layouts, resolveDesign, defaultPalette, defaultLayout, getPalette, getLayout } from './config/design.js';
-import { applyScheme } from './config/room.js';
+import { applyScheme, userHidden } from './config/room.js';
 import { clearMaterialCache } from './lib/materials.js';
 
 /* ===================================================== SAHNE KURULUMU */
@@ -116,12 +116,19 @@ function dragGroupOf(id) {
 
 /* Katman kayitlari: layer -> [Object3D] */
 let layerMap = new Map();
+/** id -> o esyaya ait sahne nesneleri (tek tek gizleyip acmak icin) */
+let itemMap = new Map();
 function indexLayers(node) {
   node.traverse((o) => {
     const l = o.userData?.layer;
     if (l) {
       if (!layerMap.has(l)) layerMap.set(l, []);
       layerMap.get(l).push(o);
+    }
+    const id = o.userData?.item?.id;
+    if (id) {
+      if (!itemMap.has(id)) itemMap.set(id, []);
+      itemMap.get(id).push(o);
     }
   });
 }
@@ -141,6 +148,23 @@ function applyLayers() {
     for (const o of objs) o.visible = on;
   }
   applyCutaway();
+  applyItemVisibility();
+}
+
+/**
+ * Kullanicinin tek tek kapattigi esyalar. Katman gorunurlugunden SONRA
+ * uygulanir, yoksa katman anahtari kapatilan esyayi geri acar.
+ * Bu yalnizca GORUNTUYU etkiler - olculer, denetim ve metraj degismez
+ * (analysis.js inRoom() kullanir).
+ */
+function applyItemVisibility() {
+  for (const [id, objs] of itemMap) {
+    if (userHidden.has(id)) for (const o of objs) o.visible = false;
+  }
+}
+function setItemHidden(id, off) {
+  if (off) userHidden.add(id); else userHidden.delete(id);
+  applyLayers();
 }
 
 /* ============================================ OTOMATIK KESIT (BEBEK EVI) */
@@ -260,7 +284,11 @@ addEventListener('keydown', (e) => {
       e.code === 'ShiftLeft' || e.code === 'Space') walk.keys.add(e.code);
   if (e.code === 'Escape' && walk.on) setWalk(false);
   if (e.code === 'KeyG' && !e.metaKey && !e.ctrlKey) setWalk(!walk.on);
-  if (e.code === 'KeyM') { measure.on = !measure.on; measure.pts = []; updateReadout(); buildUI(); }
+  if (e.code === 'KeyM') { setMeasure(!measure.on); }
+  if (e.code === 'Escape' && measure.on) {
+    measure.pts.length ? (measure.pts = [], measure.hover = null, drawMeasure(), updateReadout())
+                       : setMeasure(false);
+  }
   if (e.code === 'KeyE' && !e.metaKey && !e.ctrlKey) setEditMode(!editMode);
   if (e.code === 'KeyR' && editMode && selected?.item) {
     dragger.rotate(e.shiftKey ? -15 : 15);
@@ -275,8 +303,20 @@ addEventListener('keyup', (e) => walk.keys.delete(e.code));
  * basili surukleyerek bakma da desteklenir.
  */
 let dragLook = false;
+let mHoverT = 0;
 renderer.domElement.addEventListener('pointermove', (e) => {
-  if (editMode && dragger.state.dragging) { dragger.move(e); }
+  if (editMode && dragger.state.dragging) { dragger.move(e); return; }
+  if (measure.on) {
+    // her karede raycast pahali; 40 ms'de bir yeter
+    const now = performance.now();
+    if (now - mHoverT < 40) return;
+    mHoverT = now;
+    const h = pick(e);
+    const np = h ? snapPoint(h) : null;
+    const snapped = !!(h && np && np.distanceTo(h.point) > 1e-6);
+    renderer.domElement.style.cursor = snapped ? 'cell' : 'crosshair';
+    if (measure.pts.length === 1) { measure.hover = np; drawMeasure(); updateReadout(); }
+  }
 });
 addEventListener('pointerup', () => {
   if (dragger.end()) { controls.enabled = activeCam === camera && !walk.on; buildUI(); }
@@ -320,8 +360,12 @@ function stepWalk(dt) {
 
 /* ================================================= OLCME + SECME ARACI */
 const ray = new THREE.Raycaster();
-const measure = { on: false, pts: [], group: new THREE.Group() };
+const measure = { on: false, pts: [], hover: null, group: new THREE.Group() };
 scene.add(measure.group);
+/** Olcum etiketleri (HTML) - 3B noktalar her karede ekrana yansitilir */
+const mLabels = document.createElement('div');
+mLabels.id = 'mlab';
+document.body.appendChild(mLabels);
 let selected = null;
 const selBox = new THREE.BoxHelper(new THREE.Object3D(), 0xf2c11c);
 selBox.visible = false; selBox.material.depthTest = false; selBox.material.linewidth = 2;
@@ -357,8 +401,8 @@ renderer.domElement.addEventListener('pointerdown', (ev) => {
     }
   }
   if (measure.on) {
-    measure.pts.push(hit.point.clone());
-    if (measure.pts.length > 2) measure.pts = [hit.point.clone()];
+    if (measure.pts.length >= 2) measure.pts = [];
+    measure.pts.push(snapPoint(hit));
     drawMeasure();
     updateReadout();
   } else {
@@ -372,20 +416,109 @@ renderer.domElement.addEventListener('pointerdown', (ev) => {
   }
 });
 
+/**
+ * Tiklanan noktayi carptigi parcanin en yakin KOSESINE cekiyoruz. Serbest elle
+ * bir yuzeyin tam kenarini tutturmak imkansiza yakin; 10 cm icindeki kose
+ * yakalanirsa olcu "141.7" degil "140" cikiyor.
+ */
+function snapPoint(hit) {
+  const p = hit.point.clone();
+  const o = hit.object;
+  if (!o.geometry) return p;
+  o.geometry.computeBoundingBox();
+  const bb = o.geometry.boundingBox;
+  if (!bb) return p;
+  let best = null, bd = cm(10);
+  for (let i = 0; i < 8; i++) {
+    const c = new THREE.Vector3(
+      i & 1 ? bb.max.x : bb.min.x,
+      i & 2 ? bb.max.y : bb.min.y,
+      i & 4 ? bb.max.z : bb.min.z,
+    ).applyMatrix4(o.matrixWorld);
+    const dd = c.distanceTo(p);
+    if (dd < bd) { bd = dd; best = c; }
+  }
+  return best || p;
+}
+
+const MEAS_COL = 0xffd23f;
+function mDot(p, n) {
+  const g = new THREE.Group();
+  const s = new THREE.Mesh(new THREE.SphereGeometry(cm(2.4), 16, 12),
+    new THREE.MeshBasicMaterial({ color: MEAS_COL, depthTest: false, toneMapped: false }));
+  s.renderOrder = 999; g.add(s);
+  // koyu halka: acik zeminde de gorunsun
+  const r = new THREE.Mesh(new THREE.SphereGeometry(cm(3.4), 16, 12),
+    new THREE.MeshBasicMaterial({ color: 0x1d1b22, depthTest: false, toneMapped: false,
+      transparent: true, opacity: 0.55, side: THREE.BackSide }));
+  r.renderOrder = 998; g.add(r);
+  g.position.copy(p);
+  g.userData.labelText = String(n);
+  return g;
+}
+/** Iki nokta arasina KALIN boru - THREE.Line her zaman 1 piksel kalir, gorunmuyor */
+function mTube(a, b, col = MEAS_COL, rad = 0.7) {
+  const dir = new THREE.Vector3().subVectors(b, a);
+  const len = dir.length();
+  if (len < 1e-6) return null;
+  const geo = new THREE.CylinderGeometry(cm(rad), cm(rad), len, 8, 1, true);
+  const m = new THREE.Mesh(geo, new THREE.MeshBasicMaterial({ color: col, depthTest: false, toneMapped: false }));
+  m.position.copy(a).add(b).multiplyScalar(0.5);
+  m.quaternion.setFromUnitVectors(new THREE.Vector3(0, 1, 0), dir.clone().normalize());
+  m.renderOrder = 999;
+  return m;
+}
+
 function drawMeasure() {
   measure.group.clear();
-  const mat = new THREE.LineBasicMaterial({ color: 0xf2c11c, depthTest: false });
-  for (const p of measure.pts) {
-    const s = new THREE.Mesh(new THREE.SphereGeometry(cm(1.6), 12, 8),
-      new THREE.MeshBasicMaterial({ color: 0xf2c11c, depthTest: false }));
-    s.position.copy(p); s.renderOrder = 999;
-    measure.group.add(s);
+  measure.group.userData.labels = [];
+  if (!measure.on) { syncMeasureLabels(); return; }
+  measure.pts.forEach((p, i) => {
+    const dot = mDot(p, i + 1);
+    measure.group.add(dot);
+    measure.group.userData.labels.push({ p: p.clone(), text: String(i + 1), kind: 'no' });
+  });
+  // ikinci nokta konmadiysa imlece kadar sonuk bir kilavuz cizgi
+  if (measure.pts.length === 1 && measure.hover) {
+    const t = mTube(measure.pts[0], measure.hover, 0x8f8a7a, 0.35);
+    if (t) { t.material.transparent = true; t.material.opacity = 0.75; measure.group.add(t); }
+    const d = measure.pts[0].distanceTo(measure.hover) * 100;
+    measure.group.userData.labels.push({
+      p: measure.pts[0].clone().add(measure.hover).multiplyScalar(0.5),
+      text: d.toFixed(1) + ' cm', kind: 'pre',
+    });
   }
   if (measure.pts.length === 2) {
-    const l = new THREE.Line(new THREE.BufferGeometry().setFromPoints(measure.pts), mat);
-    l.renderOrder = 999;
-    measure.group.add(l);
+    const [a, b] = measure.pts;
+    const t = mTube(a, b);
+    if (t) measure.group.add(t);
+    const d = a.distanceTo(b) * 100;
+    measure.group.userData.labels.push({
+      p: a.clone().add(b).multiplyScalar(0.5), text: d.toFixed(1) + ' cm', kind: 'dist',
+    });
   }
+  syncMeasureLabels();
+}
+
+/** 3B noktalari ekran koordinatina cevirip HTML etiketleri yerlestirir */
+function syncMeasureLabels() {
+  const list = (measure.on && measure.group.userData.labels) || [];
+  while (mLabels.children.length > list.length) mLabels.lastChild.remove();
+  while (mLabels.children.length < list.length) {
+    const e = document.createElement('div');
+    mLabels.appendChild(e);
+  }
+  const w = renderer.domElement.clientWidth, h = renderer.domElement.clientHeight;
+  list.forEach((l, i) => {
+    const el2 = mLabels.children[i];
+    el2.className = 'ml ' + l.kind;
+    el2.textContent = l.text;
+    const v = l.p.clone().project(activeCam);
+    const vis = v.z < 1;
+    el2.style.display = vis ? 'block' : 'none';
+    el2.style.left = ((v.x * 0.5 + 0.5) * w).toFixed(1) + 'px';
+    el2.style.top = ((-v.y * 0.5 + 0.5) * h).toFixed(1) + 'px';
+  });
 }
 
 /* =============================================== SEMA DEGISTIRME */
@@ -413,6 +546,7 @@ function setDesign(pId, lId) {
   scene.add(modelRoot, dimPlan, dimElev);
 
   layerMap = new Map();
+  itemMap = new Map();
   indexLayers(modelRoot);
   indexLayers(lights.group);
   layerMap.set('dimPlan', [dimPlan]);
@@ -454,15 +588,23 @@ updateHead();
 
 function updateReadout() {
   if (measure.on) {
-    if (measure.pts.length === 2) {
-      const d = measure.pts[0].distanceTo(measure.pts[1]) * 100;
-      const dx = Math.abs(measure.pts[0].x - measure.pts[1].x) * 100;
-      const dy = Math.abs(measure.pts[0].y - measure.pts[1].y) * 100;
-      const dz = Math.abs(measure.pts[0].z - measure.pts[1].z) * 100;
+    const [a, b] = measure.pts;
+    if (a && b) {
+      const d = a.distanceTo(b) * 100;
+      // sahne metre; X/Z plan ekseni, Y kot
+      const dx = Math.abs(a.x - b.x) * 100, dz = Math.abs(a.z - b.z) * 100, dy = Math.abs(a.y - b.y) * 100;
+      el.readout.style.borderColor = '';
       el.readout.innerHTML = `<div class="big">${d.toFixed(1)} cm</div>
-        <div class="sm">ΔX ${dx.toFixed(1)} · ΔY(kot) ${dy.toFixed(1)} · ΔZ ${dz.toFixed(1)} cm</div>`;
+        <div class="sm">yatay ${Math.hypot(dx, dz).toFixed(1)} · yükseklik farkı ${dy.toFixed(1)} cm</div>
+        <div class="sm w" style="margin-top:5px">Yeni ölçü için tekrar tıklayın ·
+          <kbd>Esc</kbd> temizler</div>`;
+    } else if (a) {
+      el.readout.innerHTML = '<div class="nm">1. nokta kondu</div>'
+        + '<div class="sm w">Şimdi ikinci noktaya tıklayın.</div>';
     } else {
-      el.readout.innerHTML = '<div class="sm w">Ölçmek için iki noktaya tıklayın.</div>';
+      el.readout.innerHTML = '<div class="nm">Ölçüm açık</div>'
+        + '<div class="sm w">Başlangıç noktasına tıklayın. İmleç bir köşeye '
+        + 'yaklaşınca oraya yapışır.</div>';
     }
     el.readout.style.display = 'block';
     return;
@@ -494,6 +636,14 @@ function updateReadout() {
   el.readout.style.display = 'none';
 }
 
+function setMeasure(on) {
+  measure.on = on;
+  measure.pts = []; measure.hover = null;
+  if (!on) renderer.domElement.style.cursor = '';
+  if (on && editMode) setEditMode(false);
+  drawMeasure(); updateReadout(); buildUI();
+}
+
 function buildUI() {
   /* ---- ust bar ---- */
   el.topbar.innerHTML = '';
@@ -519,7 +669,13 @@ function buildUI() {
   const bm = document.createElement('button');
   bm.textContent = measure.on ? 'Ölçüm açık  M' : 'Ölç  M';
   bm.className = measure.on ? 'act' : '';
-  bm.onclick = () => { measure.on = !measure.on; measure.pts = []; drawMeasure(); updateReadout(); buildUI(); };
+  bm.onclick = () => setMeasure(!measure.on);
+  if (measure.on) {
+    const bc = document.createElement('button');
+    bc.textContent = 'Temizle';
+    bc.onclick = () => { measure.pts = []; measure.hover = null; drawMeasure(); updateReadout(); };
+    el.topbar.appendChild(bc);
+  }
   el.topbar.appendChild(bm);
 
   if (editMode) {
@@ -527,6 +683,9 @@ function buildUI() {
       + '(<kbd>Shift+R</kbd> ters) · duvara yaklaşınca <b>yapışır</b> · '
       + 'çerçeve <b style="color:#6cc248">yeşilse</b> yerleşim geçerli, '
       + '<b style="color:#d4553a">kırmızıysa</b> sorunlu · <kbd>E</kbd> çık';
+  } else if (measure.on) {
+    el.hint.innerHTML = 'İki noktaya <b>tıklayın</b> · imleç köşelere <b>yapışır</b> '
+      + '(imleç <b>▣</b> olur) · <kbd>Esc</kbd> temizler · <kbd>M</kbd> kapatır';
   } else el.hint.innerHTML = walk.on
     ? '<kbd>W</kbd><kbd>A</kbd><kbd>S</kbd><kbd>D</kbd> yürü · <kbd>Shift</kbd> koş · fare ile (veya sol tuşa basılı sürükleyerek) bak · <kbd>Esc</kbd> çık'
     : measure.on
@@ -687,11 +846,9 @@ function secLayouts() {
 function secFindings() {
   const d = sec('Nelere dikkat etmeli', true);
   const desk = furniture.find((f) => f.id === 'M1');
-  const behind = Math.round(room.depth - (desk.pos[1] + desk.d / 2));
-  const deskLeft = desk.pos[0] - desk.w / 2;
-  const deskFront = desk.pos[1] - desk.d / 2;
-  const hingeGap = Math.round(Math.hypot(deskLeft - 99, deskFront) - (door.width - 2 * door.frameFace));
-  const facesDoor = (desk.rot || 0) === 0 && desk.pos[1] > room.depth * 0.4;
+  const CLR = deskClearance() || { cm: 0, by: '-' };
+  const SIGHT = doorSight() || { deg: 180, kind: 'arkada' };
+  const behind = Math.round(CLR.cm);
 
   const items = [
     { no: '1', title: 'Kapı tam açılıyor mu',
@@ -700,20 +857,27 @@ function secFindings() {
         ? `Kapı <b>${SWING.angle}°</b> açılıyor, önünde hiçbir şey yok.`
         : `Kapı ancak <b>${SWING.angle}°</b> açılıyor, sonra <b>${SWING.blocker || '—'}</b> engelliyor.
            Fotoğraflarda da kapının duvara tam yaslanmadığı görülüyor.` },
-    { no: '2', title: 'Masa kapıya ne kadar yakın',
-      ok: hingeGap >= 20,
-      body: `Masanın sol köşesi ile kapının açılma yayı arasında <b>${hingeGap} cm</b> var.
-             ${hingeGap >= 20 ? 'Rahat.' : 'Masayı birkaç cm sola kaydırırsanız kapı çarpar.'}` },
+    { no: '2', title: 'Kapıyı ne engelliyor',
+      ok: SWING.angle >= 150,
+      body: SWING.blocker === 'duvar'
+        ? `Kanadı artık hiçbir eşya değil, <b>sol duvar</b> durduruyor —
+           bu kapının fiziksel sınırı, daha fazlası mümkün değil.`
+        : `Kanadı <b>${SWING.blocker || '—'}</b> durduruyor. O eşyayı kapının
+           süpürdüğü alanın dışına alırsanız kapı ${'' + 152}° açılır.` },
     { no: '3', title: 'Oturunca kapıyı görüyor musunuz',
-      ok: facesDoor,
-      body: facesDoor
-        ? 'Masanın arkasında, kapıya dönük oturuyorsunuz — içeri gireni görüyorsunuz.'
-        : 'Kapıya sırtınız dönük oturuyorsunuz. İçeri gireni görmüyorsunuz.' },
+      ok: SIGHT.kind !== 'arkada',
+      body: SIGHT.kind === 'onunde'
+        ? `Kapı tam karşınızda (<b>${SIGHT.deg}°</b>) — içeri gireni doğrudan görüyorsunuz.`
+        : SIGHT.kind === 'yandan'
+          ? `Kapı yan tarafınızda (<b>${SIGHT.deg}°</b>) — göz ucuyla fark ediyorsunuz.`
+          : `Kapı arkanızda kalıyor (<b>${SIGHT.deg}°</b>). İçeri gireni görmek için
+             dönmeniz gerekiyor.` },
     { no: '4', title: 'Hareket alanı yeterli mi',
       ok: behind >= 100 && (M.alan - MET.doluAlan) >= 6.4,
       body: `Eşyalar <b>${MET.doluAlan.toFixed(1)} m²</b> kaplıyor, <b>${(M.alan - MET.doluAlan).toFixed(1)} m²</b>
-             boş kalıyor. Masanın arkasında sandalyeyi çekip geçebilmek için
-             <b>${behind} cm</b> var (en az 100 cm iyi olur).` },
+             boş kalıyor. Oturduğunuz tarafta sandalyeyi çekip geçebilmek için
+             <b>${behind} cm</b> var (en az 100 cm iyi olur; ilk engel:
+             <b>${CLR.by === 'duvar' ? 'duvar' : CLR.by}</b>).` },
     { no: '5', title: 'Pencere ölçüleri tahmin',
       ok: false,
       body: (() => {
@@ -818,24 +982,51 @@ function secTools() {
 
 function secSchedule() {
   const d = sec('Odadaki eşyalar');
-  const rows = [
-    ...furniture.map((f) => ({ ...f, grp: 'Mobilya' })),
-    ...equipment.map((f) => ({ ...f, tag: 'Ekipman', grp: 'Ekipman' })),
-    ...clutter.map((f) => ({ ...f, tag: 'Eşya', grp: 'Eşya' })),
+  const groups = [
+    ['Mobilya', furniture],
+    ['Masa üstü', equipment],
+    ['Dağınık eşya', clutter],
   ];
+  const n = document.createElement('p');
+  n.className = 'note';
+  n.innerHTML = 'Satıra tıklayın — kamera o eşyaya döner. Soldaki kutucuğu '
+    + 'kapatırsanız eşya <b>sadece görüntüden</b> kalkar; ölçüler ve uyarılar '
+    + 'değişmez.';
+  d.body.appendChild(n);
+
   const t = document.createElement('table');
   t.className = 'sch';
-  t.innerHTML = '<thead><tr><th>Eşya</th><th>en×boy×yükseklik</th></tr></thead>';
+  t.innerHTML = '<thead><tr><th class="eye"></th><th>Eşya</th><th>en×boy×yükseklik</th></tr></thead>';
   const tb = document.createElement('tbody');
-  for (const r of rows) {
-    const tr = document.createElement('tr');
-    tr.innerHTML = `<td><span class="poz">${r.id}</span>${r.name}</td>
-                    <td class="n">${r.w}×${r.d}×${r.h}</td>`;
-    tr.onclick = () => focusItem(r);
-    tb.appendChild(tr);
+  for (const [gname, arr] of groups) {
+    if (!arr.length) continue;
+    const gh = document.createElement('tr');
+    gh.className = 'grp';
+    gh.innerHTML = `<td colspan="3">${gname}</td>`;
+    tb.appendChild(gh);
+    for (const r of arr) {
+      const tr = document.createElement('tr');
+      const off = userHidden.has(r.id);
+      if (off) tr.classList.add('off');
+      tr.innerHTML = `<td class="eye"><input type="checkbox" ${off ? '' : 'checked'} title="göster / gizle"></td>
+                      <td><span class="poz">${r.id}</span>${r.name}</td>
+                      <td class="n">${r.w}×${r.d}×${r.h}</td>`;
+      const cb = tr.querySelector('input');
+      cb.onclick = (e) => e.stopPropagation();
+      cb.onchange = (e) => { setItemHidden(r.id, !e.target.checked); tr.classList.toggle('off', !e.target.checked); };
+      tr.onclick = () => focusItem(r);
+      tb.appendChild(tr);
+    }
   }
   t.appendChild(tb);
   d.body.appendChild(t);
+
+  const all = document.createElement('button');
+  all.className = 'btn';
+  all.style.marginTop = '8px';
+  all.textContent = 'Hepsini göster';
+  all.onclick = () => { userHidden.clear(); applyLayers(); buildUI(); };
+  d.body.appendChild(all);
 
   const wu = document.createElement('p');
   wu.className = 'note';
@@ -846,17 +1037,35 @@ function secSchedule() {
   return d;
 }
 
+/**
+ * Bir esyaya odaklan.
+ *
+ * place() MERKEZ tabanli calisir, yani it.pos zaten esyanin ortasidir - eskiden
+ * buraya ayrica yari en/boy ekleniyordu ve kamera yanlis noktaya bakiyordu.
+ * Kamera, esyadan ODANIN MERKEZINE dogru cekilir; boylece duvara dayali bir
+ * esyaya her zaman odanin icinden bakilir. Mesafe esyanin buyuklugune gore
+ * hesaplanir (kucuk esyada burnunu dayamaz, buyuk esyada disarida kalmaz);
+ * kamera oda disina cikabilir - onundeki duvar otomatik gizlenir.
+ */
 function focusItem(it) {
-  const rad = -(it.rot || 0) * Math.PI / 180;
-  const cxp = it.pos[0] + (it.w / 2) * Math.cos(rad) - (it.d / 2) * Math.sin(rad);
-  const cyp = it.pos[1] + (it.w / 2) * Math.sin(rad) + (it.d / 2) * Math.cos(rad);
-  const dist = Math.max(it.w, it.d, it.h) * 2.3 + 90;
-  const cx = Math.max(30, Math.min(room.width - 30, cxp + dist * 0.5));
-  const cy = Math.max(30, Math.min(room.depth - 30, cyp + dist * 0.55));
+  const cxp = it.pos[0], cyp = it.pos[1];
+  const cz = (it.h || 80) * 0.5;
+  const FOV = 45;
+  const r = Math.max(it.w || 60, it.d || 60, it.h || 60) / 2;
+  const dist = Math.max(140, Math.min(340, (r / Math.tan((FOV * Math.PI) / 360)) * 1.35));
+  let dx = room.width / 2 - cxp, dy = room.depth / 2 - cyp;
+  const len = Math.hypot(dx, dy);
+  if (len < 30) { dx = 0; dy = -1; } else { dx /= len; dy /= len; }
+  // ~32 derece yukaridan bakilir: onunde duran alcak esyalarin (masa, sandalye)
+  // uzerinden gorunur. Duz karsidan bakinca kucuk odada surekli baska bir
+  // esyanin arkasinda kaliyordu.
+  const cam = [cxp + dx * dist, cyp + dy * dist, Math.max(90, Math.min(272, cz + dist * 0.62))];
   setOrtho(false);
-  flyTo([cx, cy, (it.h || 80) * 0.75 + 60], [cxp, cyp, (it.h || 80) * 0.45], 55);
-  selected = { item: it, host: null, name: it.name };
-  selBox.visible = false;
+  flyTo(cam, [cxp, cyp, cz], FOV);
+  if (userHidden.has(it.id)) { userHidden.delete(it.id); applyLayers(); buildUI(); }
+  const host = dragGroupOf(it.id);
+  selected = { item: it, host: host || null, name: it.name };
+  if (host) { selBox.setFromObject(host); selBox.visible = true; } else selBox.visible = false;
   updateReadout();
 }
 
@@ -888,36 +1097,61 @@ function secExport() {
     <b>3B model</b> — bir mimara veya mobilyacıya vermek isterseniz; SketchUp,
     Blender gibi programlarla açılır.<br>
     Yazdırılabilir plan ve ölçü föyü proje klasöründe: <code>docs/drawings/</code></p>`;
-  if (window.self !== window.top) {
-    // Gomulu (iframe) gosterimde tarayici indirmeyi engeller; olu dugme
-    // birakmamak icin butonlar devre disi birakilir ve nedeni yazilir.
-    for (const b of wrap.querySelectorAll('.btn')) {
-      b.disabled = true;
-      b.style.opacity = '.45';
-      b.style.cursor = 'not-allowed';
-      b.title = 'Gömülü görünümde tarayıcı indirmeye izin vermiyor';
-    }
+  d.body.appendChild(wrap);
+
+  const kilit = (btn, sebep) => {
+    btn.disabled = true; btn.style.opacity = '.45';
+    btn.style.cursor = 'not-allowed'; btn.title = sebep;
+  };
+  // Gomulu (iframe) gosterimde tarayici <a download> baglantisini calistirmaz.
+  // Yayinlanan sayfada bunun yerine `downloads` yetenegi devreye girer; o da
+  // yalnizca resim/metin turlerini kabul ettigi icin GLB ve OBJ kapali kalir.
+  const gomulu = window.self !== window.top;
+  if (gomulu) for (const b of wrap.querySelectorAll('.btn')) kilit(b, 'Kontrol ediliyor…');
+  downloadsNS().then((ns) => {
     const w = document.createElement('div');
     w.className = 'callout';
-    w.innerHTML = '<p class="note"><b>Gömülü görünümde indirme çalışmaz.</b> '
-      + 'GLB / OBJ / PNG almak için projeyi klonlayıp <code>npm install &amp;&amp; npm run dev</code> '
-      + 'ile kendi tarayıcınızda açın.</p>';
-    d.body.appendChild(w);
-  }
-  d.body.appendChild(wrap);
-  wrap.querySelector('#ex-glb').onclick = async (e) => {
-    e.target.textContent = 'Hazırlanıyor…';
-    try { await exportGLB(modelRoot, 'oda-model.glb'); e.target.textContent = 'İndi ✓'; }
-    catch (err) { console.error(err); e.target.textContent = 'Hata!'; }
-    setTimeout(() => { e.target.textContent = '3B model (GLB)'; }, 2200);
+    if (ns) {
+      for (const id of ['#ex-png', '#ex-png4']) {
+        const b = wrap.querySelector(id);
+        b.disabled = false; b.style.opacity = ''; b.style.cursor = ''; b.title = '';
+      }
+      for (const id of ['#ex-glb', '#ex-obj'])
+        kilit(wrap.querySelector(id), 'Tarayıcı bu dosya türünü buradan kaydetmiyor');
+      w.innerHTML = '<p class="note"><b>Resim indirme çalışıyor</b> — tarayıcı bir onay '
+        + 'kutusu gösterir. <b>3B model (GLB / OBJ) burada inmiyor</b>; onun için projeyi '
+        + 'bilgisayarınızda <code>npm install &amp;&amp; npm run dev</code> ile açın.</p>';
+    } else if (gomulu) {
+      for (const b of wrap.querySelectorAll('.btn')) kilit(b, 'Gömülü görünümde indirme kapalı');
+      w.innerHTML = '<p class="note"><b>Gömülü görünümde indirme çalışmaz.</b> '
+        + 'GLB / OBJ / PNG almak için projeyi klonlayıp <code>npm install &amp;&amp; npm run dev</code> '
+        + 'ile kendi tarayıcınızda açın.</p>';
+    } else return;
+    d.body.insertBefore(w, wrap);
+  });
+
+  // Yetenek yolunda kullanici onayi reddedebilir; her dugme sonucu yazar.
+  const bas = (btn, etiket, isi) => {
+    btn.onclick = async () => {
+      const eski = btn.textContent;
+      btn.textContent = 'Hazırlanıyor…';
+      try { await isi(); btn.textContent = 'İndi ✓'; }
+      catch (err) {
+        const kod = err && err.code;
+        btn.textContent = kod === 'declined' ? 'Vazgeçildi'
+          : kod === 'rejected_extension' ? 'Bu tür inmiyor'
+          : kod === 'too_large' ? 'Dosya çok büyük' : 'Olmadı';
+        if (!kod) console.error(err);
+      }
+      setTimeout(() => { btn.textContent = etiket; }, 2600);
+    };
   };
-  wrap.querySelector('#ex-obj').onclick = (e) => {
-    exportOBJ(modelRoot, 'oda-model.obj');
-    e.target.textContent = 'İndi ✓';
-    setTimeout(() => { e.target.textContent = '3B model (OBJ)'; }, 2200);
-  };
-  wrap.querySelector('#ex-png').onclick = () => exportPNG(renderer, scene, activeCam, 'oda-render.png', 2);
-  wrap.querySelector('#ex-png4').onclick = () => exportPNG(renderer, scene, activeCam, 'oda-render-4x.png', 4);
+  bas(wrap.querySelector('#ex-glb'), '3B model (GLB)', () => exportGLB(modelRoot, 'oda-model.glb'));
+  bas(wrap.querySelector('#ex-obj'), '3B model (OBJ)', () => exportOBJ(modelRoot, 'oda-model.obj'));
+  bas(wrap.querySelector('#ex-png'), 'Resmini kaydet',
+    () => exportPNG(renderer, scene, activeCam, 'oda-render.png', 2));
+  bas(wrap.querySelector('#ex-png4'), 'Büyük resim',
+    () => exportPNG(renderer, scene, activeCam, 'oda-render-4x.png', 4));
   return d;
 }
 
@@ -958,6 +1192,7 @@ function loop() {
   else if (activeCam === camera) controls.update();
   applyCutaway();
   if (selected?.host && selBox.visible) selBox.update();
+  if (measure.on) syncMeasureLabels();
   if (useAO && pipeline) {
     pipeline.setCamera(activeCam);
     pipeline.composer.render();

@@ -102,7 +102,7 @@
        text-anchor="middle" transform="rotate(-90 238.20 189.00)">80</text>
 <line x1="238.40" y1="121.00" x2="235.60" y2="121.00" stroke="#1b4f7a" stroke-width="0.18" /><line x1="238.40" y1="173.00" x2="235.60" y2="173.00" stroke="#1b4f7a" stroke-width="0.18" /><line x1="237.00" y1="121.00" x2="237.00" y2="173.00" stroke="#1b4f7a" stroke-width="0.18" /><line x1="236.00" y1="120.00" x2="238.00" y2="122.00" stroke="#1b4f7a" stroke-width="0.3" /><line x1="236.00" y1="172.00" x2="238.00" y2="174.00" stroke="#1b4f7a" stroke-width="0.3" /><text x="238.20" y="147.00" font-size="2.5" fill="#1b4f7a"
        text-anchor="middle" transform="rotate(-90 238.20 147.00)">130</text>
-<text x="144.80" y="118.00" font-size="2.5" fill="#b8860b" text-anchor="middle" font-weight="700">P1 Pencere (3 kanatli, ortadaki acilir)</text>
+<text x="144.80" y="118.00" font-size="2.5" fill="#b8860b" text-anchor="middle" font-weight="700">P1 Pencere (ortadaki kanat açılır)</text>
 <rect x="132.20" y="181.00" width="23.60" height="20.00" fill="#f2f3f4" stroke="#111318" stroke-width="0.45" />
 <line x1="135.15" y1="181.00" x2="135.15" y2="201.00" stroke="#5a626e" stroke-width="0.2" />
 <line x1="138.10" y1="181.00" x2="138.10" y2="201.00" stroke="#5a626e" stroke-width="0.2" />
@@ -118,18 +118,18 @@
        text-anchor="middle" transform="rotate(-90 250.20 147.00)">290</text>
 <line x1="77.00" y1="223.60" x2="77.00" y2="226.40" stroke="#1b4f7a" stroke-width="0.18" /><line x1="225.00" y1="223.60" x2="225.00" y2="226.40" stroke="#1b4f7a" stroke-width="0.18" /><line x1="77.00" y1="225.00" x2="225.00" y2="225.00" stroke="#1b4f7a" stroke-width="0.18" /><line x1="76.00" y1="226.00" x2="78.00" y2="224.00" stroke="#1b4f7a" stroke-width="0.3" /><line x1="224.00" y1="226.00" x2="226.00" y2="224.00" stroke="#1b4f7a" stroke-width="0.3" /><text x="151.00" y="223.90" font-size="2.5" fill="#1b4f7a" text-anchor="middle" >370</text>
 <text x="63.00" y="69.00" font-size="2.4" fill="#a4552f" text-anchor="start" >⚠ Pencere ölçüleri fotoğraf oranlamasıdır — yerinde ölçülmelidir (docs/roleve.md §9).</text>
-<rect x="102.60" y="160.20" width="24.80" height="44.80" fill="#fbfaf8" stroke="#5a626e" stroke-width="0.4" />
-<circle cx="115.00" cy="155.20" r="3.10" fill="#fffdf5" stroke="#b8860b" stroke-width="0.3"/><text x="115.00" y="156.15" font-size="2.5" fill="#7a5c05" text-anchor="middle" font-weight="700">S1</text>
-<text x="115.00" y="182.60" font-size="2.1" fill="#98a0ab" text-anchor="middle" >62x112</text>
-<rect x="199.00" y="172.20" width="21.60" height="32.80" fill="#fbfaf8" stroke="#5a626e" stroke-width="0.4" />
-<circle cx="209.80" cy="167.20" r="3.10" fill="#fffdf5" stroke="#b8860b" stroke-width="0.3"/><text x="209.80" y="168.15" font-size="2.5" fill="#7a5c05" text-anchor="middle" font-weight="700">S3</text>
-<text x="209.80" y="188.60" font-size="2.1" fill="#98a0ab" text-anchor="middle" >54x82</text>
-<rect x="171.00" y="183.00" width="28.00" height="22.00" fill="#fbfaf8" stroke="#5a626e" stroke-width="0.4" />
-<circle cx="185.00" cy="178.00" r="3.10" fill="#fffdf5" stroke="#b8860b" stroke-width="0.3"/><text x="185.00" y="178.95" font-size="2.5" fill="#7a5c05" text-anchor="middle" font-weight="700">Y1</text>
-<text x="185.00" y="194.00" font-size="2.1" fill="#98a0ab" text-anchor="middle" >70x55</text>
+<rect x="128.60" y="160.20" width="24.80" height="44.80" fill="#fbfaf8" stroke="#5a626e" stroke-width="0.4" />
+<circle cx="141.00" cy="155.20" r="3.10" fill="#fffdf5" stroke="#b8860b" stroke-width="0.3"/><text x="141.00" y="156.15" font-size="2.5" fill="#7a5c05" text-anchor="middle" font-weight="700">S1</text>
+<text x="141.00" y="182.60" font-size="2.1" fill="#98a0ab" text-anchor="middle" >62x112</text>
+<rect x="101.20" y="175.00" width="30.00" height="30.00" fill="#fbfaf8" stroke="#5a626e" stroke-width="0.4" />
+<circle cx="116.20" cy="170.00" r="3.10" fill="#fffdf5" stroke="#b8860b" stroke-width="0.3"/><text x="116.20" y="170.95" font-size="2.5" fill="#7a5c05" text-anchor="middle" font-weight="700">M1</text>
+<text x="116.20" y="190.00" font-size="2.1" fill="#98a0ab" text-anchor="middle" >75x75</text>
+<rect x="202.80" y="131.00" width="22.00" height="74.00" fill="#fbfaf8" stroke="#5a626e" stroke-width="0.4" />
+<circle cx="213.80" cy="126.00" r="3.10" fill="#fffdf5" stroke="#b8860b" stroke-width="0.3"/><text x="213.80" y="126.95" font-size="2.5" fill="#7a5c05" text-anchor="middle" font-weight="700">D1</text>
+<text x="213.80" y="168.00" font-size="2.1" fill="#98a0ab" text-anchor="middle" >55x185</text>
 <rect x="77.00" y="176.20" width="24.00" height="28.80" fill="#fbfaf8" stroke="#5a626e" stroke-width="0.4" />
 <circle cx="89.00" cy="171.20" r="3.10" fill="#fffdf5" stroke="#b8860b" stroke-width="0.3"/><text x="89.00" y="172.15" font-size="2.5" fill="#7a5c05" text-anchor="middle" font-weight="700">A1</text>
 <text x="89.00" y="190.60" font-size="2.1" fill="#98a0ab" text-anchor="middle" >60x72</text>
 <text x="63.00" y="63.00" font-size="3.2" fill="#111318" text-anchor="start" font-weight="700">C GORUNUSU — Arka duvar — pencere ve radyatör</text>
-<rect x="197.00" y="263.00" width="78.00" height="30.00" fill="#ffffff" stroke="#111318" stroke-width="0.4" /><line x1="197.00" y1="271.00" x2="275.00" y2="271.00" stroke="#111318" stroke-width="0.25" /><line x1="197.00" y1="278.50" x2="275.00" y2="278.50" stroke="#5a626e" stroke-width="0.18" /><line x1="197.00" y1="285.00" x2="275.00" y2="285.00" stroke="#5a626e" stroke-width="0.18" /><text x="200.00" y="268.60" font-size="3.2" fill="#111318" text-anchor="start" font-weight="700">Oda Tasarimi / Room Design</text><text x="200.00" y="276.00" font-size="2.9" fill="#111318" text-anchor="start" >C gorunusu — Arka duvar — pencere ve radyatör</text><text x="200.00" y="282.60" font-size="2.3" fill="#5a626e" text-anchor="start" >Olcek 1:25  ·  Olculer cm  ·  Pafta M-04</text><text x="272.00" y="268.60" font-size="2.6" fill="#b8860b" text-anchor="end" font-weight="700">32 Açık mavi-gri + Görüşme köşesi</text><text x="200.00" y="289.50" font-size="2.1" fill="#5a626e" text-anchor="start" >R00  2026-09-01  ·  parametrik model: src/config/room.js</text>
+<rect x="197.00" y="263.00" width="78.00" height="30.00" fill="#ffffff" stroke="#111318" stroke-width="0.4" /><line x1="197.00" y1="271.00" x2="275.00" y2="271.00" stroke="#111318" stroke-width="0.25" /><line x1="197.00" y1="278.50" x2="275.00" y2="278.50" stroke="#5a626e" stroke-width="0.18" /><line x1="197.00" y1="285.00" x2="275.00" y2="285.00" stroke="#5a626e" stroke-width="0.18" /><text x="200.00" y="268.60" font-size="3.2" fill="#111318" text-anchor="start" font-weight="700">Oda Tasarimi / Room Design</text><text x="200.00" y="276.00" font-size="2.9" fill="#111318" text-anchor="start" >C gorunusu — Arka duvar — pencere ve radyatör</text><text x="200.00" y="282.60" font-size="2.3" fill="#5a626e" text-anchor="start" >Olcek 1:25  ·  Olculer cm  ·  Pafta M-04</text><text x="272.00" y="268.60" font-size="2.6" fill="#b8860b" text-anchor="end" font-weight="700">33 Açık mavi-gri + Tezgâhla L kur</text><text x="200.00" y="289.50" font-size="2.1" fill="#5a626e" text-anchor="start" >R00  2026-09-01  ·  parametrik model: src/config/room.js</text>
 </svg>

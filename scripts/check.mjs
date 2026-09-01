@@ -16,8 +16,8 @@ import {
   room, partition, door, furniture, equipment, clutter, wallItems, wallUnits, ceiling,
   windows, radiators,
 } from '../src/config/room.js';
-import { footprint as rect, overlap, doorSwingLimit, metrics } from '../src/lib/analysis.js';
-import { isVisible } from '../src/config/room.js';
+import { footprint as rect, overlap, doorSwingLimit, metrics, deskClearance, doorSight } from '../src/lib/analysis.js';
+import { inRoom as isVisible } from '../src/config/room.js';
 import { resolveDesign, palettes, layouts, getPalette, getLayout } from '../src/config/design.js';
 import { applyScheme } from '../src/config/room.js';
 
@@ -198,15 +198,18 @@ function gapCheck(aId, bId, axis, min, what) {
   else ok(`${what}: ${aId}-${bId} arasi ${g.toFixed(0)} cm`);
 }
 // masa arkasi calisma/gecis bosluğu
-const desk = R2('M1');
-if (desk) {
-  const behind = room.depth - desk.y1;
-  behind < 100
-    ? warn(`Masa arkasi calisma bosluğu ${behind.toFixed(0)} cm (koltuk + gecis icin en az 100-110 cm onerilir)`)
-    : ok(`Masa arkasi calisma bosluğu ${behind.toFixed(0)} cm`);
+const dcl = deskClearance();
+if (dcl) {
+  dcl.cm < 100
+    ? warn(`Masanin oturma tarafinda ${dcl.cm.toFixed(0)} cm var (${dcl.by}); koltuk + gecis icin 100-110 cm onerilir`)
+    : ok(`Masanin oturma tarafinda ${dcl.cm.toFixed(0)} cm serbest (ilk engel: ${dcl.by})`);
 }
-gapCheck('D1', 'S2', 'y', 0, 'Sol duvar sirasi');
-gapCheck('S2', 'K2', 'y', 0, 'Sol duvar sirasi');
+const ds = doorSight();
+if (ds) {
+  ds.kind === 'arkada'
+    ? warn(`Masaya oturunca kapi arkada kaliyor (bakis acisiyla ${ds.deg}deg) - iceri gireni gormezsiniz`)
+    : ok(`Masaya oturunca kapi ${ds.kind === 'onunde' ? 'onunuzde' : 'yaninizda'} (${ds.deg}deg)`);
+}
 // dolap kanatlarinin acilmasi
 const wr = R2('D1');
 if (wr) {
@@ -216,9 +219,11 @@ if (wr) {
     : ok('D1 kanatlari serbest aciliyor');
 }
 // ust dolap alt kotu - carpma riski
-wallUnits.zBottom < 175
+// Kafa carpma riski yalnizca ASILI bir ust dolapta anlamli. Duvarin tamamini
+// kaplayan (alt kotu tezgah/doseme seviyesinde olan) bir dolap duvari degil.
+wallUnits.zBottom >= 120 && wallUnits.zBottom < 175
   ? warn(`Ust dolap alt kotu ${wallUnits.zBottom} cm - kafa carpma riski (>=175 cm onerilir)`)
-  : ok(`Ust dolap alt kotu ${wallUnits.zBottom} cm`);
+  : ok(`Dolap duvari alt kotu ${wallUnits.zBottom} cm, ${Math.round((wallUnits.yEnd - wallUnits.yStart) / wallUnits.moduleWidth)} panel`);
 // tavan armatur sayisi / alan
 const areaM2 = (room.width * room.depth) / 10000;
 const nlum = ceiling.luminaires.length;

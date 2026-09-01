@@ -30,22 +30,18 @@
 | Üst kenar | `120 cm` + eleman + `150 cm` | 370 cm ile tutarlı |
 | `Masa = 160*75` | **160 × 75 cm** | `M1` |
 | `Dolap = 80` | **80 cm** | `D1` |
-| Üçüncü satır `… = 80` | **80 cm** ⚠️ | `K2` — *aşağıya bakınız* |
+| Üçüncü satır `… = 80` | *modelde yok* | *aşağıya bakınız* |
 
-### ⚠️ Krokide okunamayan satır — ve bu elemanın odada olmadığı
+### Krokide okunamayan satır — modele alınmadı
 Krokinin üçüncü donatı satırındaki kelime el yazısından çözülemedi (“Kanturi /
-Kitaplık / Konsol” okumaları mümkün). Model bunu 80 cm genişliğinde açık raflı bir
-modül (kitaplık) olarak kabul etti.
+Kitaplık / Konsol” okumaları mümkün). Bir dönem 80 cm'lik raflı bir modül (`K2`)
+olarak modele girmişti.
 
-**Bu eleman odada YOK.** Hiçbir fotoğrafta görünmüyor; arka tarafta da olmadığı
-teyit edildi. Model bunu **tasarım programı kalemi** olarak tutuyor:
-`proposedOnly: true` ile işaretli, mevcut durum (Ş‑0) ve boya‑only önerisinde (Ş‑1)
-**gizli**, yeniden yerleşim önerisinde (Ş‑2) **yeni eleman** olarak görünür.
-
-Bu, krokinin ne olduğu konusunda bir okuma daha getiriyor: kroki büyük ihtimalle
-sadece bir röleve değil, **kısmen bir tasarım programı** — masa ve dolap zaten var,
-üçüncü 80 cm'lik kalem ise istenen yeni eleman. Doğru tür farklıysa `src/config/room.js`
-içinde `K2` kaydının `type` alanını değiştirmek yeterli.
+**Bu eleman odada yok ve artık modelde de yok.** Hiçbir fotoğrafta görünmüyor,
+kullanıcı da olmadığını teyit etti; yerleşim önerilerinin hiçbirinde **yeni eşya
+alınmıyor**, bu yüzden `K2` (ve önerilen sehpa `Y1`, ikinci sandalye `S3`) modelden
+tamamen kaldırıldı. Kroki bu satırıyla bir istek belirtiyor olabilir; ileride
+alınırsa `src/config/room.js` içine yeni bir kayıt eklemek yeterli.
 
 ## 3. Fotoğraflardan çıkarılanlar — **orta güven** ⚠️
 
@@ -59,9 +55,10 @@ Aşağıdaki değerler kapı yüksekliği (≈205 cm) referans alınarak orantı
 | Tavan yeşil bandı | 18 cm | Foto 01/02 |
 | Yeşil düşey şerit genişliği | 35 cm | Saat çapı (≈30) ile karşılaştırma |
 | Bölüntü kalınlığı | 8 cm | Alüminyum profilli sistem, tipik |
-| Ankastre üst dolap alt kotu | 182 cm | Foto 02, kapı üst kotunun biraz altı |
-| Ankastre üst dolap üst kotu | 288 cm | Tavana yakın, ince gölge boşluğu var |
-| Ankastre dolap derinliği | 35 cm | Tipik üst dolap derinliği |
+| Dolap duvarı alt kotu | 75 cm ⚠️ | Foto 01, tezgâhın (72 cm) hemen üstü — **ölçülmeli** |
+| Dolap duvarı üst kotu | 288 cm | Tavana yakın, ince gölge boşluğu var |
+| Dolap duvarı derinliği | 35 cm | Tipik dolap derinliği |
+| Panel sayısı | **3** | Kullanıcı teyidi: duvarın tamamı üç panelle kaplı (3 × 90 cm) |
 | Döşeme karosu | 33 × 33 cm | Foto 03, derz aralığı |
 | Asma tavan plakası | 60 × 60 cm | Standart T24 taşıyıcılı sistem |
 | Tüm mobilya konumları | — | Fotoğraf perspektifinden yorum |
@@ -132,7 +129,7 @@ yapıyor. Foto 05'te tül perde tek uca toplanmış, pencerenin ancak 1/3'ünü 
 - [ ] Asma tavan üstü tesisat boşluğu ve kaba döşeme kotu
 - [ ] Kapı kasası dış ölçüsü (kabul: 120 × 205) ve menteşe yönü
 - [ ] Vasistas alt/üst kotları ve cam tipi (telli mi buzlu mu)
-- [ ] Ankastre üst dolapların gerçek derinliği ve modül genişliği
+- [ ] Dolap duvarının **alt kotu** (döşemeye kadar mı iniyor, tezgâhta mı bitiyor) ve derinliği
 - [ ] Arka duvar bitişi — kabul: tamamı yeşil (foto 05 ile doğrulandı ✓)
 - [ ] Priz / anahtar / veri prizi konumları (modeldekiler temsilîdir)
 - [ ] Radyatör veya klima var mı (fotoğraflarda görünmüyor)

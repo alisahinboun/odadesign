@@ -388,7 +388,7 @@ export function buildWallUnits() {
     // dikey ayirici
     g.add(box(u.depth, cw, h - cw * 2, mat.plain('#cfcbc2', 0.8), { x: x0, y, z: u.zBottom + cw, name: `ayirici-${i}` }));
     // iki sirali kapak (foto: kareye yakin modul)
-    const rows = 2, rh = (h - cw * 2 - (rows - 1) * u.gap) / rows;
+    const rows = u.rows || 2, rh = (h - cw * 2 - (rows - 1) * u.gap) / rows;
     for (let r = 0; r < rows; r++) {
       const cName = (i + r) % 2 === 0 ? colorName : (colorName === 'yellow' ? 'offwhite' : 'yellow');
       const z = u.zBottom + cw + r * (rh + u.gap);

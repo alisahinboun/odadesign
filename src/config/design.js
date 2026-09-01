@@ -41,7 +41,7 @@ export const palettes = [
       curtain:     { hex: '#efe9dd', label: 'Tül perde',                          ral: '-' },
       radiator:    { hex: '#f4f2ee', label: 'Radyatör',                           ral: 'RAL 9016' },
     },
-    wallUnitPattern: ['offwhite', 'yellow', 'offwhite', 'offwhite', 'yellow', 'offwhite'],
+    wallUnitPattern: ['offwhite', 'yellow', 'offwhite'],
     is: 'Boya: bölüntü panelleri + üç duvar + pencere duvarı + tavan bandı. '
       + 'Dolap kapakları yeniden kaplanır. Mobilya alımı yok.',
   },
@@ -60,7 +60,7 @@ export const palettes = [
       curtain:     { hex: '#eef0f0', label: 'Tül perde',                     ral: '-' },
       radiator:    { hex: '#f6f7f7', label: 'Radyatör',                      ral: 'RAL 9016' },
     },
-    wallUnitPattern: ['offwhite', 'offwhite', 'yellow', 'offwhite', 'offwhite', 'yellow'],
+    wallUnitPattern: ['offwhite', 'yellow', 'offwhite'],
     is: 'Boya: bölüntü panelleri + üç duvar + pencere duvarı + tavan bandı. '
       + 'Dolap kapakları yeniden kaplanır. Mobilya alımı yok.',
   },
@@ -79,87 +79,139 @@ export const palettes = [
       curtain:     { hex: '#f0e8da', label: 'Tül perde',                 ral: '-' },
       radiator:    { hex: '#f5f2ec', label: 'Radyatör',                  ral: 'RAL 9016' },
     },
-    wallUnitPattern: ['yellow', 'offwhite', 'yellow', 'offwhite', 'yellow', 'offwhite'],
+    wallUnitPattern: ['yellow', 'offwhite', 'yellow'],
     is: 'Boya: bölüntü panelleri + üç duvar + pencere duvarı + tavan bandı. '
       + 'Dolap kapakları yeniden kaplanır. Mobilya alımı yok.',
   },
 ];
 
 /* ============================================================ YERLESIMLER */
+/**
+ * KURAL: Bu yerlesimlerin HICBIRINDE yeni esya yok. Odada bugun ne varsa
+ * (masa, dolap, koltuk, sandalye, tezgah, portmanto, kova) sadece yeri
+ * degisiyor. Kapi da ICERI aciliyor - disa acilmasi mumkun degil.
+ *
+ * Kapinin sureklu bosta kalmasi gereken alan: mentese x=99'da, kanat 112 cm.
+ * Yani x 99..211 / y 0..112 dortgeninin icindeki CEYREK DAIRE hep bos kalmali.
+ */
 export const layouts = [
   {
     id: 'y1', code: '1', name: 'Şu anki hâli', kind: 'mevcut',
     summary: 'Eşyalar bugünkü yerlerinde.',
-    why: 'Karşılaştırma tabanı. Bu hâlde kapı ancak ~109° açılıyor, masaya oturunca '
-       + 'kapıya sırtınız dönük oluyor ve görüşme için ayrı bir oturma alanı yok — '
-       + 'öğrenci masanın karşısına oturmak zorunda.',
+    why: 'Karşılaştırma tabanı. Bu hâlde kapı tam açılmıyor — kanadı sol duvardaki '
+       + 'misafir sandalyesi durduruyor. Öğrencinin oturacağı tek yer masanın tam '
+       + 'karşısı ve bilgisayar ekranı doğrudan pencereye dönük.',
     furniture: {}, equipment: {}, clutter: {}, windows: {},
   },
 
   {
-    id: 'y2', code: '2', name: 'Görüşme köşesi', kind: 'oneri',
-    summary: 'Masa yerinde kalıyor; arka-sol köşede iki sandalye ve küçük sehpadan '
-           + 'oluşan ayrı bir görüşme alanı kuruluyor.',
-    why: 'Rehberlik görüşmesinde en önemli şey öğrencinin masanın KARŞISINA '
-       + 'oturmamasıdır — karşılıklı oturmak sorgu hissi verir. Odanın arka-sol köşesi '
-       + 'kapıdan doğrudan görünmüyor; öğrenci orada kendini daha rahat hissediyor. '
-       + 'Masa çalışma için yerinde kalıyor, görüşme ayrı bir alanda yapılıyor.',
+    id: 'y2', code: '2', name: 'Masayı geri çek', kind: 'oneri',
+    summary: 'Masa 53 cm sola, 55 cm arkaya kayıyor; sağ ucu tezgâha dayanıyor.',
+    why: 'En ucuz çözüm: tek başına masayı itmek, hiçbir şeyi taşımadan. Kapının '
+       + 'önü boşalıyor ve kapı ile masa arasında bir giriş alanı oluşuyor — '
+       + 'içeri giren kişi doğrudan masaya çarpmıyor. Öğrenci sandalyesi masanın '
+       + 'karşısına değil SOL UCUNA geçiyor; böylece 90 derece açıyla oturuluyor, '
+       + 'karşılıklı sorgu hissi kalkıyor. AMA kapı yine tam açılmıyor: kanadı '
+       + 'artık masa değil, ön-sol köşedeki dolap durduruyor (109° yerine 115°). '
+       + 'Tam açılması için Y-4\'e bakın.',
     furniture: {
-      D1: { pos: [28, 45], rot: -90 },        // dolap on-sol kosede, kilitli evrak icin
-      S2: { pos: [105, 148], rot: 0 },        // ogrenci sandalyesi
-      S3: { pos: [38, 205], rot: -90 },       // ikinci sandalye (90 derece acili)
-      Y1: { pos: [100, 205], rot: 0 },        // aralarindaki sehpa
-      S1: { pos: [275, 150], rot: 180 },
-      M1: { pos: [283, 97], rot: 0 },
-      A1: { pos: [340, 205], rot: 90 },
-      C1: { pos: [300, 24], rot: 0 },
-      W1: { pos: [243, 100], rot: 0 },
-    },
-    show: ['Y1', 'S3'],
-    windows: { P1: { curtain: { from: -2, to: 287, drop: 122, headroom: 3, hem: 8 } } },
-    is: 'Yeni alım: 1 küçük yuvarlak sehpa (Ø70) + 1 sandalye. '
-      + 'Tül perde boydan boya çekilir. Diğer her şey yerinde.',
-  },
-
-  {
-    id: 'y3', code: '3', name: 'Kapı dışa açılsın', kind: 'oneri',
-    summary: 'Kapı koridora doğru açılacak şekilde çevriliyor. Bu tek değişiklik '
-           + 'odanın ortasında ~2 m² kullanılabilir alan açıyor.',
-    why: 'Şu anda kapı içeri açıldığı için, menteşenin 112 cm çevresindeki alana '
-       + 'hiçbir şey konulamıyor — 10 m²lik odada bu çok büyük bir kayıp. Kapıyı '
-       + 'koridora çevirmek menteşe ve kasa işi; yangın yönetmeliği açısından da '
-       + 'kaçış yönüne açılması zaten tercih edilir. Açılan alanla masa duvara '
-       + 'dayanabiliyor, görüşme köşesi rahatlıyor ve oda gerçekten iki kişilik oluyor.',
-    door: { swing: 'out', openAngle: 95 },
-    furniture: {
-      M1: { pos: [283, 45], rot: 0 },         // masa artik duvara dayanabiliyor
-      S1: { pos: [275, 118], rot: 180 },
-      W1: { pos: [240, 52], rot: 0 },
-      C1: { pos: [150, 22], rot: 0 },         // portmanto kapinin yanina
-      S2: { pos: [95,  98], rot: 0 },
-      S3: { pos: [30, 148], rot: -90 },
-      Y1: { pos: [95, 150], rot: 0 },         // sehpa, dolabin kanat payini kapatmayacak kadar onde
-      D1: { pos: [28, 230], rot: -90 },       // dolap arka-sol koseye
+      M1: { pos: [230, 152], rot: 0 },    // sag ucu tezgahin on yuzune (x=310) dayanir
+      S1: { pos: [230, 197], rot: 180 },   // radyatorun 40 cm serbest seridine girmeyecek kadar onde
+      S2: { pos: [125, 155], rot: -90 },  // ogrenci masanin sol ucunda, 90 derece
+      W1: { pos: [180, 150], rot: 0 },
+      C1: { pos: [236,  26], rot: 0 },
+      D1: { pos: [ 28,  45], rot: -90 },
       A1: { pos: [340, 205], rot: 90 },
     },
     equipment: {
-      E1: { pos: [318, 30], rot: 0 },
-      E2: { pos: [350, 38], rot: 0 },
-      E3: { pos: [300, 64], rot: -8 },
-      E4: { pos: [338, 68], rot: -8 },
-      E5: { pos: [237, 55], rot: -6 },
-      E6: { pos: [268, 21], rot: 0 },
-      E7: { pos: [249, 23], rot: -8 },
-      E8: { pos: [243, 45], rot: 0 },
+      E1: { pos: [243, 131] }, E2: { pos: [292, 143] }, E3: { pos: [239, 171] },
+      E4: { pos: [277, 175] }, E5: { pos: [184, 162] }, E6: { pos: [215, 128] },
+      E7: { pos: [196, 130] }, E8: { pos: [190, 152] },
+    },
+    windows: { P1: { curtain: { from: -2, to: 287, drop: 122, headroom: 3, hem: 8 } } },
+    is: 'Yeni alım yok. Masa arkaya itilir, misafir sandalyesi masanın ucuna alınır, '
+      + 'portmanto kapının sağına geçer. Tül perde boydan boya çekilir.',
+  },
+
+  {
+    id: 'y3', code: '3', name: 'Tezgâhla L kur', kind: 'oneri',
+    summary: 'Masa 90° çevrilip sağ duvardaki tezgâha dayanıyor; ikisi kesintisiz '
+           + 'bir L çalışma yüzeyi oluyor.',
+    why: 'Odanın en iyi çözümü. Üç şeyi birden düzeltiyor: (1) Ekran artık pencereye '
+       + 'dönük değil, pencere solda kalıyor — camdan gelen ışık ekrana vurmuyor, '
+       + 'yansıma bitiyor. (2) Yazıcı kolun uzandığı yere geliyor; kalkmadan '
+       + 'dönüp alıyorsunuz. (3) Odanın sol yarısı tek parça boş kalıyor — '
+       + 'kapı sonuna kadar açılıyor ve 179 × 188 cm kesintisiz boş döşeme '
+       + 'kalıyor (tekerlekli sandalye rahat dönüyor). Öğrenci masanın ön ucuna, '
+       + '90 derece açıyla oturuyor; kapı ekseninin sağında kaldığı için '
+       + 'koridordan geçen biri onu görmüyor — ancak tam kapı boşluğunda duran '
+       + 'biri görebilir. Bedeli şu: masa döndüğü için oturduğunuzda kapı '
+       + 'arkanızda kalıyor, içeri gireni görmek için dönmeniz gerekiyor. '
+       + 'Bu sizi rahatsız ederse Y-4.',
+    furniture: {
+      M1: { pos: [272, 185], rot: 90 },   // 160 boy Y'de, arkasi tezgahin on yuzune (x=310) dayali
+      S1: { pos: [210, 185], rot: -90 },  // calisma koltugu, +X'e (masaya) donuk
+      S2: { pos: [272,  78], rot: 0 },    // ogrenci, masanin on ucunda 90 derece
+      W1: { pos: [222, 120], rot: 0 },
+      C1: { pos: [236,  26], rot: 0 },
+      D1: { pos: [ 28, 228], rot: -90 },  // dolap arka-sol koseye: kapinin yayi boşalir
+      A1: { pos: [340, 205], rot: 90 },
     },
     clutter: {
-      X1: { pos: [10, 211], rot: 4 }, X2: { pos: [29, 215], rot: -6 }, X3: { pos: [29, 249], rot: 102 },
-      X4: { pos: [200, 250], rot: 0 }, X5: { pos: [230, 258], rot: 0 },
+      X1: { pos: [10, 209] }, X2: { pos: [29, 213] }, X3: { pos: [29, 247] },
+      X4: { pos: [30, 150] }, X5: { pos: [22, 172] },
     },
-    show: ['Y1', 'S3'],
+    equipment: {
+      E1: { pos: [285, 185], rot: 90 },   // ekran kullaniciya (-X) donuk
+      E2: { pos: [297, 130], rot: 0 },
+      E3: { pos: [255, 185], rot: 90 },
+      E4: { pos: [255, 152], rot: 90 },
+      E5: { pos: [262, 240], rot: 90 },
+      E6: { pos: [300, 210], rot: 0 },
+      E7: { pos: [298, 228], rot: 90 },
+      E8: { pos: [252, 210], rot: 0 },
+    },
     windows: { P1: { curtain: { from: -2, to: 287, drop: 122, headroom: 3, hem: 8 } } },
-    is: 'Kapı kanadı ve kasası koridora açılacak şekilde çevrilir (marangoz işi). '
-      + 'Yeni alım: 1 yuvarlak sehpa + 1 sandalye. Tül perde boydan boya çekilir.',
+    is: 'Yeni alım yok. Masa 90° çevrilip tezgâha dayanır, dolap arka-sol köşeye '
+      + 'taşınır. Masa tablası 75, tezgâh 72 cm — aralarında 3 cm kot farkı kalır; '
+      + 'rahatsız ederse masanın ayakları kısaltılabilir. Tül perde boydan boya çekilir.',
+  },
+
+  {
+    id: 'y4', code: '4', name: 'Masayı çek + dolabı arkaya al', kind: 'oneri',
+    summary: 'Y-2 ile aynı masa düzeni, üstüne dolap ön-sol köşeden arka-sol '
+           + 'köşeye taşınıyor.',
+    why: 'Kapının sonuna kadar açılmasını engelleyen tek şey dolap. Dolabı arka '
+       + 'köşeye alınca kapı 115°den 152°ye çıkıyor — yani duvara dayanana kadar '
+       + 'açılıyor. Üstelik kapıdan girer girmez 185 cm yüksekliğinde bir dolapla '
+       + 'karşılaşmıyorsunuz; göz doğrudan pencereye gidiyor ve oda olduğundan '
+       + 'geniş görünüyor. Aynanın olduğu sarı panel de serbest kalıyor. '
+       + 'Dolap pencerenin soluna (x 0–55) denk geldiği için ışığı kesmiyor. '
+       + 'Masa dönmediği için oturduğunuzda kapı tam karşınızda kalıyor; '
+       + 'karşılığında ekran pencereye dönük kalıyor — tül perdenin boydan boya '
+       + 'çekilmesi şart.',
+    furniture: {
+      M1: { pos: [230, 152], rot: 0 },
+      S1: { pos: [230, 197], rot: 180 },
+      S2: { pos: [125, 155], rot: -90 },
+      W1: { pos: [180, 150], rot: 0 },
+      C1: { pos: [236,  26], rot: 0 },
+      D1: { pos: [ 28, 228], rot: -90 },  // arka-sol kose; pencere x=58'de basliyor
+      A1: { pos: [340, 205], rot: 90 },
+    },
+    equipment: {
+      E1: { pos: [243, 131] }, E2: { pos: [292, 143] }, E3: { pos: [239, 171] },
+      E4: { pos: [277, 175] }, E5: { pos: [184, 162] }, E6: { pos: [215, 128] },
+      E7: { pos: [196, 130] }, E8: { pos: [190, 152] },
+    },
+    clutter: {
+      X1: { pos: [10, 209] }, X2: { pos: [29, 213] }, X3: { pos: [29, 247] },
+      X4: { pos: [30, 100] }, X5: { pos: [22, 128] },
+    },
+    windows: { P1: { curtain: { from: -2, to: 287, drop: 122, headroom: 3, hem: 8 } } },
+    is: 'Yeni alım yok. Masa itilir, dolap boşaltılıp arka-sol köşeye taşınır '
+      + '(iki kişilik iş); üstündeki eşyalar da onunla gider. Tül perde boydan '
+      + 'boya çekilir.',
   },
 ];
 
@@ -182,8 +234,5 @@ export function resolveDesign(paletteId, layoutId) {
     clutter: L.clutter || {},
     wallItems: L.wallItems || {},
     windows: L.windows || {},
-    door: L.door || null,
-    show: L.show || [],
-    hide: L.hide || [],
   };
 }

@@ -55,7 +55,7 @@
        text-anchor="middle" transform="rotate(-90 238.20 189.00)">80</text>
 <line x1="238.40" y1="121.00" x2="235.60" y2="121.00" stroke="#1b4f7a" stroke-width="0.18" /><line x1="238.40" y1="173.00" x2="235.60" y2="173.00" stroke="#1b4f7a" stroke-width="0.18" /><line x1="237.00" y1="121.00" x2="237.00" y2="173.00" stroke="#1b4f7a" stroke-width="0.18" /><line x1="236.00" y1="120.00" x2="238.00" y2="122.00" stroke="#1b4f7a" stroke-width="0.3" /><line x1="236.00" y1="172.00" x2="238.00" y2="174.00" stroke="#1b4f7a" stroke-width="0.3" /><text x="238.20" y="147.00" font-size="2.5" fill="#1b4f7a"
        text-anchor="middle" transform="rotate(-90 238.20 147.00)">130</text>
-<text x="144.80" y="118.00" font-size="2.5" fill="#b8860b" text-anchor="middle" font-weight="700">P1 Pencere (3 kanatli, ortadaki acilir)</text>
+<text x="144.80" y="118.00" font-size="2.5" fill="#b8860b" text-anchor="middle" font-weight="700">P1 Pencere (ortadaki kanat açılır)</text>
 <rect x="132.20" y="181.00" width="23.60" height="20.00" fill="#f2f3f4" stroke="#111318" stroke-width="0.45" />
 <line x1="135.15" y1="181.00" x2="135.15" y2="201.00" stroke="#5a626e" stroke-width="0.2" />
 <line x1="138.10" y1="181.00" x2="138.10" y2="201.00" stroke="#5a626e" stroke-width="0.2" />

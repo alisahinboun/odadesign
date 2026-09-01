@@ -1,5 +1,5 @@
 <svg xmlns="http://www.w3.org/2000/svg" width="255mm" height="251.5mm" viewBox="0 0 255 251.5" font-family="Helvetica,Arial,sans-serif">
-<title>Tasarim karsilastirmasi 11 / 43</title>
+<title>Tasarim karsilastirmasi 11 / 33</title>
 <rect width="255" height="251.5" fill="#ffffff"/>
 <text x="22.00" y="28.00" font-size="5.4" fill="#14161a" text-anchor="start" font-weight="700" letter-spacing="0.5">TASARIM KARŞILAŞTIRMASI</text>
 <text x="22.00" y="35.00" font-size="3" fill="#5d6570" text-anchor="start" >Oda Tasarimi / Room Design · ofis / idari oda 370×270 cm · net 9.99 m² · ölçek 1:40</text>
@@ -49,73 +49,65 @@
 <line x1="79.00" y1="94.75" x2="86.50" y2="94.75" stroke="#14161a" stroke-width="0.9" />
 <circle cx="82.75" cy="98.50" r="2.70" fill="#fffdf5" stroke="#b8860b" stroke-width="0.28"/>
 <text x="82.75" y="99.35" font-size="2.2" fill="#7a5c05" text-anchor="middle" font-weight="700">W1</text>
-<text x="140.50" y="45.00" font-size="4.2" fill="#b8860b" text-anchor="start" font-weight="700">43  Toprak tonları + Kapı dışa açılsın</text>
-<text x="140.50" y="50.50" font-size="2.5" fill="#5d6570" text-anchor="start" >Kapı koridora doğru açılacak şekilde çevriliyor. Bu tek değişiklik odanın ortasında ~2 m² kullanılabilir alan açıyor.</text>
+<text x="140.50" y="45.00" font-size="4.2" fill="#b8860b" text-anchor="start" font-weight="700">33  Açık mavi-gri + Tezgâhla L kur</text>
+<text x="140.50" y="50.50" font-size="2.5" fill="#5d6570" text-anchor="start" >Masa 90° çevrilip sağ duvardaki tezgâha dayanıyor; ikisi kesintisiz bir L çalışma yüzeyi oluyor.</text>
 <rect x="140.50" y="56.00" width="92.50" height="67.50" fill="#f7f6f3" stroke="none" stroke-width="0" />
-<rect x="138.00" y="56.00" width="2.50" height="67.50" fill="#f1ede8" stroke="#14161a" stroke-width="0.55" />
-<rect x="233.00" y="56.00" width="2.50" height="67.50" fill="#f1ede8" stroke="#14161a" stroke-width="0.55" />
-<rect x="138.00" y="53.50" width="97.50" height="2.50" fill="#f1ede8" stroke="#14161a" stroke-width="0.55" />
-<rect x="140.50" y="123.50" width="23.75" height="2.00" fill="#f6f2ec" stroke="#14161a" stroke-width="0.55" />
+<rect x="138.00" y="56.00" width="2.50" height="67.50" fill="#eff0f0" stroke="#14161a" stroke-width="0.55" />
+<rect x="233.00" y="56.00" width="2.50" height="67.50" fill="#eff0f0" stroke="#14161a" stroke-width="0.55" />
+<rect x="138.00" y="53.50" width="97.50" height="2.50" fill="#eff0f0" stroke="#14161a" stroke-width="0.55" />
+<rect x="140.50" y="123.50" width="23.75" height="2.00" fill="#f6f6f4" stroke="#14161a" stroke-width="0.55" />
 <rect x="164.25" y="123.50" width="1.00" height="2.00" fill="#ccd1d8" stroke="#14161a" stroke-width="0.55" />
 <rect x="193.25" y="123.50" width="1.00" height="2.00" fill="#ccd1d8" stroke="#14161a" stroke-width="0.55" />
-<rect x="194.25" y="123.50" width="8.75" height="2.00" fill="#decbbc" stroke="#14161a" stroke-width="0.55" />
-<rect x="203.00" y="123.50" width="30.00" height="2.00" fill="#f6f2ec" stroke="#14161a" stroke-width="0.55" />
-<path d="M 193.25 123.50 A 28.00 28.00 0 0 0 137.27 122.52 L 165.25 123.50 Z"
-    fill="rgba(46,125,79,.10)" stroke="none"/>
+<rect x="194.25" y="123.50" width="8.75" height="2.00" fill="#c8d3d8" stroke="#14161a" stroke-width="0.55" />
+<rect x="203.00" y="123.50" width="30.00" height="2.00" fill="#f6f6f4" stroke="#14161a" stroke-width="0.55" />
+<path d="M 193.25 123.50 A 28.00 28.00 0 0 0 140.53 110.35 L 165.25 123.50 Z"
+    fill="rgba(184,134,11,.13)" stroke="none"/>
 <line x1="165.25" y1="123.50" x2="165.25" y2="95.50" stroke="#14161a" stroke-width="0.55" />
-<line x1="165.25" y1="123.50" x2="137.27" y2="122.52" stroke="#2e7d4f" stroke-width="0.35" stroke-dasharray="2 1.5"/>
-<text x="162.86" y="106.30" font-size="2.6" fill="#2e7d4f" text-anchor="middle" font-weight="700">178°</text>
+<line x1="165.25" y1="123.50" x2="140.53" y2="110.35" stroke="#b8860b" stroke-width="0.35" stroke-dasharray="2 1.5"/>
+<text x="167.19" y="106.25" font-size="2.6" fill="#b8860b" text-anchor="middle" font-weight="700">152°</text>
 <rect x="224.25" y="56.00" width="8.75" height="67.50" fill="none" stroke="#a2a9b2" stroke-width="0.28" stroke-dasharray="2.4 1.4"/>
-<rect x="191.25" y="102.88" width="40.00" height="18.75" fill="#ffffff" stroke="#5d6570" stroke-width="0.4" />
-<line x1="191.25" y1="102.88" x2="231.25" y2="102.88" stroke="#14161a" stroke-width="0.9" />
-<circle cx="211.25" cy="112.25" r="2.70" fill="#fffdf5" stroke="#b8860b" stroke-width="0.28"/>
-<text x="211.25" y="113.10" font-size="2.2" fill="#7a5c05" text-anchor="middle" font-weight="700">M1</text>
-<rect x="140.63" y="56.00" width="13.75" height="20.00" fill="#ffffff" stroke="#5d6570" stroke-width="0.4" />
-<line x1="140.63" y1="56.00" x2="140.63" y2="76.00" stroke="#14161a" stroke-width="0.9" />
-<circle cx="147.50" cy="66.00" r="2.70" fill="#fffdf5" stroke="#b8860b" stroke-width="0.28"/>
-<text x="147.50" y="66.85" font-size="2.2" fill="#7a5c05" text-anchor="middle" font-weight="700">D1</text>
-<rect x="155.50" y="77.25" width="17.50" height="17.50" fill="#ffffff" stroke="#5d6570" stroke-width="0.4" />
-<line x1="155.50" y1="77.25" x2="173.00" y2="77.25" stroke="#14161a" stroke-width="0.9" />
-<circle cx="164.25" cy="86.00" r="2.70" fill="#fffdf5" stroke="#b8860b" stroke-width="0.28"/>
-<text x="164.25" y="86.85" font-size="2.2" fill="#7a5c05" text-anchor="middle" font-weight="700">Y1</text>
-<rect x="141.25" y="80.50" width="13.50" height="12.00" fill="#ffffff" stroke="#5d6570" stroke-width="0.4" />
-<line x1="141.25" y1="80.50" x2="141.25" y2="92.50" stroke="#14161a" stroke-width="0.9" />
-<circle cx="148.00" cy="86.50" r="2.70" fill="#fffdf5" stroke="#b8860b" stroke-width="0.28"/>
-<text x="148.00" y="87.35" font-size="2.2" fill="#7a5c05" text-anchor="middle" font-weight="700">S3</text>
-<rect x="201.50" y="86.25" width="15.50" height="15.50" fill="#ffffff" stroke="#5d6570" stroke-width="0.4" />
-<line x1="201.50" y1="101.75" x2="217.00" y2="101.75" stroke="#14161a" stroke-width="0.9" />
-<circle cx="209.25" cy="94.00" r="2.70" fill="#fffdf5" stroke="#b8860b" stroke-width="0.28"/>
-<text x="209.25" y="94.85" font-size="2.2" fill="#7a5c05" text-anchor="middle" font-weight="700">S1</text>
-<rect x="158.25" y="92.25" width="12.00" height="13.50" fill="#ffffff" stroke="#5d6570" stroke-width="0.4" />
-<line x1="158.25" y1="92.25" x2="170.25" y2="92.25" stroke="#14161a" stroke-width="0.9" />
-<circle cx="164.25" cy="99.00" r="2.70" fill="#fffdf5" stroke="#b8860b" stroke-width="0.28"/>
-<text x="164.25" y="99.85" font-size="2.2" fill="#7a5c05" text-anchor="middle" font-weight="700">S2</text>
+<rect x="199.13" y="57.25" width="18.75" height="40.00" fill="#ffffff" stroke="#5d6570" stroke-width="0.4" />
+<line x1="217.88" y1="57.25" x2="217.88" y2="97.25" stroke="#14161a" stroke-width="0.9" />
+<circle cx="208.50" cy="77.25" r="2.70" fill="#fffdf5" stroke="#b8860b" stroke-width="0.28"/>
+<text x="208.50" y="78.10" font-size="2.2" fill="#7a5c05" text-anchor="middle" font-weight="700">M1</text>
+<rect x="140.63" y="56.50" width="13.75" height="20.00" fill="#ffffff" stroke="#5d6570" stroke-width="0.4" />
+<line x1="140.63" y1="56.50" x2="140.63" y2="76.50" stroke="#14161a" stroke-width="0.9" />
+<circle cx="147.50" cy="66.50" r="2.70" fill="#fffdf5" stroke="#b8860b" stroke-width="0.28"/>
+<text x="147.50" y="67.35" font-size="2.2" fill="#7a5c05" text-anchor="middle" font-weight="700">D1</text>
+<rect x="185.25" y="69.50" width="15.50" height="15.50" fill="#ffffff" stroke="#5d6570" stroke-width="0.4" />
+<line x1="185.25" y1="69.50" x2="185.25" y2="85.00" stroke="#14161a" stroke-width="0.9" />
+<circle cx="193.00" cy="77.25" r="2.70" fill="#fffdf5" stroke="#b8860b" stroke-width="0.28"/>
+<text x="193.00" y="78.10" font-size="2.2" fill="#7a5c05" text-anchor="middle" font-weight="700">S1</text>
+<rect x="202.50" y="97.25" width="12.00" height="13.50" fill="#ffffff" stroke="#5d6570" stroke-width="0.4" />
+<line x1="202.50" y1="97.25" x2="214.50" y2="97.25" stroke="#14161a" stroke-width="0.9" />
+<circle cx="208.50" cy="104.00" r="2.70" fill="#fffdf5" stroke="#b8860b" stroke-width="0.28"/>
+<text x="208.50" y="104.85" font-size="2.2" fill="#7a5c05" text-anchor="middle" font-weight="700">S2</text>
 <rect x="218.00" y="56.00" width="15.00" height="32.50" fill="#ffffff" stroke="#5d6570" stroke-width="0.4" />
 <line x1="233.00" y1="56.00" x2="233.00" y2="88.50" stroke="#14161a" stroke-width="0.9" />
 <circle cx="225.50" cy="72.25" r="2.70" fill="#fffdf5" stroke="#b8860b" stroke-width="0.28"/>
 <text x="225.50" y="73.10" font-size="2.2" fill="#7a5c05" text-anchor="middle" font-weight="700">A1</text>
-<rect x="173.25" y="113.25" width="9.50" height="9.50" fill="#ffffff" stroke="#5d6570" stroke-width="0.4" />
-<line x1="173.25" y1="113.25" x2="182.75" y2="113.25" stroke="#14161a" stroke-width="0.9" />
-<circle cx="178.00" cy="118.00" r="2.70" fill="#fffdf5" stroke="#b8860b" stroke-width="0.28"/>
-<text x="178.00" y="118.85" font-size="2.2" fill="#7a5c05" text-anchor="middle" font-weight="700">C1</text>
-<rect x="196.75" y="106.75" width="7.50" height="7.50" fill="#ffffff" stroke="#5d6570" stroke-width="0.4" />
-<line x1="196.75" y1="106.75" x2="204.25" y2="106.75" stroke="#14161a" stroke-width="0.9" />
-<circle cx="200.50" cy="110.50" r="2.70" fill="#fffdf5" stroke="#b8860b" stroke-width="0.28"/>
-<text x="200.50" y="111.35" font-size="2.2" fill="#7a5c05" text-anchor="middle" font-weight="700">W1</text>
+<rect x="194.75" y="112.25" width="9.50" height="9.50" fill="#ffffff" stroke="#5d6570" stroke-width="0.4" />
+<line x1="194.75" y1="112.25" x2="204.25" y2="112.25" stroke="#14161a" stroke-width="0.9" />
+<circle cx="199.50" cy="117.00" r="2.70" fill="#fffdf5" stroke="#b8860b" stroke-width="0.28"/>
+<text x="199.50" y="117.85" font-size="2.2" fill="#7a5c05" text-anchor="middle" font-weight="700">C1</text>
+<rect x="192.25" y="89.75" width="7.50" height="7.50" fill="#ffffff" stroke="#5d6570" stroke-width="0.4" />
+<line x1="192.25" y1="89.75" x2="199.75" y2="89.75" stroke="#14161a" stroke-width="0.9" />
+<circle cx="196.00" cy="93.50" r="2.70" fill="#fffdf5" stroke="#b8860b" stroke-width="0.28"/>
+<text x="196.00" y="94.35" font-size="2.2" fill="#7a5c05" text-anchor="middle" font-weight="700">W1</text>
 <text x="22.00" y="138.50" font-size="3.2" fill="#14161a" text-anchor="start" font-weight="700" letter-spacing="0.4">ÖLÇÜLEBİLİR FARK</text>
 <line x1="22.00" y1="143.50" x2="233.00" y2="143.50" stroke="#14161a" stroke-width="0.4" />
 <text x="108.70" y="148.50" font-size="2.8" fill="#5d6570" text-anchor="start" font-weight="700">11</text>
-<text x="175.00" y="148.50" font-size="2.8" fill="#b8860b" text-anchor="start" font-weight="700">43</text>
+<text x="175.00" y="148.50" font-size="2.8" fill="#b8860b" text-anchor="start" font-weight="700">33</text>
 <line x1="22.00" y1="151.00" x2="233.00" y2="151.00" stroke="#5d6570" stroke-width="0.25" />
 <text x="22.00" y="157.00" font-size="2.7" fill="#5d6570" text-anchor="start" >Kapı kanadı azami açıklık</text>
 <text x="108.70" y="157.00" font-size="2.8" fill="#14161a" text-anchor="start" >109° (S2 sınırlıyor)</text>
-<text x="175.00" y="157.00" font-size="2.8" fill="#2e7d4f" text-anchor="start" font-weight="700">178°</text>
+<text x="175.00" y="157.00" font-size="2.8" fill="#2e7d4f" text-anchor="start" font-weight="700">152° (duvar sınırlıyor)</text>
 <text x="170.50" y="157.00" font-size="2.4" fill="#2e7d4f" text-anchor="start" >▲</text>
 <line x1="22.00" y1="159.60" x2="233.00" y2="159.60" stroke="#e6e8ea" stroke-width="0.2" />
 <text x="22.00" y="164.40" font-size="2.7" fill="#5d6570" text-anchor="start" >Masa – süpürme yayı payı</text>
 <text x="108.70" y="164.40" font-size="2.8" fill="#14161a" text-anchor="start" >8 cm</text>
-<text x="175.00" y="164.40" font-size="2.8" fill="#a4552f" text-anchor="start" >-8 cm</text>
-<text x="170.50" y="164.40" font-size="2.4" fill="#a4552f" text-anchor="start" >▼</text>
+<text x="175.00" y="164.40" font-size="2.8" fill="#2e7d4f" text-anchor="start" font-weight="700">62 cm</text>
+<text x="170.50" y="164.40" font-size="2.4" fill="#2e7d4f" text-anchor="start" >▲</text>
 <line x1="22.00" y1="167.00" x2="233.00" y2="167.00" stroke="#e6e8ea" stroke-width="0.2" />
 <text x="22.00" y="171.80" font-size="2.7" fill="#5d6570" text-anchor="start" >Kullanıcı girişi görüyor mu</text>
 <text x="108.70" y="171.80" font-size="2.8" fill="#14161a" text-anchor="start" >hayır</text>
@@ -123,18 +115,16 @@
 <line x1="22.00" y1="174.40" x2="233.00" y2="174.40" stroke="#e6e8ea" stroke-width="0.2" />
 <text x="22.00" y="179.20" font-size="2.7" fill="#5d6570" text-anchor="start" >Masa arkası çalışma boşluğu</text>
 <text x="108.70" y="179.20" font-size="2.8" fill="#14161a" text-anchor="start" >136 cm</text>
-<text x="175.00" y="179.20" font-size="2.8" fill="#2e7d4f" text-anchor="start" font-weight="700">188 cm</text>
-<text x="170.50" y="179.20" font-size="2.4" fill="#2e7d4f" text-anchor="start" >▲</text>
+<text x="175.00" y="179.20" font-size="2.8" fill="#a4552f" text-anchor="start" >48 cm  ⚠</text>
+<text x="170.50" y="179.20" font-size="2.4" fill="#a4552f" text-anchor="start" >▼</text>
 <line x1="22.00" y1="181.80" x2="233.00" y2="181.80" stroke="#e6e8ea" stroke-width="0.2" />
 <text x="22.00" y="186.60" font-size="2.7" fill="#5d6570" text-anchor="start" >Mobilya ayak izi</text>
 <text x="108.70" y="186.60" font-size="2.8" fill="#14161a" text-anchor="start" >3.30 m²</text>
-<text x="175.00" y="186.60" font-size="2.8" fill="#a4552f" text-anchor="start" >4.05 m²</text>
-<text x="170.50" y="186.60" font-size="2.4" fill="#a4552f" text-anchor="start" >▼</text>
+<text x="175.00" y="186.60" font-size="2.8" fill="#14161a" text-anchor="start" >3.30 m²</text>
 <line x1="22.00" y1="189.20" x2="233.00" y2="189.20" stroke="#e6e8ea" stroke-width="0.2" />
 <text x="22.00" y="194.00" font-size="2.7" fill="#5d6570" text-anchor="start" >Serbest dolaşım alanı</text>
 <text x="108.70" y="194.00" font-size="2.8" fill="#14161a" text-anchor="start" >6.69 m²</text>
-<text x="175.00" y="194.00" font-size="2.8" fill="#a4552f" text-anchor="start" >5.94 m²</text>
-<text x="170.50" y="194.00" font-size="2.4" fill="#a4552f" text-anchor="start" >▼</text>
+<text x="175.00" y="194.00" font-size="2.8" fill="#14161a" text-anchor="start" >6.69 m²</text>
 <line x1="22.00" y1="196.60" x2="233.00" y2="196.60" stroke="#e6e8ea" stroke-width="0.2" />
 <text x="22.00" y="201.40" font-size="2.7" fill="#5d6570" text-anchor="start" >Pencere önü açık mı</text>
 <text x="108.70" y="201.40" font-size="2.8" fill="#14161a" text-anchor="start" >evet</text>
@@ -154,6 +144,6 @@
 <text x="175.00" y="223.60" font-size="2.8" fill="#14161a" text-anchor="start" >1 × 80 cm modül</text>
 <line x1="22.00" y1="226.20" x2="233.00" y2="226.20" stroke="#e6e8ea" stroke-width="0.2" />
 <text x="22.00" y="231.50" font-size="2.3" fill="#a2a9b2" text-anchor="start" >▲ iyileşme     ▼ gerileme (kabul edilebilir sınırlar içinde)     işaretsiz: fark yok</text>
-<text x="22.00" y="237.00" font-size="2.5" fill="#5d6570" text-anchor="start" >Kapsam — 43: Boya: bölüntü panelleri + üç duvar + pencere duvarı + tavan bandı. Dolap kapakları yeniden kaplanır. Mobilya alımı yok. Kapı kanadı ve kasası koridora açılacak şekilde çevrilir (marangoz işi). Yeni alım: 1 yuvarlak sehpa + 1 sandalye. Tül perde boydan boya çekilir.</text>
+<text x="22.00" y="237.00" font-size="2.5" fill="#5d6570" text-anchor="start" >Kapsam — 33: Boya: bölüntü panelleri + üç duvar + pencere duvarı + tavan bandı. Dolap kapakları yeniden kaplanır. Mobilya alımı yok. Yeni alım yok. Masa 90° çevrilip tezgâha dayanır, dolap arka-sol köşeye taşınır. Masa tablası 75, tezgâh 72 cm — aralarında 3 cm kot farkı kalır; rahatsız ederse masanın ayakları kısaltılabilir. Tül perde boydan boya çekilir.</text>
 <text x="22.00" y="242.00" font-size="2.3" fill="#a2a9b2" text-anchor="start" >Ölçüler modelden hesaplanmıştır (src/config/room.js + schemes.js). R00 · 2026-09-01 · ölçüler cm.</text>
 </svg>

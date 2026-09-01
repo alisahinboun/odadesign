@@ -40,11 +40,12 @@ npm run all:schemes  # üçünü, TÜM tasarım şemaları için
 npm run build        # tek dosyalık dağıtım (dist/index.html) — paylaşılabilir
 ```
 
-Belirli bir şema için:
+Belirli bir renk + yerleşim için:
 
 ```bash
-npm run check    -- --sema=s2
-npm run drawings -- --sema=s2      # docs/drawings/*-s2.svg
+npm run check    -- --palet=p3 --yerlesim=y3
+npm run drawings -- --palet=p3 --yerlesim=y3   # docs/drawings/*-p3y3.svg
+npm run secenekler                             # docs/secenekler.md'yi modelden üretir
 ```
 
 `npm run build` çıktısı **tek bir HTML dosyasıdır**; sunucu gerekmeden
@@ -130,20 +131,22 @@ açıldığını** ve dolaşım boşluklarını denetler.
 
 ## Renk ve yerleşim seçenekleri
 
-Oda bir **rehber öğretmen odası** olacak. Öneriler buna göre seçildi: öğrenci
-masanın karşısına değil, ~90° açıyla oturmalı; renkler sakin olmalı; kapıdan
-bakınca öğrenci doğrudan görünmemeli.
+Oda bir **rehber öğretmen odası** olacak. İki kısıt var: **yeni eşya alınmıyor**
+ve **kapı içeri açılıyor** (dışa çevrilemiyor). Öneriler buna göre seçildi:
+öğrenci masanın karşısına değil ~90° açıyla oturmalı, oturunca kapı görülmeli,
+ekrana pencereden yansıma gelmemeli.
 
 **Renk** (hiçbir şey taşınmaz, sadece boya): Şu anki · Sakin yeşil ·
 Açık mavi‑gri · Toprak tonları
-**Yerleşim** (boya değişmez): Şu anki · Görüşme köşesi · Kapı dışa açılsın
+**Yerleşim** (boya değişmez, **yeni eşya alınmaz**): Şu anki · Masayı geri çek ·
+Tezgâhla L kur · Masayı çek + dolabı arkaya al
 
 İkisi bağımsız — istediğiniz gibi eşleştirin. Ayrıntı ve gerekçeler:
 [`docs/secenekler.md`](docs/secenekler.md)
 
 ```bash
-npm run check    -- --palet=p2 --yerlesim=y3
-npm run drawings -- --palet=p2 --yerlesim=y3
+npm run check    -- --palet=p3 --yerlesim=y3
+npm run drawings -- --palet=p3 --yerlesim=y3
 npm run all:schemes                     # anlamlı 5 kombinasyon, hepsi
 npm run foy                             # yazdırılabilir ölçü föyü
 ```
@@ -185,7 +188,7 @@ src/
     textures.js         prosedürel dokular (hiç dış dosya yok)
   model/
     shell.js            döşeme, duvarlar, bölüntü, kapı, asma tavan, koridor
-    furniture.js        masa, dolap, kitaplık, koltuklar, kredenza, portmanto…
+    furniture.js        masa, dolap, koltuklar, tezgâh, portmanto…
     equipment.js        monitör, PC, yazıcı, duvar elemanları (saat, tablo, ayna…)
     index.js            derleyici + aydınlatma rigi
   viewer/

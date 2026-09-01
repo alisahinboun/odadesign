@@ -116,7 +116,7 @@ export const door = {
  */
 export const windows = [
   {
-    id: 'P1', name: 'Pencere (3 kanatli, ortadaki acilir)',
+    id: 'P1', name: 'Pencere (ortadaki kanat açılır)',
     wall: 'back',
     u: 58,            // duvarin sol ucundan (x=0 kosesinden) uzaklik  | foto - TAHMIN
     width: 285,       // kasa dis genisligi                            | foto - TAHMIN
@@ -152,7 +152,7 @@ export const windows = [
 /** Isitma - pencere altindaki dilimli radyator (foto 05) */
 export const radiators = [
   {
-    id: 'R1', name: 'Dilimli (kolonlu) radyator',
+    id: 'R1', name: 'Dilimli radyatör',
     wall: 'back',
     u: 173,           // duvarin sol ucundan | foto - TAHMIN
     width: 59,        // ~8 dilim            | foto - TAHMIN
@@ -186,7 +186,7 @@ export const context = {
  */
 export const furniture = [
   {
-    id: 'M1', tag: 'Masa', name: 'Calisma masasi',
+    id: 'M1', tag: 'Masa', name: 'Çalışma masası',
     type: 'desk',
     w: 160, d: 75, h: 75,          // kroki: "Masa = 160*75"
     pos: [283, 97], rot: 0,        // on-sag bolge, on duvara paralel
@@ -197,7 +197,7 @@ export const furniture = [
         + 'pratikte ~150 dereceden fazla acilamaz (bkz. docs/roleve.md, tespit T-3).',
   },
   {
-    id: 'D1', tag: 'Dolap', name: 'Cift kanatli elbise/evrak dolabi',
+    id: 'D1', tag: 'Dolap', name: 'Çift kanatlı dolap',
     type: 'wardrobe',
     w: 80, d: 55, h: 185,          // kroki: "Dolap = 80"
     pos: [28, 45], rot: -90,       // sirti SOL duvarda, on yuzu +X (odaya bakar)
@@ -207,61 +207,21 @@ export const furniture = [
         + 'kalir ve foto 03teki ayna oraya asilir.',
   },
   {
-    id: 'K2', tag: 'Modul', name: '80 cm rafli modul (YENI - krokide istenen)',
-    type: 'bookcase',
-    w: 80, d: 35, h: 185,          // kroki: ucuncu satir "... = 80"
-    pos: [23, 202], rot: -90,      // sol duvar, arka bolge
-    shelves: 5,
-    materials: { body: 'beech', back: 'beechDark' },
-    /**
-     * ⚠ BU ELEMAN ODADA YOK. Fotograflarin hicbirinde gorunmuyor; kullanici da
-     * arkada boyle bir sey olmadigini teyit etti. Krokinin ucuncu satirindaki
-     * okunamayan "... = 80" kaydindan turetildi ve TASARIM PROGRAMI kalemi
-     * olarak modelde tutuluyor: mevcut durum semasinda (S-0) ve boya-only
-     * onerisinde (S-1) GIZLI, yeniden yerlesim onerisinde (S-2) yeni eleman
-     * olarak GORUNUR.
-     */
-    proposedOnly: true,
-    note: 'ODADA YOK — krokideki okunamayan 80 cm lik kalemden turetilen YENI eleman. '
-        + 'Yalnizca S-2 onerisinde gorunur. Turu (kitaplik/dolap/kredenza) belirsiz; '
-        + 'type alanini degistirmek yeterli.',
-  },
-  {
-    id: 'Y1', tag: 'Sehpa', name: 'Yuvarlak gorusme sehpasi (YENI)',
-    type: 'roundTable',
-    w: 70, d: 70, h: 55,
-    pos: [95, 165], rot: 0,
-    materials: { top: 'beech', leg: 'steelDark' },
-    proposedOnly: true,
-    note: 'ODADA YOK. Rehberlik gorusmesi icin: iki sandalye arasinda kucuk bir '
-        + 'sehpa, ogrencinin cay/mendil/brosur koyabilecegi bir yuzey. Masanin '
-        + 'karsisina oturtmaktan cok daha az resmi bir kurulum.',
-  },
-  {
-    id: 'S3', tag: 'Sandalye', name: 'Ikinci misafir sandalyesi (YENI)',
-    type: 'stackChair',
-    w: 48, d: 54, h: 82,
-    pos: [30, 160], rot: -90,
-    materials: { upholstery: 'blackFabric', frame: 'steelDark' },
-    proposedOnly: true,
-    note: 'ODADA YOK. Ogrenci + veli birlikte gelebildigi icin ikinci sandalye.',
-  },
-  {
-    id: 'S1', tag: 'Koltuk', name: 'Yonetici calisma koltugu',
+    id: 'S1', tag: 'Koltuk', name: 'Çalışma koltuğu',
     type: 'officeChair',
     w: 62, d: 62, h: 112,
     pos: [275, 150], rot: 180,     // masaya donuk (-Y); A1 tezgahinin onunu kapatmaz, masanin altina itilmis
     materials: { upholstery: 'blackLeather', base: 'chrome' },
   },
   {
-    id: 'S2', tag: 'Sandalye', name: 'Misafir sandalyesi (istiflenebilir)',
+    id: 'S2', tag: 'Sandalye', name: 'Misafir sandalyesi',
     type: 'stackChair',
     w: 48, d: 54, h: 82,
     pos: [33, 120], rot: -90,      // sol duvarda, odaya donuk
     materials: { upholstery: 'blackFabric', frame: 'steelDark' },
   },
   {
-    id: 'A1', tag: 'Tezgah', name: 'Sag duvar tezgahi (yazici + evrak)',
+    id: 'A1', tag: 'Tezgah', name: 'Sağ duvar tezgâhı',
     type: 'credenza',
     w: 130, d: 60, h: 72,
     pos: [340, 205], rot: 90,      // sag duvar boyunca, pencere duvarina kadar
@@ -272,14 +232,14 @@ export const furniture = [
         + 'Uzunluk fotograftan oranlandi - yerinde olculmeli.',
   },
   {
-    id: 'C1', tag: 'Portmanto', name: 'Ayakli askilik',
+    id: 'C1', tag: 'Portmanto', name: 'Ayaklı askılık (portmanto)',
     type: 'coatStand',
     w: 38, d: 38, h: 178,
     pos: [300, 24], rot: 0,        // masa ile on duvar arasi, tablonun onunde
     materials: { frame: 'steelBlack' },
   },
   {
-    id: 'W1', tag: 'Cop kovasi', name: 'Pedalli cop kovasi',
+    id: 'W1', tag: 'Cop kovasi', name: 'Pedallı çöp kovası',
     type: 'bin',
     w: 30, d: 30, h: 42,
     pos: [243, 100], rot: 0,       // masa altinda
@@ -287,40 +247,51 @@ export const furniture = [
   },
 ];
 
-/** Sag duvardaki ankastre ust dolap bankosu (foto 01/02 - sari + krem kapaklar) */
+/**
+ * Sag duvardaki ankastre dolap duvari (foto 01/02 - sari + krem kapaklar).
+ *
+ * ⚠ KULLANICI DUZELTMESI: Bu dolaplar dar bir UST BANT degil; duvarin
+ * tamamini kapliyor ve genislik boyunca UC panel var. Buna gore 270 cm'lik
+ * duvar 3 x 90 cm modul olarak modellendi.
+ *
+ * ⚠ zBottom (dolabin alt kotu) hala TAHMIN. Foto 01'de saga dogru tezgahin
+ * (A1, ust kot 72) hemen ustunden basliyor gibi duruyor; 75 cm alindi.
+ * Dolap dosemeye kadar iniyorsa bu deger 0 yapilmali - yerinde olculmeli.
+ */
 export const wallUnits = {
-  id: 'AD1', name: 'Ankastre ust dolap bankosu',
+  id: 'AD1', name: 'Ankastre dolap duvarı',
   wall: 'right',
-  zBottom: 182,          // foto
+  zBottom: 75,           // foto - TAHMIN (tezgah ustu)
   zTop: 288,             // foto
   depth: 35,             // tipik
   yStart: 0, yEnd: 270,  // duvarin tamami
-  moduleWidth: 60,       // kapak modulu | foto
-  frontPattern: ['yellow', 'yellow', 'offwhite', 'yellow', 'offwhite', 'offwhite'],
+  moduleWidth: 90,       // 270 / 3 panel | kullanici
+  rows: 2,               // her panelde iki sirali kapak
+  frontPattern: ['yellow', 'offwhite', 'yellow'],
   gap: 0.4,
 };
 
 /* ----------------------------------------------- 5. EKIPMAN / MASA USTU */
 
 export const equipment = [
-  { id: 'E1', name: '24" monitor',          type: 'monitor',  w: 55, d: 20, h: 42, pos: [296,  76], rot: -10, onTop: 'M1' },
-  { id: 'E2', name: 'Masaustu bilgisayar',  type: 'pcTower',  w: 20, d: 45, h: 42, pos: [345,  88], rot: 4,   onTop: 'M1' },
+  { id: 'E1', name: '24" ekran',          type: 'monitor',  w: 55, d: 20, h: 42, pos: [296,  76], rot: -10, onTop: 'M1' },
+  { id: 'E2', name: 'Masaüstü bilgisayar',  type: 'pcTower',  w: 20, d: 45, h: 42, pos: [345,  88], rot: 4,   onTop: 'M1' },
   { id: 'E3', name: 'Klavye',               type: 'keyboard', w: 44, d: 15, h: 3,  pos: [292, 116], rot: -8,  onTop: 'M1' },
   { id: 'E4', name: 'Mouse',                type: 'mouse',    w: 7,  d: 11, h: 4,  pos: [330, 120], rot: -8,  onTop: 'M1' },
-  { id: 'E5', name: 'Klasor / not defteri', type: 'binder',   w: 24, d: 32, h: 3,  pos: [237, 107], rot: -6,  onTop: 'M1' },
-  { id: 'E6', name: 'Kalemlik (hasir)',     type: 'penPot',   w: 11, d: 11, h: 20, pos: [268,  73], rot: 0,   onTop: 'M1' },
-  { id: 'E7', name: 'Zimba / kutu',         type: 'smallBox', w: 12, d: 7,  h: 4,  pos: [249,  75], rot: -8,  onTop: 'M1' },
-  { id: 'E8', name: 'Bardak altligi',       type: 'coaster',  w: 11, d: 11, h: 1,  pos: [243,  97], rot: 0,   onTop: 'M1' },
-  { id: 'E9', name: 'Fotokopi / yazici',    type: 'printer',  w: 58, d: 42, h: 44, pos: [340, 175], rot: 90,  onTop: 'A1' },
+  { id: 'E5', name: 'Klasör / not defteri', type: 'binder',   w: 24, d: 32, h: 3,  pos: [237, 107], rot: -6,  onTop: 'M1' },
+  { id: 'E6', name: 'Kalemlik',     type: 'penPot',   w: 11, d: 11, h: 20, pos: [268,  73], rot: 0,   onTop: 'M1' },
+  { id: 'E7', name: 'Zımba / kutu',         type: 'smallBox', w: 12, d: 7,  h: 4,  pos: [249,  75], rot: -8,  onTop: 'M1' },
+  { id: 'E8', name: 'Bardak altlığı',       type: 'coaster',  w: 11, d: 11, h: 1,  pos: [243,  97], rot: 0,   onTop: 'M1' },
+  { id: 'E9', name: 'Fotokopi / yazıcı',    type: 'printer',  w: 58, d: 42, h: 44, pos: [340, 175], rot: 90,  onTop: 'A1' },
   // Foto 05: tezgahin pencere ucunda duran kupa
-  { id: 'E10', name: 'Kupa (odul)',         type: 'trophy',   w: 13, d: 13, h: 27, pos: [340, 250], rot: 0,   onTop: 'A1' },
+  { id: 'E10', name: 'Kupa (ödül)',         type: 'trophy',   w: 13, d: 13, h: 27, pos: [340, 250], rot: 0,   onTop: 'A1' },
 ];
 
 /** Dolap ustundeki esyalar (foto 01/03) */
 export const clutter = [
   // D1 dolabinin ustu (dolap -90 donuk oldugu icin ust yuzey x 0.5-55.5, y 5-85)
-  { id: 'X1', name: 'Mavi klasor',      type: 'binder3d',  w: 8,  d: 30, h: 32, pos: [ 10,  26], rot: 4  , onTop: 'D1' },
-  { id: 'X2', name: 'Eski CRT monitor', type: 'crt',       w: 34, d: 32, h: 28, pos: [ 29,  30], rot: -6 , onTop: 'D1' },
+  { id: 'X1', name: 'Mavi klasör',      type: 'binder3d',  w: 8,  d: 30, h: 32, pos: [ 10,  26], rot: 4  , onTop: 'D1' },
+  { id: 'X2', name: 'Eski CRT ekran', type: 'crt',       w: 34, d: 32, h: 28, pos: [ 29,  30], rot: -6 , onTop: 'D1' },
   { id: 'X3', name: 'Kutu oyunu',       type: 'boardGame', w: 30, d: 22, h: 6,  pos: [ 29,  64], rot: 102, onTop: 'D1' },
   // Doseme uzerinde, sari panelin dibinde (foto 01/03)
   { id: 'X4', name: 'Futbol topu',      type: 'ball',      w: 22, d: 22, h: 22, pos: [ 78, 36], rot: 0 },
@@ -334,11 +305,11 @@ export const clutter = [
  * z    : merkez kotu
  */
 export const wallItems = [
-  { id: 'T1', name: 'Duvar saati (OSYM)',       type: 'clock',   wall: 'front', u: 232, z: 228, dia: 30, note: 'Yesil serit uzerinde (foto 01/02)' },
+  { id: 'T1', name: 'Duvar saati',       type: 'clock',   wall: 'front', u: 232, z: 228, dia: 30, note: 'Yesil serit uzerinde (foto 01/02)' },
   { id: 'T2', name: 'Manzara tablosu',          type: 'picture', wall: 'front', u: 300, z: 198, w: 46, h: 40, art: 'landscape' },
-  { id: 'T3', name: 'Ayna (sari askili)',       type: 'mirror',  wall: 'front', u:  75, z: 152, w: 34, h: 40, note: 'Dolap ile kapi kasasi arasindaki bos sari panelde (foto 03)' },
-  { id: 'T4', name: 'Cerceveli belge + bayrak', type: 'picture', wall: 'right', u:  35, z: 248, w: 52, h: 66, art: 'certificate' },
-  { id: 'T5', name: 'Anahtar (aydinlatma)',     type: 'switch',  wall: 'front', u: 237, z: 122, w: 8,  h: 8 },
+  { id: 'T3', name: 'Ayna',       type: 'mirror',  wall: 'front', u:  75, z: 152, w: 34, h: 40, note: 'Dolap ile kapi kasasi arasindaki bos sari panelde (foto 03)' },
+  { id: 'T4', name: 'Çerçeveli belge + bayrak', type: 'picture', wall: 'right', u:  35, z: 248, w: 52, h: 66, art: 'certificate' },
+  { id: 'T5', name: 'Işık anahtarı',     type: 'switch',  wall: 'front', u: 237, z: 122, w: 8,  h: 8 },
   { id: 'T6', name: 'Priz',                     type: 'socket',  wall: 'right', u: 140, z:  40, w: 8,  h: 8 },
   { id: 'T7', name: 'Priz',                     type: 'socket',  wall: 'left',  u:  90, z:  40, w: 8,  h: 8 },
   { id: 'T8', name: 'Mantar pano',              type: 'pinboard', wall: 'right', u: 195, z: 150, w: 70, h: 52, note: 'Tezgahin uzerinde, pencereye yakin (foto 05)' },
@@ -423,7 +394,15 @@ export const meta = {
  */
 /** Semaya gore gizlenen elemanlar. buildRoom, denetim, cizim ve metraj bunu okur. */
 export const hidden = new Set();
-export const isVisible = (it) => !hidden.has(it.id);
+/**
+ * Kullanicinin arayuzden tek tek kapattigi kalemler. `hidden`den ayri tutulur:
+ * `hidden` semanin karari (sema degisince sifirlanir), `userHidden` kullanicinin
+ * karari (sema degisse de kalir). Ikisi de yalnizca GORUNURLUGU etkiler.
+ */
+export const userHidden = new Set();
+export const isVisible = (it) => !hidden.has(it.id) && !userHidden.has(it.id);
+/** Denetim/metraj icin: kullanici gizlese de eleman odada durmaya devam eder. */
+export const inRoom = (it) => !hidden.has(it.id);
 /** Yalnizca aktif semada bulunan mobilyalar */
 export const activeFurniture = () => furniture.filter(isVisible);
 
