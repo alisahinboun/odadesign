@@ -277,7 +277,7 @@ function drawElevation(side, code, name) {
   const H = MM(room.height);
   const len = (side === 'front' || side === 'back') ? room.width : room.depth;
   const L = MM(len);
-  const wMM = L + PAD * 2 + 72, hMM = H + PAD * 2 + 58;
+  const wMM = L + PAD * 2 + 72, hMM = H + PAD * 2 + 74;
   const ox = PAD + 22, oy = PAD + 16;
   const U = (u) => ox + MM(u);            // duvar boyunca
   const Z = (z) => oy + H - MM(z);        // kot
@@ -394,8 +394,10 @@ function drawElevation(side, code, name) {
     p.push(text(U(wi.u), Z(wi.z + h / 2) - 2.2, `${wi.id}  +${wi.z}`, 2.1, 'middle', C.acc));
   }
   if (wis.length) {
-    p.push(text(U(0), Z(room.height) - 6,
-      wis.map((x) => `${x.id} ${x.name} (+${x.z})`).join('   ·   '), 2.0, 'start', C.view));
+    // Eleman listesi paftanin altina, olcu zincirinin altina yazilir
+    p.push(text(U(0), Z(0) + (side === 'front' ? 30 : 22),
+      'Duvar elemanları:  ' + wis.map((x) => `${x.id} ${x.name} (+${x.z})`).join('   ·   '),
+      2.1, 'start', C.view));
   }
 
   p.push(text(ox, oy - 6, `${code} GORUNUSU — ${name}`, 3.2, 'start', C.txt, 'font-weight="700"'));

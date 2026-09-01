@@ -1,7 +1,7 @@
-<svg xmlns="http://www.w3.org/2000/svg" width="330mm" height="284mm"
-  viewBox="0 0 330 284" font-family="Helvetica,Arial,sans-serif">
+<svg xmlns="http://www.w3.org/2000/svg" width="330mm" height="300mm"
+  viewBox="0 0 330 300" font-family="Helvetica,Arial,sans-serif">
 <title>A gorunusu</title>
-<rect width="330" height="284" fill="#ffffff"/>
+<rect width="330" height="300" fill="#ffffff"/>
 <rect x="77.00" y="71.00" width="148.00" height="116.00" fill="#ffffff" stroke="#111318" stroke-width="0.5" />
 <line x1="73.80" y1="187.00" x2="228.20" y2="187.00" stroke="#111318" stroke-width="0.8" />
 <line x1="73.80" y1="71.00" x2="228.20" y2="71.00" stroke="#111318" stroke-width="0.5" />
@@ -94,7 +94,7 @@
 <text x="107.00" y="116.00" font-size="2.1" fill="#b8860b" text-anchor="middle" >T3  +152</text>
 <rect x="170.20" y="136.60" width="3.20" height="3.20" fill="#ffffff" stroke="#5a626e" stroke-width="0.4" />
 <text x="171.80" y="134.40" font-size="2.1" fill="#b8860b" text-anchor="middle" >T5  +122</text>
-<text x="77.00" y="65.00" font-size="2" fill="#5a626e" text-anchor="start" >T1 Duvar saati (OSYM) (+228)   ·   T2 Manzara tablosu (+198)   ·   T3 Ayna (sari askili) (+152)   ·   T5 Anahtar (aydinlatma) (+122)</text>
+<text x="77.00" y="217.00" font-size="2.1" fill="#5a626e" text-anchor="start" >Duvar elemanları:  T1 Duvar saati (OSYM) (+228)   ·   T2 Manzara tablosu (+198)   ·   T3 Ayna (sari askili) (+152)   ·   T5 Anahtar (aydinlatma) (+122)</text>
 <text x="77.00" y="65.00" font-size="3.2" fill="#111318" text-anchor="start" font-weight="700">A GORUNUSU — On boluntu / kapi duvari</text>
-<rect x="197.00" y="225.00" width="78.00" height="30.00" fill="#ffffff" stroke="#111318" stroke-width="0.4" /><line x1="197.00" y1="233.00" x2="275.00" y2="233.00" stroke="#111318" stroke-width="0.25" /><line x1="197.00" y1="240.50" x2="275.00" y2="240.50" stroke="#5a626e" stroke-width="0.18" /><line x1="197.00" y1="247.00" x2="275.00" y2="247.00" stroke="#5a626e" stroke-width="0.18" /><text x="200.00" y="230.60" font-size="3.2" fill="#111318" text-anchor="start" font-weight="700">Oda Tasarimi / Room Design</text><text x="200.00" y="238.00" font-size="2.9" fill="#111318" text-anchor="start" >A gorunusu — On boluntu / kapi duvari</text><text x="200.00" y="244.60" font-size="2.3" fill="#5a626e" text-anchor="start" >Olcek 1:25  ·  Olculer cm  ·  Pafta M-02</text><text x="272.00" y="230.60" font-size="2.6" fill="#b8860b" text-anchor="end" font-weight="700">Ş-2 Yeniden yerleşim</text><text x="200.00" y="251.50" font-size="2.1" fill="#5a626e" text-anchor="start" >R00  2026-09-01  ·  parametrik model: src/config/room.js</text>
+<rect x="197.00" y="241.00" width="78.00" height="30.00" fill="#ffffff" stroke="#111318" stroke-width="0.4" /><line x1="197.00" y1="249.00" x2="275.00" y2="249.00" stroke="#111318" stroke-width="0.25" /><line x1="197.00" y1="256.50" x2="275.00" y2="256.50" stroke="#5a626e" stroke-width="0.18" /><line x1="197.00" y1="263.00" x2="275.00" y2="263.00" stroke="#5a626e" stroke-width="0.18" /><text x="200.00" y="246.60" font-size="3.2" fill="#111318" text-anchor="start" font-weight="700">Oda Tasarimi / Room Design</text><text x="200.00" y="254.00" font-size="2.9" fill="#111318" text-anchor="start" >A gorunusu — On boluntu / kapi duvari</text><text x="200.00" y="260.60" font-size="2.3" fill="#5a626e" text-anchor="start" >Olcek 1:25  ·  Olculer cm  ·  Pafta M-02</text><text x="272.00" y="246.60" font-size="2.6" fill="#b8860b" text-anchor="end" font-weight="700">Ş-2 Yeniden yerleşim</text><text x="200.00" y="267.50" font-size="2.1" fill="#5a626e" text-anchor="start" >R00  2026-09-01  ·  parametrik model: src/config/room.js</text>
 </svg>
