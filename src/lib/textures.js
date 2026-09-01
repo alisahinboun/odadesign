@@ -409,34 +409,48 @@ const MP = {
   beak:  '#e0913c',
 };
 
-/** Muz yapragi: sivri uclu, orta damarli, kenari dilimli */
-function muzYapragi(g, { x, y, len, wid, ang, bend = 0.25, fill, vein, dilim = true, sap = 0, sapRenk }) {
+/**
+ * MUZ YAPRAGI.
+ * Referanstaki yaprak sivri ucgen degil: dipte ince, ortada genis, UCU
+ * YUVARLAK; guclu bir orta damar ve ona 30-40 derece aci yapan sik paralel
+ * yan damarlar var. Bazi yapraklarda damar aralarindan neredeyse orta damara
+ * kadar inen DERIN YIRTIKLAR bulunuyor (muz yapragi zamanla boyle yirtilir).
+ *
+ * Yirtiklar ayri bir cizim degil, DOLGU YOLUNUN kendisine isleniyor; ustune
+ * zemin rengiyle cizmek arkadaki yapraklari da silerdi.
+ *
+ * @param yirtik 0 = duz kenar, 1 = seyrek yirtik, 2 = sik yirtik
+ */
+function muzYapragi(g, { x, y, len, wid, ang, bend = 0.25, fill, vein, yirtik = 1, sap = 0, sapRenk }) {
   g.save();
   g.translate(x, y);
   g.rotate(ang);
   if (sap > 0) {
-    // Referanstaki gibi: yaprak ayasi uzun ince bir sapin ucunde durur
     g.strokeStyle = sapRenk || vein;
     g.lineCap = 'round';
-    g.lineWidth = Math.max(1.5, wid * 0.13);
-    g.beginPath(); g.moveTo(0, 0); g.quadraticCurveTo(sap * 0.5, bend * wid * 0.35, sap, bend * wid * 0.8); g.stroke();
-    g.translate(sap, bend * wid * 0.8);
+    g.lineWidth = Math.max(1.4, wid * 0.10);
+    g.beginPath(); g.moveTo(0, 0); g.quadraticCurveTo(sap * 0.5, bend * wid * 0.3, sap, bend * wid * 0.7); g.stroke();
+    g.translate(sap, bend * wid * 0.7);
   }
-  const N = 44;
-  const half = (t) => wid * Math.sin(Math.PI * Math.pow(t, 0.72));
-  const off = (t) => bend * wid * t * t * 2.2;      // uca dogru kivrilma
+
+  const N = 96;
+  // dipte ince -> ortada genis -> ucta yuvarlak
+  const half = (t) => wid * Math.pow(Math.sin(Math.PI * t), 0.58) * Math.min(1, t / 0.13);
+  const off = (t) => bend * wid * t * t * 2.0;
+  // yirtik konumlari: iki ornek genisliginde, orta damara %22'ye kadar inen kesik
+  const adim = yirtik === 2 ? 9 : 14;
+  const kesik = (i) => yirtik > 0 && i > N * 0.16 && i < N * 0.93 && (i % adim === 0 || i % adim === 1);
+
   const pts = [];
   for (let i = 0; i <= N; i++) {
     const t = i / N;
-    let h = half(t);
-    if (dilim && i > 3 && i < N - 3 && i % 5 === 0) h *= 0.74;   // yirtik kenar
-    pts.push([len * t, off(t) - h]);
+    pts.push([len * t, off(t) - (kesik(i) ? half(t) * 0.58 : half(t))]);
   }
   for (let i = N; i >= 0; i--) {
     const t = i / N;
-    let h = half(t);
-    if (dilim && i > 3 && i < N - 3 && (i + 2) % 5 === 0) h *= 0.74;
-    pts.push([len * t, off(t) + h]);
+    const alt = yirtik > 0 && i > N * 0.16 && i < N * 0.93
+      && ((i + Math.round(adim / 2)) % adim === 0 || (i + Math.round(adim / 2)) % adim === 1);
+    pts.push([len * t, off(t) + (alt ? half(t) * 0.58 : half(t))]);
   }
   g.beginPath();
   g.moveTo(pts[0][0], pts[0][1]);
@@ -444,27 +458,40 @@ function muzYapragi(g, { x, y, len, wid, ang, bend = 0.25, fill, vein, dilim = t
   g.closePath();
   g.fillStyle = fill; g.fill();
 
-  // orta damar
-  g.strokeStyle = vein; g.lineCap = 'round';
-  g.lineWidth = Math.max(1.2, wid * 0.055);
-  g.beginPath();
-  g.moveTo(0, 0);
-  for (let i = 1; i <= 16; i++) { const t = i / 16; g.lineTo(len * t, off(t)); }
-  g.stroke();
-
-  // yan damarlar
-  g.lineWidth = Math.max(0.7, wid * 0.02);
-  g.globalAlpha = 0.45;
-  for (let i = 2; i <= 17; i++) {
-    const t = i / 19, bx = len * t, by = off(t), h = half(t) * 0.60;
-    for (const s of [-1, 1]) {
+  // yan damarlar: orta damardan uca dogru egik, sik
+  g.save();
+  g.clip();                                   // yapragin disina tasmasin
+  g.strokeStyle = vein;
+  g.globalAlpha = 0.30;
+  g.lineWidth = Math.max(0.6, wid * 0.015);
+  const nv = Math.round(26 + wid * 0.10);
+  for (let i = 1; i < nv; i++) {
+    const t = i / nv, bx = len * t, by = off(t), h = half(t) * 1.25;
+    for (const sgn of [-1, 1]) {
       g.beginPath();
       g.moveTo(bx, by);
-      g.quadraticCurveTo(bx + len * 0.05, by + s * h * 0.5, bx + len * 0.085, by + s * h);
+      g.quadraticCurveTo(bx + len * 0.035, by + sgn * h * 0.55, bx + len * 0.075, by + sgn * h);
       g.stroke();
     }
   }
-  g.globalAlpha = 1;
+  g.restore();
+
+  // orta damar
+  g.strokeStyle = vein;
+  g.lineCap = 'round';
+  g.lineWidth = Math.max(1.3, wid * 0.075);
+  g.beginPath();
+  g.moveTo(0, 0);
+  for (let i = 1; i <= 24; i++) { const t = i / 24; g.lineTo(len * t, off(t)); }
+  g.stroke();
+  g.restore();
+}
+
+/** Ince dik govde (referanstaki bambu benzeri sürgünler) */
+function surgun(g, { x, y, h, w, fill }) {
+  g.save(); g.translate(x, y);
+  g.strokeStyle = fill; g.lineCap = 'round'; g.lineWidth = w;
+  g.beginPath(); g.moveTo(0, 0); g.quadraticCurveTo(-w * 0.8, -h * 0.5, 0, -h); g.stroke();
   g.restore();
 }
 
@@ -476,7 +503,7 @@ function tepeDemeti(g, { x, y, r, n, fill, vein, spread = Math.PI * 1.25 }) {
     const L = r * (0.62 + 0.38 * Math.sin(Math.PI * t));
     muzYapragi(g, {
       x, y, len: L, wid: L * 0.17, ang: a,
-      bend: 0.35, fill: i % 2 ? fill[1] : fill[0], vein, dilim: false,
+      bend: 0.35, fill: i % 2 ? fill[1] : fill[0], vein, yirtik: 0,
     });
   }
 }
@@ -639,31 +666,32 @@ export function muralTexture(px = 2048) {
     const B = H * 1.02;                      // yapraklarin ciktigi taban kotu
     const X = (f) => W * f;
 
-    /* --- 1. katman: soluk cam gogu yapraklari (en arka) ---
-       Yapraklar KUCUK ve COK: 90 cm'lik bir kapak dokunun ucte birini
-       gosterdigi icin buyuk yapraklar asiri yakin duruyordu. */
+    /* --- 1. katman: buyuk cam gogu muz yapraklari (yirtik kenarli) --- */
     const arka = [
-      [0.03, 0.60, -1.32], [0.09, 0.70, -1.72], [0.15, 0.52, -1.06],
-      [0.21, 0.66, -1.55], [0.27, 0.56, -1.90], [0.33, 0.72, -1.24],
-      [0.40, 0.58, -1.68], [0.47, 0.68, -1.10], [0.54, 0.54, -1.62],
-      [0.60, 0.70, -1.86], [0.67, 0.60, -1.18], [0.74, 0.66, -1.74],
-      [0.81, 0.52, -1.08], [0.87, 0.68, -1.58], [0.94, 0.62, -1.82],
-      [0.99, 0.56, -1.30],
+      [0.04, 0.86, -1.40], [0.13, 0.70, -1.02], [0.22, 0.94, -1.62],
+      [0.32, 0.74, -1.96], [0.42, 0.88, -1.20], [0.52, 0.72, -1.68],
+      [0.62, 0.92, -1.10], [0.72, 0.76, -1.86], [0.82, 0.86, -1.34],
+      [0.92, 0.70, -1.74], [0.99, 0.82, -1.52],
     ];
     for (const [fx, fl, a] of arka) {
       const L = H * fl;
       muzYapragi(g, {
-        x: X(fx), y: B, len: L * 0.62, wid: L * 0.115, ang: a,
-        bend: 0.22 + rnd() * 0.18, fill: MP.teal[1], vein: MP.teal[3],
-        sap: L * 0.42, sapRenk: MP.teal[2],
+        x: X(fx), y: B, len: L * 0.58, wid: L * 0.135, ang: a,
+        bend: 0.20 + rnd() * 0.16, fill: MP.teal[1], vein: MP.teal[3],
+        yirtik: 2, sap: L * 0.44, sapRenk: MP.teal[2],
       });
     }
     for (const [fx, fl, a] of arka) {
-      const L = H * fl * 0.82;
+      const L = H * fl * 0.78;
       muzYapragi(g, {
-        x: X(fx + 0.025), y: B, len: L * 0.60, wid: L * 0.105, ang: a + 0.38,
-        bend: 0.3, fill: MP.teal[0], vein: MP.teal[2], sap: L * 0.40, sapRenk: MP.teal[2],
+        x: X(fx + 0.03), y: B, len: L * 0.56, wid: L * 0.125, ang: a + 0.40,
+        bend: 0.28, fill: MP.teal[0], vein: MP.teal[2], yirtik: 1,
+        sap: L * 0.42, sapRenk: MP.teal[2],
       });
+    }
+    // dik ince surgunler
+    for (const fx of [0.11, 0.28, 0.50, 0.71, 0.89]) {
+      surgun(g, { x: X(fx), y: B, h: H * (0.52 + rnd() * 0.22), w: H * 0.012, fill: MP.teal[3] });
     }
 
     /* --- 2. katman: ortada hardal/haki tepe demetleri --- */
@@ -676,45 +704,53 @@ export function muralTexture(px = 2048) {
 
     /* --- 3. katman: pembe/gul yapraklar --- */
     const pembe = [
-      [0.05, 0.52, -1.18], [0.12, 0.60, -1.80], [0.19, 0.46, -1.28],
-      [0.26, 0.56, -1.92], [0.34, 0.50, -1.10], [0.42, 0.58, -1.72],
-      [0.56, 0.54, -1.22], [0.63, 0.48, -1.86], [0.70, 0.58, -1.30],
-      [0.78, 0.50, -1.90], [0.86, 0.56, -1.14], [0.93, 0.48, -1.76],
-      [0.98, 0.54, -1.44],
+      [0.07, 0.58, -1.22], [0.19, 0.66, -1.82], [0.31, 0.54, -1.28],
+      [0.43, 0.62, -1.88], [0.57, 0.60, -1.18], [0.69, 0.52, -1.80],
+      [0.81, 0.64, -1.34], [0.93, 0.56, -1.86],
     ];
     for (const [fx, fl, a] of pembe) {
       const L = H * fl;
       muzYapragi(g, {
-        x: X(fx), y: B, len: L * 0.60, wid: L * 0.135, ang: a,
-        bend: 0.26, fill: MP.rose[0], vein: MP.rose[2], sap: L * 0.42, sapRenk: MP.rose[2],
+        x: X(fx), y: B, len: L * 0.56, wid: L * 0.155, ang: a,
+        bend: 0.24, fill: MP.rose[0], vein: MP.rose[2], yirtik: 1,
+        sap: L * 0.42, sapRenk: MP.rose[2],
       });
       muzYapragi(g, {
-        x: X(fx + 0.012), y: B, len: L * 0.46, wid: L * 0.115, ang: a - 0.46,
-        bend: 0.3, fill: MP.rose[1], vein: MP.rose[3], sap: L * 0.34, sapRenk: MP.rose[3],
+        x: X(fx + 0.014), y: B, len: L * 0.42, wid: L * 0.125, ang: a - 0.44,
+        bend: 0.28, fill: MP.rose[1], vein: MP.rose[3], yirtik: 0,
+        sap: L * 0.32, sapRenk: MP.rose[3],
       });
     }
 
     /* --- 4. katman: koyu yesil on yapraklar --- */
     const on = [
-      [0.02, 0.38, -1.32], [0.10, 0.32, -1.94], [0.18, 0.36, -1.12],
-      [0.27, 0.34, -1.96], [0.37, 0.32, -1.10], [0.46, 0.38, -1.88],
-      [0.58, 0.34, -1.24], [0.67, 0.36, -1.92], [0.77, 0.32, -1.14],
-      [0.88, 0.38, -1.84], [0.96, 0.34, -1.38],
+      [0.04, 0.40, -1.34], [0.17, 0.34, -1.92], [0.30, 0.38, -1.12],
+      [0.44, 0.36, -1.94], [0.58, 0.40, -1.16], [0.71, 0.34, -1.88],
+      [0.85, 0.38, -1.22], [0.96, 0.36, -1.80],
     ];
     for (const [fx, fl, a] of on) {
       const L = H * fl;
       muzYapragi(g, {
-        x: X(fx), y: B, len: L * 0.66, wid: L * 0.21, ang: a,
-        bend: 0.2, fill: MP.deep[0], vein: MP.deep[2], dilim: false,
+        x: X(fx), y: B, len: L * 0.62, wid: L * 0.26, ang: a,
+        bend: 0.18, fill: MP.deep[0], vein: MP.deep[2], yirtik: 0,
         sap: L * 0.34, sapRenk: MP.deep[1],
+      });
+    }
+    // arkada kalan hardal yapraklar
+    for (const fx of [0.14, 0.38, 0.62, 0.88]) {
+      const L = H * 0.40;
+      muzYapragi(g, {
+        x: X(fx), y: B, len: L * 0.60, wid: L * 0.16, ang: -1.5 + (rnd() - 0.5) * 0.9,
+        bend: 0.5, fill: MP.ochre[1], vein: MP.olive[3], yirtik: 0,
+        sap: L * 0.30, sapRenk: MP.ochre[1],
       });
     }
 
     /* --- aksanlar: mercan cicekler ve ince dallar --- */
-    for (const fx of [0.06, 0.17, 0.30, 0.42, 0.54, 0.65, 0.78, 0.88, 0.96]) {
+    for (const fx of [0.09, 0.24, 0.40, 0.58, 0.74, 0.90]) {
       heliconia(g, { x: X(fx), y: B, h: H * 0.34, w: H * 0.030, fill: MP.coral });
     }
-    for (const fx of [0.13, 0.25, 0.37, 0.61, 0.72, 0.85, 0.94]) {
+    for (const fx of [0.16, 0.34, 0.66, 0.86]) {
       inceDal(g, { x: X(fx), y: B, h: H * 0.40, fill: MP.burg });
     }
 
