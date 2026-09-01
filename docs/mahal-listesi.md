@@ -1,9 +1,9 @@
-# Mahal ve Donatı Listesi — Ş-0 Mevcut durum
+# Mahal ve Donatı Listesi — 11 Şu anki renkler + Şu anki hâli
 
 **Oda Tasarimi / Room Design** · R00 · 2026-09-01
 
-> **Ş-0 · Mevcut durum** — Fotoğraf ve krokiden çıkarılan mevcut hâl. Karşılaştırma tabanı.
-> Okul boyası paleti (sarı panel + yeşil şerit + tamamı yeşil pencere duvarı), mobilya olduğu yerde. Kapı kanadı S2 sandalyesine çarptığı için ~109° açılıyor ve kullanıcı girişe sırtı dönük oturuyor. Krokide istenen 80 cm'lik raflı modül (K2) odada YOK — mevcut durumda gösterilmez.
+> **11 · Şu anki renkler + Şu anki hâli** — Eşyalar bugünkü yerlerinde.
+> Karşılaştırma tabanı. Bu hâlde kapı ancak ~109° açılıyor, masaya oturunca kapıya sırtınız dönük oluyor ve görüşme için ayrı bir oturma alanı yok — öğrenci masanın karşısına oturmak zorunda.
 
 Bu dosya `src/config/room.js` verisinden **otomatik üretilir** (`npm run schedule`). Elle düzenlemeyin.
 

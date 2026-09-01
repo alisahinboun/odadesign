@@ -19,10 +19,10 @@ export const schemes = [
   /* ---------------------------------------------------------------- S-0 */
   {
     id: 's0',
-    code: 'Ş-0',
-    name: 'Mevcut durum',
+    code: '1',
+    name: 'Şu anki hâli',
     kind: 'roleve',
-    summary: 'Fotoğraf ve krokiden çıkarılan mevcut hâl. Karşılaştırma tabanı.',
+    summary: 'Odanın bugünkü hâli. Diğerleriyle karşılaştırmak için buradan başlayın.',
     rationale:
       'Okul boyası paleti (sarı panel + yeşil şerit + tamamı yeşil pencere duvarı), '
       + 'mobilya olduğu yerde. Kapı kanadı S2 sandalyesine çarptığı için ~109° '
@@ -36,10 +36,10 @@ export const schemes = [
   /* ---------------------------------------------------------------- S-1 */
   {
     id: 's1',
-    code: 'Ş-1',
-    name: 'Sakin palet',
+    code: '2',
+    name: 'Sadece renk değişsin',
     kind: 'oneri',
-    summary: 'Yerleşim aynı, yalnızca yüzey renkleri. En düşük maliyetli müdahale — ışığı geri kazandırır.',
+    summary: 'Hiçbir şey taşınmıyor, sadece duvarlar boyanıyor. En ucuz seçenek — oda belirgin şekilde aydınlanır.',
     rationale:
       'Odanın asıl ışık kaynağı arka duvardaki 268 cm genişliğindeki pencere '
       + '(foto 05). Sorun şu: pencerenin bulunduğu duvarın TAMAMI doygun yeşile '
@@ -69,10 +69,10 @@ export const schemes = [
   /* ---------------------------------------------------------------- S-2 */
   {
     id: 's2',
-    code: 'Ş-2',
-    name: 'Yeniden yerleşim',
+    code: '3',
+    name: 'Renk + yeni yerleşim',
     kind: 'oneri',
-    summary: 'Ş-1 paleti + mobilya yeniden konumlanıyor. Kapı tam açılıyor, kullanıcı girişi görüyor.',
+    summary: 'Boya + eşyalar yer değiştiriyor. Kapı tam açılıyor, masaya oturunca kapıyı görüyorsunuz.',
     rationale:
       'Modelin ortaya çıkardığı dört sorunu birden çözer: (1) kapı süpürme yayı '
       + 'tamamen boşaltılır, kanat neredeyse tam açılır; (2) masa arkaya alınıp '

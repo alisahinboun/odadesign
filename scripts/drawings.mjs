@@ -16,22 +16,23 @@ import path from 'node:path';
 import { fileURLToPath } from 'node:url';
 import {
   room, partition, door, furniture, equipment, wallItems, wallUnits,
-  ceiling as ceilCfg, floor as floorCfg, palette, meta, windows, radiators, isVisible,
+  ceiling as ceilCfg, floor as floorCfg, palette, meta, windows, radiators, isVisible, applyScheme,
 } from '../src/config/room.js';
 import { footprint, doorSwingLimit, metrics, hingeX, leafWidth } from '../src/lib/analysis.js';
-import { schemes, resolveScheme } from '../src/config/schemes.js';
-import { applyScheme } from '../src/config/room.js';
+import { palettes, layouts, resolveDesign, getPalette, getLayout } from '../src/config/design.js';
 
-/* ------------------------------------------------------------- sema secimi */
-/** node scripts/X.mjs --sema=s2   (varsayilan s0 = mevcut durum) */
-const argSema = (process.argv.find((a) => a.startsWith('--sema=')) || '').split('=')[1] || 's0';
-const SEMA = schemes.find((x) => x.id === argSema);
-if (!SEMA) {
-  console.error(`Bilinmeyen sema: ${argSema}. Secenekler: ${schemes.map((x) => x.id).join(', ')}`);
-  process.exit(2);
-}
-applyScheme(resolveScheme(argSema));
-const SUFFIX = argSema === 's0' ? '' : `-${argSema}`;
+/* ---------------------------------------------------------- secim */
+/** node scripts/X.mjs --palet=p2 --yerlesim=y3   (varsayilan p1/y1) */
+const arg = (k, d) => (process.argv.find((a) => a.startsWith(`--${k}=`)) || '').split('=')[1] || d;
+const PID = arg('palet', 'p1'), LID = arg('yerlesim', 'y1');
+if (!palettes.some((x) => x.id === PID)) { console.error(`Bilinmeyen palet: ${PID}`); process.exit(2); }
+if (!layouts.some((x) => x.id === LID)) { console.error(`Bilinmeyen yerlesim: ${LID}`); process.exit(2); }
+const PAL = getPalette(PID), LAY = getLayout(LID);
+const SEMA = { code: `${PAL.code}${LAY.code}`, name: `${PAL.name} + ${LAY.name}`,
+  kind: (PAL.kind === 'mevcut' && LAY.kind === 'mevcut') ? 'roleve' : 'oneri',
+  summary: LAY.summary, rationale: LAY.why, metrajNote: [PAL.is, LAY.is].filter(Boolean).join(' ') };
+applyScheme(resolveDesign(PID, LID));
+const SUFFIX = (PID === 'p1' && LID === 'y1') ? '' : `-${PID}${LID}`;
 
 
 const OUT = path.resolve(path.dirname(fileURLToPath(import.meta.url)), '../docs/drawings');

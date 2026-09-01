@@ -227,6 +227,26 @@ export const furniture = [
         + 'type alanini degistirmek yeterli.',
   },
   {
+    id: 'Y1', tag: 'Sehpa', name: 'Yuvarlak gorusme sehpasi (YENI)',
+    type: 'roundTable',
+    w: 70, d: 70, h: 55,
+    pos: [95, 165], rot: 0,
+    materials: { top: 'beech', leg: 'steelDark' },
+    proposedOnly: true,
+    note: 'ODADA YOK. Rehberlik gorusmesi icin: iki sandalye arasinda kucuk bir '
+        + 'sehpa, ogrencinin cay/mendil/brosur koyabilecegi bir yuzey. Masanin '
+        + 'karsisina oturtmaktan cok daha az resmi bir kurulum.',
+  },
+  {
+    id: 'S3', tag: 'Sandalye', name: 'Ikinci misafir sandalyesi (YENI)',
+    type: 'stackChair',
+    w: 48, d: 54, h: 82,
+    pos: [30, 160], rot: -90,
+    materials: { upholstery: 'blackFabric', frame: 'steelDark' },
+    proposedOnly: true,
+    note: 'ODADA YOK. Ogrenci + veli birlikte gelebildigi icin ikinci sandalye.',
+  },
+  {
     id: 'S1', tag: 'Koltuk', name: 'Yonetici calisma koltugu',
     type: 'officeChair',
     w: 62, d: 62, h: 112,
@@ -414,6 +434,8 @@ const BASE = {
   clutter: clutter.map((f) => ({ pos: [...f.pos], rot: f.rot || 0 })),
   wallItems: wallItems.map((w) => ({ u: w.u, z: w.z })),
   wallUnitPattern: [...wallUnits.frontPattern],
+  doorSwing: door.swing,
+  doorOpenAngle: door.openAngle,
   windows: windows.map((w) => ({ curtain: { ...w.curtain }, sillBoard: { ...w.sillBoard } })),
 };
 
@@ -454,6 +476,9 @@ export function applyScheme(resolved) {
   patch(equipment, resolved.equipment);
   patch(clutter, resolved.clutter);
   patch(wallItems, resolved.wallItems);
+  // Yerlesim kapinin acilma yonunu degistirebilir (disa acilan kapi ~2 m2 kazandirir)
+  door.swing = resolved.door?.swing || BASE.doorSwing;
+  door.openAngle = resolved.door?.openAngle ?? BASE.doorOpenAngle;
   for (const [id, d] of Object.entries(resolved.windows || {})) {
     const w = windows.find((x) => x.id === id);
     if (!w) continue;

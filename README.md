@@ -13,7 +13,8 @@ alüminyum bölüntü (120 cm kapı + vasistas); sağ duvarda ankastre üst dola
 | | |
 |---|---|
 | **3B görselleştirici** | `npm run dev` → tarayıcıda etkileşimli model |
-| **Tasarım şemaları** | Mevcut durum + 2 öneri; panelden anında geçiş → [`docs/semalar.md`](docs/semalar.md) |
+| **Renk + yerleşim seçenekleri** | 4 renk × 3 yerleşim, panelden bağımsız seçilir → [`docs/secenekler.md`](docs/secenekler.md) |
+| **Eşyaları taşı** | Sürükle‑bırak; her hareket sonrası anında denetim |
 | **2B çizimler** | `npm run drawings` → `docs/drawings/*.svg` (plan, 4 görünüş, **2 kesit**, tavan, döşeme) |
 | **Metraj / mahal listesi** | `npm run schedule` → `docs/mahal-listesi.md` + `.csv` |
 | **Model denetimi** | `npm run check` → çakışma, sınır, kapı süpürme ve ergonomi kontrolü |
@@ -127,38 +128,25 @@ açıldığını** ve dolaşım boşluklarını denetler.
 
 ---
 
-## Tasarım şemaları
+## Renk ve yerleşim seçenekleri
 
-Röleve modeli tasarımın başlangıcı; bitişi değil. `src/config/schemes.js` içinde
-mevcut durum ve iki öneri tanımlı:
+Oda bir **rehber öğretmen odası** olacak. Öneriler buna göre seçildi: öğrenci
+masanın karşısına değil, ~90° açıyla oturmalı; renkler sakin olmalı; kapıdan
+bakınca öğrenci doğrudan görünmemeli.
 
-| Şema | Kapsam | Kapı açıklığı | Denetim |
-|---|---|---:|---|
-| **Ş‑0** Mevcut durum | röleve, karşılaştırma tabanı | 109° | 0 hata, 1 uyarı |
-| **Ş‑1** Sakin palet | sadece boya + dolap kapağı | 109° | 0 hata, 1 uyarı |
-| **Ş‑2** Yeniden yerleşim | Ş‑1 + mobilya taşınır | **178°** | **0 hata, 0 uyarı** |
+**Renk** (hiçbir şey taşınmaz, sadece boya): Şu anki · Sakin yeşil ·
+Açık mavi‑gri · Toprak tonları
+**Yerleşim** (boya değişmez): Şu anki · Görüşme köşesi · Kapı dışa açılsın
 
-Ş‑2, pencereyi de hesaba katar: depolama arka duvara konulamaz (odanın tek
-penceresini kapatır), radyatörün önü boş bırakılır, tül perde ekran yansımasını
-kesecek şekilde pencere boyunca tamamlanır ve **iç denizlik 38 cm'e derinleştirilip
-pencere altı kullanılabilir bir rafa dönüştürülür.**
-
-Şemalar eleman **gizleyebilir/ekleyebilir**: krokide istenen 80 cm'lik modül (K2)
-odada yok, bu yüzden Ş‑0 ve Ş‑1'de gösterilmez; Ş‑2'de yeni eleman olarak girer.
-Bir kalemi `proposedOnly: true` ile işaretlemek yeterli.
-
-Ayrıntı, gerekçe ve karşılaştırma tablosu: [`docs/semalar.md`](docs/semalar.md)
-
-Müşteri sunumu için **karşılaştırma paftası** — iki plan yan yana, kapı süpürme
-sektörü taralı, altında ölçülebilir fark tablosu:
+İkisi bağımsız — istediğiniz gibi eşleştirin. Ayrıntı ve gerekçeler:
+[`docs/secenekler.md`](docs/secenekler.md)
 
 ```bash
-npm run compare                      # docs/drawings/karsilastirma-s0-s2.svg
-node scripts/karsilastirma.mjs s0 s1
+npm run check    -- --palet=p2 --yerlesim=y3
+npm run drawings -- --palet=p2 --yerlesim=y3
+npm run all:schemes                     # anlamlı 5 kombinasyon, hepsi
+npm run foy                             # yazdırılabilir ölçü föyü
 ```
-
-Bir şema seçildiğinde **her şey** onu izler: 3B model, ölçü kotaları, 9 pafta teknik
-çizim ve metraj listesi. Yeni şema eklemek `schemes.js` içine bir nesne yazmaktır.
 
 ---
 
@@ -189,7 +177,7 @@ Hangi paftanın ne içerdiği: [`docs/drawings/00-pafta-listesi.md`](docs/drawin
 src/
   config/
     room.js             ⭐ TEK DOĞRULUK KAYNAĞI — tüm ölçüler burada
-    schemes.js          tasarım şemaları (mevcut durum + öneriler)
+    design.js           renk ve yerleşim seçenekleri
   lib/
     analysis.js         ayak izi, çakışma, kapı süpürme açısı, metrikler
     geom.js             cm→m dönüşümü, kutu/silindir/yuvarlatılmış kutu üreticileri
@@ -203,6 +191,7 @@ src/
   viewer/
     dimensions.js       3B ölçü kotaları
     render.js           GTAO ortam gölgelemesi + FXAA işleme hattı
+    drag.js             eşya taşıma + anlık denetim
   export/gltf.js        GLB / OBJ / PNG ihracatı
   main.js               görselleştirici arayüzü
 scripts/
@@ -210,10 +199,11 @@ scripts/
   drawings.mjs          2B teknik çizim üreteci (plan · 4 görünüş · 2 kesit · tavan · döşeme)
   schedule.mjs          mahal ve donatı listesi üreteci
   build-all.mjs         tüm şemalar için denetim + çizim + metraj
-  karsilastirma.mjs     iki şemayı yan yana koyan sunum paftası
+  karsilastirma.mjs     iki seçeneği yan yana koyan sunum paftası
+  olcu-foyu.mjs         yazdırılıp yanınıza alınacak ölçü listesi + numaralı plan
 docs/
   roleve.md             ⚠️ röleve notları, varsayımlar, yerinde kontrol listesi
-  semalar.md            tasarım şemaları: gerekçe, değişiklik ve karşılaştırma
+  secenekler.md         renk ve yerleşim seçenekleri: gerekçe ve karşılaştırma
   mahal-listesi.md      metraj + donatı listesi (üretilen)
   donati-listesi.csv    Excel için (üretilen)
   drawings/

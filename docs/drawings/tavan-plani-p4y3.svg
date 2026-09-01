@@ -1,0 +1,36 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="298mm" height="258mm"
+  viewBox="0 0 298 258" font-family="Helvetica,Arial,sans-serif">
+<title>Tavan plani</title>
+<rect width="298" height="258" fill="#ffffff"/>
+<rect x="73.00" y="69.00" width="148.00" height="108.00" fill="#fbfbf9" stroke="#111318" stroke-width="0.6" />
+<line x1="97.00" y1="177.00" x2="97.00" y2="69.00" stroke="#98a0ab" stroke-width="0.18" />
+<line x1="121.00" y1="177.00" x2="121.00" y2="69.00" stroke="#98a0ab" stroke-width="0.18" />
+<line x1="145.00" y1="177.00" x2="145.00" y2="69.00" stroke="#98a0ab" stroke-width="0.18" />
+<line x1="169.00" y1="177.00" x2="169.00" y2="69.00" stroke="#98a0ab" stroke-width="0.18" />
+<line x1="193.00" y1="177.00" x2="193.00" y2="69.00" stroke="#98a0ab" stroke-width="0.18" />
+<line x1="217.00" y1="177.00" x2="217.00" y2="69.00" stroke="#98a0ab" stroke-width="0.18" />
+<line x1="73.00" y1="153.00" x2="221.00" y2="153.00" stroke="#98a0ab" stroke-width="0.18" />
+<line x1="73.00" y1="129.00" x2="221.00" y2="129.00" stroke="#98a0ab" stroke-width="0.18" />
+<line x1="73.00" y1="105.00" x2="221.00" y2="105.00" stroke="#98a0ab" stroke-width="0.18" />
+<line x1="73.00" y1="81.00" x2="221.00" y2="81.00" stroke="#98a0ab" stroke-width="0.18" />
+<rect x="99.00" y="125.00" width="24.00" height="24.00" fill="#fff8dc" stroke="#111318" stroke-width="0.5" />
+<line x1="99.00" y1="125.00" x2="123.00" y2="149.00" stroke="#5a626e" stroke-width="0.25" />
+<line x1="99.00" y1="149.00" x2="123.00" y2="125.00" stroke="#5a626e" stroke-width="0.25" />
+<text x="111.00" y="129.00" font-size="2.4" fill="#b8860b" text-anchor="middle" >L1</text>
+<line x1="73.00" y1="60.60" x2="73.00" y2="63.40" stroke="#1b4f7a" stroke-width="0.18" /><line x1="111.00" y1="60.60" x2="111.00" y2="63.40" stroke="#1b4f7a" stroke-width="0.18" /><line x1="73.00" y1="62.00" x2="111.00" y2="62.00" stroke="#1b4f7a" stroke-width="0.18" /><line x1="72.00" y1="63.00" x2="74.00" y2="61.00" stroke="#1b4f7a" stroke-width="0.3" /><line x1="110.00" y1="63.00" x2="112.00" y2="61.00" stroke="#1b4f7a" stroke-width="0.3" /><text x="92.00" y="60.90" font-size="2.5" fill="#1b4f7a" text-anchor="middle" >95</text>
+<line x1="230.40" y1="137.00" x2="227.60" y2="137.00" stroke="#1b4f7a" stroke-width="0.18" /><line x1="230.40" y1="177.00" x2="227.60" y2="177.00" stroke="#1b4f7a" stroke-width="0.18" /><line x1="229.00" y1="137.00" x2="229.00" y2="177.00" stroke="#1b4f7a" stroke-width="0.18" /><line x1="228.00" y1="136.00" x2="230.00" y2="138.00" stroke="#1b4f7a" stroke-width="0.3" /><line x1="228.00" y1="176.00" x2="230.00" y2="178.00" stroke="#1b4f7a" stroke-width="0.3" /><text x="230.20" y="157.00" font-size="2.5" fill="#1b4f7a"
+       text-anchor="middle" transform="rotate(-90 230.20 157.00)">100</text>
+<rect x="161.00" y="125.00" width="24.00" height="24.00" fill="#fff8dc" stroke="#111318" stroke-width="0.5" />
+<line x1="161.00" y1="125.00" x2="185.00" y2="149.00" stroke="#5a626e" stroke-width="0.25" />
+<line x1="161.00" y1="149.00" x2="185.00" y2="125.00" stroke="#5a626e" stroke-width="0.25" />
+<text x="173.00" y="129.00" font-size="2.4" fill="#b8860b" text-anchor="middle" >L2</text>
+<line x1="73.00" y1="60.60" x2="73.00" y2="63.40" stroke="#1b4f7a" stroke-width="0.18" /><line x1="173.00" y1="60.60" x2="173.00" y2="63.40" stroke="#1b4f7a" stroke-width="0.18" /><line x1="73.00" y1="62.00" x2="173.00" y2="62.00" stroke="#1b4f7a" stroke-width="0.18" /><line x1="72.00" y1="63.00" x2="74.00" y2="61.00" stroke="#1b4f7a" stroke-width="0.3" /><line x1="172.00" y1="63.00" x2="174.00" y2="61.00" stroke="#1b4f7a" stroke-width="0.3" /><text x="123.00" y="60.90" font-size="2.5" fill="#1b4f7a" text-anchor="middle" >250</text>
+<line x1="230.40" y1="137.00" x2="227.60" y2="137.00" stroke="#1b4f7a" stroke-width="0.18" /><line x1="230.40" y1="177.00" x2="227.60" y2="177.00" stroke="#1b4f7a" stroke-width="0.18" /><line x1="229.00" y1="137.00" x2="229.00" y2="177.00" stroke="#1b4f7a" stroke-width="0.18" /><line x1="228.00" y1="136.00" x2="230.00" y2="138.00" stroke="#1b4f7a" stroke-width="0.3" /><line x1="228.00" y1="176.00" x2="230.00" y2="178.00" stroke="#1b4f7a" stroke-width="0.3" /><text x="230.20" y="157.00" font-size="2.5" fill="#1b4f7a"
+       text-anchor="middle" transform="rotate(-90 230.20 157.00)">100</text>
+<text x="73.00" y="63.00" font-size="3" fill="#111318" text-anchor="start" font-weight="700">ASMA TAVAN PLANI — 60x60 plaka, T24 tasiyici, alt kot +290 cm</text>
+<line x1="73.00" y1="186.60" x2="73.00" y2="189.40" stroke="#1b4f7a" stroke-width="0.18" /><line x1="221.00" y1="186.60" x2="221.00" y2="189.40" stroke="#1b4f7a" stroke-width="0.18" /><line x1="73.00" y1="188.00" x2="221.00" y2="188.00" stroke="#1b4f7a" stroke-width="0.18" /><line x1="72.00" y1="189.00" x2="74.00" y2="187.00" stroke="#1b4f7a" stroke-width="0.3" /><line x1="220.00" y1="189.00" x2="222.00" y2="187.00" stroke="#1b4f7a" stroke-width="0.3" /><text x="147.00" y="186.90" font-size="2.5" fill="#1b4f7a" text-anchor="middle" >370</text>
+<line x1="240.40" y1="69.00" x2="237.60" y2="69.00" stroke="#1b4f7a" stroke-width="0.18" /><line x1="240.40" y1="177.00" x2="237.60" y2="177.00" stroke="#1b4f7a" stroke-width="0.18" /><line x1="239.00" y1="69.00" x2="239.00" y2="177.00" stroke="#1b4f7a" stroke-width="0.18" /><line x1="238.00" y1="68.00" x2="240.00" y2="70.00" stroke="#1b4f7a" stroke-width="0.3" /><line x1="238.00" y1="176.00" x2="240.00" y2="178.00" stroke="#1b4f7a" stroke-width="0.3" /><text x="240.20" y="123.00" font-size="2.5" fill="#1b4f7a"
+       text-anchor="middle" transform="rotate(-90 240.20 123.00)">270</text>
+<text x="73.00" y="197.00" font-size="2.5" fill="#5a626e" text-anchor="start" >Tam plaka: 6 x 4 adet  ·  kenar kesim: 10 cm (X) / 30 cm (Y)</text>
+<rect x="165.00" y="199.00" width="78.00" height="30.00" fill="#ffffff" stroke="#111318" stroke-width="0.4" /><line x1="165.00" y1="207.00" x2="243.00" y2="207.00" stroke="#111318" stroke-width="0.25" /><line x1="165.00" y1="214.50" x2="243.00" y2="214.50" stroke="#5a626e" stroke-width="0.18" /><line x1="165.00" y1="221.00" x2="243.00" y2="221.00" stroke="#5a626e" stroke-width="0.18" /><text x="168.00" y="204.60" font-size="3.2" fill="#111318" text-anchor="start" font-weight="700">Oda Tasarimi / Room Design</text><text x="168.00" y="212.00" font-size="2.9" fill="#111318" text-anchor="start" >Asma tavan plani</text><text x="168.00" y="218.60" font-size="2.3" fill="#5a626e" text-anchor="start" >Olcek 1:25  ·  Olculer cm  ·  Pafta M-06</text><text x="240.00" y="204.60" font-size="2.6" fill="#b8860b" text-anchor="end" font-weight="700">43 Toprak tonları + Kapı dışa açılsın</text><text x="168.00" y="225.50" font-size="2.1" fill="#5a626e" text-anchor="start" >R00  2026-09-01  ·  parametrik model: src/config/room.js</text>
+</svg>

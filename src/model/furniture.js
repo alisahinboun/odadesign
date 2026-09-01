@@ -288,6 +288,23 @@ export function credenza(it) {
   return g;
 }
 
+/* ================================================== GORUSME SEHPASI */
+/** Kucuk yuvarlak sehpa: iki sandalye arasinda, gorusmeyi resmiyetten cikarir */
+export function roundTable(it) {
+  const g = group(`${it.id} ${it.name}`, { layer: 'furniture', label: `${it.tag} Ø${it.w}`, item: it });
+  const r = it.w / 2, h = it.h;
+  const top = mat.wood('beech', it.w, it.w, 0.5);
+  const met = mat.metal('steelDark', 0.4);
+  // tabla (kenari pahli)
+  g.add(cyl(r, r, 3, top, { x: r, y: r, z: h - 1.5, seg: 40 }));
+  g.add(cyl(r - 0.8, r - 0.8, 1.4, top, { x: r, y: r, z: h - 3.6, seg: 40 }));
+  // merkez ayak + taban
+  g.add(cyl(3.2, 3.2, h - 4, met, { x: r, y: r, z: (h - 4) / 2 + 1.5, seg: 18 }));
+  g.add(cyl(r * 0.62, r * 0.62, 2.2, met, { x: r, y: r, z: 1.1, seg: 30 }));
+  g.add(cyl(r * 0.20, r * 0.20, 2, met, { x: r, y: r, z: h - 5, seg: 16 }));
+  return g;
+}
+
 /* =========================================================== PORTMANTO */
 export function coatStand(it) {
   const g = group(`${it.id} ${it.name}`, { layer: 'furniture', label: `${it.tag} - ayakli askilik`, item: it });
@@ -384,4 +401,4 @@ export function buildWallUnits() {
   return g;
 }
 
-export const builders = { desk, wardrobe, bookcase, officeChair, stackChair, credenza, coatStand, bin };
+export const builders = { desk, wardrobe, bookcase, officeChair, stackChair, credenza, coatStand, bin, roundTable };

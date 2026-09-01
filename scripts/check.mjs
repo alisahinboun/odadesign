@@ -18,15 +18,17 @@ import {
 } from '../src/config/room.js';
 import { footprint as rect, overlap, doorSwingLimit, metrics } from '../src/lib/analysis.js';
 import { isVisible } from '../src/config/room.js';
-import { resolveScheme, schemes } from '../src/config/schemes.js';
+import { resolveDesign, palettes, layouts, getPalette, getLayout } from '../src/config/design.js';
 import { applyScheme } from '../src/config/room.js';
 
-/* Sema secimi:  node scripts/check.mjs --sema=s2   (varsayilan: s0 mevcut durum) */
-const argSema = (process.argv.find((a) => a.startsWith('--sema=')) || '').split('=')[1] || 's0';
-const SEMA = schemes.find((x) => x.id === argSema);
-if (!SEMA) { console.error(`Bilinmeyen sema: ${argSema}. Secenekler: ${schemes.map((x) => x.id).join(', ')}`); process.exit(2); }
-applyScheme(resolveScheme(argSema));
-console.log(`\n\x1b[1m\x1b[33m${SEMA.code} · ${SEMA.name}\x1b[0m  —  ${SEMA.summary}`);
+/* Secim:  node scripts/check.mjs --palet=p2 --yerlesim=y3   (varsayilan p1/y1) */
+const arg = (k, d) => (process.argv.find((a) => a.startsWith(`--${k}=`)) || '').split('=')[1] || d;
+const PID = arg('palet', 'p1'), LID = arg('yerlesim', 'y1');
+if (!palettes.some((x) => x.id === PID)) { console.error(`Bilinmeyen palet: ${PID}`); process.exit(2); }
+if (!layouts.some((x) => x.id === LID)) { console.error(`Bilinmeyen yerlesim: ${LID}`); process.exit(2); }
+const PAL = getPalette(PID), LAY = getLayout(LID);
+applyScheme(resolveDesign(PID, LID));
+console.log(`\n\x1b[1m\x1b[33mPalet ${PAL.code} ${PAL.name}  ·  Yerlesim ${LAY.code} ${LAY.name}\x1b[0m`);
 
 let errs = 0, warns = 0;
 const bad = (m) => { console.log('  \x1b[31m✗\x1b[0m ' + m); errs++; };
@@ -67,16 +69,27 @@ for (const f of VIS) {
 
 /* --- 3 --- */
 head('3. Mobilya cakismalari');
-// Bilinen ve kasitli ic ice gecmeler (mobilya altina giren elemanlar)
-const ALLOWED = new Set(['M1|W1', 'M1|S1']);
+/**
+ * Kasitli ic ice gecmeler. Iki kural:
+ *  1. Sandalye/koltuk bir masaya CEKILEBILIR - bu cakisma degil.
+ *  2. Cop kovasi masanin ALTINA girer.
+ */
+const SEATS = new Set(['stackChair', 'officeChair']);
+const TABLES = new Set(['desk', 'roundTable', 'credenza']);
+const typeOf = (id) => (furniture.find((f) => f.id === id) || {}).type;
+function intended(aId, bId) {
+  const ta = typeOf(aId), tb = typeOf(bId);
+  if ((SEATS.has(ta) && TABLES.has(tb)) || (SEATS.has(tb) && TABLES.has(ta))) return true;
+  if (ta === 'bin' || tb === 'bin') return true;
+  return false;
+}
 let clash = 0;
 for (let i = 0; i < rects.length; i++) {
   for (let j = i + 1; j < rects.length; j++) {
     const a = rects[i], b = rects[j];
     const o = overlap(a, b);
     if (o.x > 0.5 && o.y > 0.5) {
-      const key = [a.id, b.id].sort().join('|');
-      if (ALLOWED.has(key)) { ok(`${a.id} / ${b.id} ic ice (kasitli: altina/onune giriyor)`); continue; }
+      if (intended(a.id, b.id)) { ok(`${a.id} / ${b.id} ic ice (sandalye masaya cekilmis / kova masa altinda)`); continue; }
       bad(`${a.id} ve ${b.id} cakisiyor (${o.x.toFixed(1)} x ${o.y.toFixed(1)} cm)`);
       clash++;
     }

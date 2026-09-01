@@ -14,17 +14,22 @@ import { fileURLToPath } from 'node:url';
 import {
   room, partition, door, furniture, palette, wallUnits, meta, applyScheme, isVisible, windows,
 } from '../src/config/room.js';
-import { schemes, resolveScheme } from '../src/config/schemes.js';
+import { palettes, layouts, resolveDesign, getPalette, getLayout } from '../src/config/design.js';
 import { footprint, doorSwingLimit, metrics, hingeX, leafWidth } from '../src/lib/analysis.js';
 
 const OUT = path.resolve(path.dirname(fileURLToPath(import.meta.url)), '../docs/drawings');
-const [leftId = 's0', rightId = 's2'] = process.argv.slice(2);
-for (const id of [leftId, rightId]) {
-  if (!schemes.find((s) => s.id === id)) {
-    console.error(`Bilinmeyen sema: ${id}. Secenekler: ${schemes.map((s) => s.id).join(', ')}`);
-    process.exit(2);
-  }
-}
+/** node scripts/karsilastirma.mjs [solPalet solYerlesim sagPalet sagYerlesim] */
+const [lp = 'p1', ll = 'y1', rp = 'p2', rl = 'y2'] = process.argv.slice(2);
+for (const id of [lp, rp]) if (!palettes.some((x) => x.id === id)) { console.error(`Bilinmeyen palet: ${id}`); process.exit(2); }
+for (const id of [ll, rl]) if (!layouts.some((x) => x.id === id)) { console.error(`Bilinmeyen yerlesim: ${id}`); process.exit(2); }
+const SIDE = (pi, li) => ({
+  id: `${pi}${li}`,
+  code: `${getPalette(pi).code}${getLayout(li).code}`,
+  name: `${getPalette(pi).name} + ${getLayout(li).name}`,
+  kind: (getPalette(pi).kind === 'mevcut' && getLayout(li).kind === 'mevcut') ? 'roleve' : 'oneri',
+  summary: getLayout(li).summary,
+  metrajNote: [getPalette(pi).is, getLayout(li).is].filter(Boolean).join(' '),
+});
 
 const SCALE = 1 / 40;                 // sunum paftasi 1:40
 const MM = (cm) => cm * 10 * SCALE;
@@ -129,10 +134,10 @@ function miniPlan(snap, ox, oy) {
 }
 
 /* ------------------------------------------------------------------ pafta */
-applyScheme(resolveScheme(leftId));
-const A = snapshot(schemes.find((s) => s.id === leftId));
-applyScheme(resolveScheme(rightId));
-const B = snapshot(schemes.find((s) => s.id === rightId));
+applyScheme(resolveDesign(lp, ll));
+const A = snapshot(SIDE(lp, ll));
+applyScheme(resolveDesign(rp, rl));
+const B = snapshot(SIDE(rp, rl));
 
 const ROWS = 10;
 const PW = MM(room.width), PD = MM(room.depth);
@@ -209,7 +214,7 @@ const svg = `<svg xmlns="http://www.w3.org/2000/svg" width="${wMM}mm" height="${
 ${body.join('\n')}
 </svg>`;
 
-const name = `karsilastirma-${leftId}-${rightId}.svg`;
+const name = `karsilastirma-${lp}${ll}-${rp}${rl}.svg`;
 fs.mkdirSync(OUT, { recursive: true });
 fs.writeFileSync(path.join(OUT, name), svg);
 console.log(`  ✓ docs/drawings/${name}  (${(svg.length / 1024).toFixed(1)} kB)  —  ${A.scheme.code} vs ${B.scheme.code}`);

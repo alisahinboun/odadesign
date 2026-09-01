@@ -1,0 +1,71 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="362mm" height="353.6mm"
+  viewBox="0 0 362 353.6" font-family="Helvetica,Arial,sans-serif">
+<title>1-1 kesiti</title>
+<rect width="362" height="353.6" fill="#ffffff"/>
+<defs>
+    <pattern id="hs" width="1.6" height="1.6" patternTransform="rotate(45)" patternUnits="userSpaceOnUse">
+      <line x1="0" y1="0" x2="0" y2="1.6" stroke="#c9ced6" stroke-width="0.55"/></pattern>
+    <pattern id="hc" width="1.1" height="1.1" patternTransform="rotate(45)" patternUnits="userSpaceOnUse">
+      <line x1="0" y1="0" x2="0" y2="1.1" stroke="#b9bec6" stroke-width="0.45"/></pattern>
+  </defs>
+<rect x="83.00" y="227.80" width="168.00" height="8.80" fill="url(#hc)" stroke="#111318" stroke-width="0.6" />
+<rect x="89.00" y="97.80" width="4.00" height="130.00" fill="url(#hs)" stroke="#111318" stroke-width="0.6" />
+<rect x="241.00" y="97.80" width="4.00" height="130.00" fill="url(#hs)" stroke="#111318" stroke-width="0.6" />
+<rect x="83.00" y="89.00" width="168.00" height="8.80" fill="url(#hc)" stroke="#111318" stroke-width="0.6" />
+<rect x="93.00" y="111.80" width="148.00" height="1.20" fill="#e9e4d8" stroke="#111318" stroke-width="0.45" />
+<line x1="111.00" y1="111.80" x2="111.00" y2="97.80" stroke="#98a0ab" stroke-width="0.2" stroke-dasharray="1.4 1.2"/>
+<line x1="109.40" y1="97.80" x2="112.60" y2="97.80" stroke="#98a0ab" stroke-width="0.35" />
+<line x1="135.00" y1="111.80" x2="135.00" y2="97.80" stroke="#98a0ab" stroke-width="0.2" stroke-dasharray="1.4 1.2"/>
+<line x1="133.40" y1="97.80" x2="136.60" y2="97.80" stroke="#98a0ab" stroke-width="0.35" />
+<line x1="159.00" y1="111.80" x2="159.00" y2="97.80" stroke="#98a0ab" stroke-width="0.2" stroke-dasharray="1.4 1.2"/>
+<line x1="157.40" y1="97.80" x2="160.60" y2="97.80" stroke="#98a0ab" stroke-width="0.35" />
+<line x1="183.00" y1="111.80" x2="183.00" y2="97.80" stroke="#98a0ab" stroke-width="0.2" stroke-dasharray="1.4 1.2"/>
+<line x1="181.40" y1="97.80" x2="184.60" y2="97.80" stroke="#98a0ab" stroke-width="0.35" />
+<line x1="207.00" y1="111.80" x2="207.00" y2="97.80" stroke="#98a0ab" stroke-width="0.2" stroke-dasharray="1.4 1.2"/>
+<line x1="205.40" y1="97.80" x2="208.60" y2="97.80" stroke="#98a0ab" stroke-width="0.35" />
+<line x1="231.00" y1="111.80" x2="231.00" y2="97.80" stroke="#98a0ab" stroke-width="0.2" stroke-dasharray="1.4 1.2"/>
+<line x1="229.40" y1="97.80" x2="232.60" y2="97.80" stroke="#98a0ab" stroke-width="0.35" />
+<rect x="93.00" y="227.80" width="148.00" height="1.20" fill="#dcdee1" stroke="#111318" stroke-width="0.45" />
+<text x="167.00" y="105.80" font-size="2.3" fill="#5a626e" text-anchor="middle" >asma tavan üstü tesisat boşluğu  35 cm</text>
+<rect x="93.00" y="145.80" width="38.00" height="82.00" fill="#f4f2ec" stroke="#5a626e" stroke-width="0.3" />
+<rect x="131.00" y="145.80" width="48.00" height="82.00" fill="#f2f2f0" stroke="#5a626e" stroke-width="0.35" />
+<text x="155.00" y="186.80" font-size="3" fill="#5a626e" text-anchor="middle" font-weight="700">K1</text>
+<rect x="179.00" y="145.80" width="14.00" height="82.00" fill="#adc1b3" stroke="#5a626e" stroke-width="0.3" />
+<rect x="193.00" y="145.80" width="48.00" height="82.00" fill="#f4f2ec" stroke="#5a626e" stroke-width="0.3" />
+<rect x="93.00" y="119.00" width="148.00" height="26.80" fill="#eff3f4" stroke="#5a626e" stroke-width="0.3" />
+<rect x="93.00" y="111.80" width="148.00" height="7.20" fill="#e2f2ce" stroke="#5a626e" stroke-width="0.3" />
+<rect x="227.00" y="112.60" width="14.00" height="42.40" fill="#ffffff" stroke="#111318" stroke-width="0.6" />
+<line x1="227.00" y1="154.28" x2="241.00" y2="154.28" stroke="#5a626e" stroke-width="0.25" />
+<line x1="228.00" y1="144.04" x2="240.00" y2="144.04" stroke="#98a0ab" stroke-width="0.22" />
+<line x1="227.00" y1="133.80" x2="241.00" y2="133.80" stroke="#5a626e" stroke-width="0.25" />
+<line x1="228.00" y1="123.56" x2="240.00" y2="123.56" stroke="#98a0ab" stroke-width="0.22" />
+<text x="224.00" y="133.80" font-size="2.4" fill="#b8860b" text-anchor="end" font-weight="700">AD1</text>
+<line x1="258.40" y1="112.60" x2="255.60" y2="112.60" stroke="#1b4f7a" stroke-width="0.18" /><line x1="258.40" y1="155.00" x2="255.60" y2="155.00" stroke="#1b4f7a" stroke-width="0.18" /><line x1="257.00" y1="112.60" x2="257.00" y2="155.00" stroke="#1b4f7a" stroke-width="0.18" /><line x1="256.00" y1="111.60" x2="258.00" y2="113.60" stroke="#1b4f7a" stroke-width="0.3" /><line x1="256.00" y1="154.00" x2="258.00" y2="156.00" stroke="#1b4f7a" stroke-width="0.3" /><text x="258.20" y="133.80" font-size="2.5" fill="#1b4f7a"
+       text-anchor="middle" transform="rotate(-90 258.20 133.80)">106</text>
+<line x1="258.40" y1="155.00" x2="255.60" y2="155.00" stroke="#1b4f7a" stroke-width="0.18" /><line x1="258.40" y1="227.80" x2="255.60" y2="227.80" stroke="#1b4f7a" stroke-width="0.18" /><line x1="257.00" y1="155.00" x2="257.00" y2="227.80" stroke="#1b4f7a" stroke-width="0.18" /><line x1="256.00" y1="154.00" x2="258.00" y2="156.00" stroke="#1b4f7a" stroke-width="0.3" /><line x1="256.00" y1="226.80" x2="258.00" y2="228.80" stroke="#1b4f7a" stroke-width="0.3" /><text x="258.20" y="191.40" font-size="2.5" fill="#1b4f7a"
+       text-anchor="middle" transform="rotate(-90 258.20 191.40)">182</text>
+<rect x="93.20" y="153.80" width="22.00" height="74.00" fill="#fbfbfa" stroke="#98a0ab" stroke-width="0.28" />
+<text x="104.20" y="150.80" font-size="2.2" fill="#98a0ab" text-anchor="middle" >D1</text>
+<rect x="205.40" y="156.60" width="15.20" height="71.20" fill="#fbfbfa" stroke="#98a0ab" stroke-width="0.28" />
+<text x="213.00" y="153.60" font-size="2.2" fill="#98a0ab" text-anchor="middle" >C1</text>
+<rect x="174.20" y="197.80" width="64.00" height="30.00" fill="url(#hc)" stroke="#111318" stroke-width="0.55" />
+<circle cx="206.20" cy="192.30" r="3.10" fill="#fffdf5" stroke="#b8860b" stroke-width="0.3"/><text x="206.20" y="193.25" font-size="2.5" fill="#7a5c05" text-anchor="middle" font-weight="700">M1</text>
+<text x="206.20" y="212.80" font-size="2.3" fill="#111318" text-anchor="middle" >75</text>
+<rect x="95.40" y="195.00" width="21.60" height="32.80" fill="url(#hc)" stroke="#111318" stroke-width="0.55" />
+<circle cx="106.20" cy="189.50" r="3.10" fill="#fffdf5" stroke="#b8860b" stroke-width="0.3"/><text x="106.20" y="190.45" font-size="2.5" fill="#7a5c05" text-anchor="middle" font-weight="700">S2</text>
+<text x="106.20" y="211.40" font-size="2.3" fill="#111318" text-anchor="middle" >82</text>
+<rect x="184.20" y="211.00" width="12.00" height="16.80" fill="url(#hc)" stroke="#111318" stroke-width="0.55" />
+<circle cx="190.20" cy="205.50" r="3.10" fill="#fffdf5" stroke="#b8860b" stroke-width="0.3"/><text x="190.20" y="206.45" font-size="2.5" fill="#7a5c05" text-anchor="middle" font-weight="700">W1</text>
+<text x="190.20" y="219.40" font-size="2.3" fill="#111318" text-anchor="middle" >42</text>
+<line x1="75.00" y1="227.80" x2="89.00" y2="227.80" stroke="#1b4f7a" stroke-width="0.16" stroke-dasharray="3 2"/><path d="M 78.00 227.80 l -2.4 -2.4 l -2.4 2.4 z" fill="#1b4f7a"/><text x="79.00" y="226.20" font-size="2.4" fill="#1b4f7a" text-anchor="start" >±0.00</text>
+<line x1="75.00" y1="111.80" x2="89.00" y2="111.80" stroke="#1b4f7a" stroke-width="0.16" stroke-dasharray="3 2"/><path d="M 78.00 111.80 l -2.4 -2.4 l -2.4 2.4 z" fill="#1b4f7a"/><text x="79.00" y="110.20" font-size="2.4" fill="#1b4f7a" text-anchor="start" >+2.90 asma tavan</text>
+<line x1="75.00" y1="97.80" x2="89.00" y2="97.80" stroke="#1b4f7a" stroke-width="0.16" stroke-dasharray="3 2"/><path d="M 78.00 97.80 l -2.4 -2.4 l -2.4 2.4 z" fill="#1b4f7a"/><text x="79.00" y="96.20" font-size="2.4" fill="#1b4f7a" text-anchor="start" >+3.25 kaba tavan</text>
+<line x1="77.60" y1="111.80" x2="80.40" y2="111.80" stroke="#1b4f7a" stroke-width="0.18" /><line x1="77.60" y1="227.80" x2="80.40" y2="227.80" stroke="#1b4f7a" stroke-width="0.18" /><line x1="79.00" y1="111.80" x2="79.00" y2="227.80" stroke="#1b4f7a" stroke-width="0.18" /><line x1="78.00" y1="110.80" x2="80.00" y2="112.80" stroke="#1b4f7a" stroke-width="0.3" /><line x1="78.00" y1="226.80" x2="80.00" y2="228.80" stroke="#1b4f7a" stroke-width="0.3" /><text x="77.80" y="169.80" font-size="2.5" fill="#1b4f7a"
+       text-anchor="middle" transform="rotate(-90 77.80 169.80)">290 net</text>
+<line x1="77.60" y1="97.80" x2="80.40" y2="97.80" stroke="#1b4f7a" stroke-width="0.18" /><line x1="77.60" y1="111.80" x2="80.40" y2="111.80" stroke="#1b4f7a" stroke-width="0.18" /><line x1="79.00" y1="97.80" x2="79.00" y2="111.80" stroke="#1b4f7a" stroke-width="0.18" /><line x1="78.00" y1="96.80" x2="80.00" y2="98.80" stroke="#1b4f7a" stroke-width="0.3" /><line x1="78.00" y1="110.80" x2="80.00" y2="112.80" stroke="#1b4f7a" stroke-width="0.3" /><text x="77.80" y="104.80" font-size="2.5" fill="#1b4f7a"
+       text-anchor="middle" transform="rotate(-90 77.80 104.80)">35</text>
+<line x1="93.00" y1="239.40" x2="93.00" y2="242.20" stroke="#1b4f7a" stroke-width="0.18" /><line x1="241.00" y1="239.40" x2="241.00" y2="242.20" stroke="#1b4f7a" stroke-width="0.18" /><line x1="93.00" y1="240.80" x2="241.00" y2="240.80" stroke="#1b4f7a" stroke-width="0.18" /><line x1="92.00" y1="241.80" x2="94.00" y2="239.80" stroke="#1b4f7a" stroke-width="0.3" /><line x1="240.00" y1="241.80" x2="242.00" y2="239.80" stroke="#1b4f7a" stroke-width="0.3" /><text x="167.00" y="239.70" font-size="2.5" fill="#1b4f7a" text-anchor="middle" >370</text>
+<text x="63.00" y="63.00" font-size="3.2" fill="#111318" text-anchor="start" font-weight="700">1-1 KESITI — Enine kesit — kapı duvarına bakış</text>
+<text x="63.00" y="69.00" font-size="2.4" fill="#5a626e" text-anchor="start" >Kesme duzlemi y = 110 cm, on duvara bakis</text>
+<rect x="229.00" y="294.60" width="78.00" height="30.00" fill="#ffffff" stroke="#111318" stroke-width="0.4" /><line x1="229.00" y1="302.60" x2="307.00" y2="302.60" stroke="#111318" stroke-width="0.25" /><line x1="229.00" y1="310.10" x2="307.00" y2="310.10" stroke="#5a626e" stroke-width="0.18" /><line x1="229.00" y1="316.60" x2="307.00" y2="316.60" stroke="#5a626e" stroke-width="0.18" /><text x="232.00" y="300.20" font-size="3.2" fill="#111318" text-anchor="start" font-weight="700">Oda Tasarimi / Room Design</text><text x="232.00" y="307.60" font-size="2.9" fill="#111318" text-anchor="start" >1-1 kesiti — Enine kesit — kapı duvarına bakış</text><text x="232.00" y="314.20" font-size="2.3" fill="#5a626e" text-anchor="start" >Olcek 1:25  ·  Olculer cm  ·  Pafta M-08</text><text x="304.00" y="300.20" font-size="2.6" fill="#b8860b" text-anchor="end" font-weight="700">21 Sakin yeşil + Şu anki hâli</text><text x="232.00" y="321.10" font-size="2.1" fill="#5a626e" text-anchor="start" >R00  2026-09-01  ·  parametrik model: src/config/room.js</text>
+</svg>
