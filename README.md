@@ -11,7 +11,8 @@ SketchUp / Blender / 3ds Max'e aktarım.
 | | |
 |---|---|
 | **3B görselleştirici** | `npm run dev` → tarayıcıda etkileşimli model |
-| **2B çizimler** | `npm run drawings` → `docs/drawings/*.svg` (plan, 4 görünüş, tavan, döşeme) |
+| **Tasarım şemaları** | Mevcut durum + 2 öneri; panelden anında geçiş → [`docs/semalar.md`](docs/semalar.md) |
+| **2B çizimler** | `npm run drawings` → `docs/drawings/*.svg` (plan, 4 görünüş, **2 kesit**, tavan, döşeme) |
 | **Metraj / mahal listesi** | `npm run schedule` → `docs/mahal-listesi.md` + `.csv` |
 | **Model denetimi** | `npm run check` → çakışma, sınır, kapı süpürme ve ergonomi kontrolü |
 | **Dışa aktarım** | Görselleştiriciden **GLB / OBJ / PNG** |
@@ -28,10 +29,19 @@ npm run dev        # http://localhost:5173
 Diğer komutlar:
 
 ```bash
-npm run check      # modeli denetle (her ölçü değişikliğinden sonra çalıştırın)
-npm run drawings   # 2B teknik çizimleri üret
-npm run schedule   # mahal ve donatı listesini üret
-npm run build      # tek dosyalık dağıtım (dist/index.html) — paylaşılabilir
+npm run check        # modeli denetle (her ölçü değişikliğinden sonra çalıştırın)
+npm run drawings     # 2B teknik çizimleri üret
+npm run schedule     # mahal ve donatı listesini üret
+npm run all          # üçünü birden
+npm run all:schemes  # üçünü, TÜM tasarım şemaları için
+npm run build        # tek dosyalık dağıtım (dist/index.html) — paylaşılabilir
+```
+
+Belirli bir şema için:
+
+```bash
+npm run check    -- --sema=s2
+npm run drawings -- --sema=s2      # docs/drawings/*-s2.svg
 ```
 
 `npm run build` çıktısı **tek bir HTML dosyasıdır**; sunucu gerekmeden
@@ -110,6 +120,26 @@ açıldığını** ve dolaşım boşluklarını denetler.
 | Kapı açıklığı | Sağ panelden kaydırıcı; çarpmadan azami açı yanında yazar |
 | Aydınlatma | Pozlama ve koridordan gelen gün ışığı ayarlanabilir |
 | Dışa aktarım | GLB · OBJ · PNG (1× ve 4×) |
+| Tasarım şeması | Sağ panelden Ş‑0 / Ş‑1 / Ş‑2 arası geçiş — kamera açısı korunur |
+| Ortam gölgelemesi | GTAO; köşelerde ve mobilya altında yumuşak gölge, kapatılabilir |
+
+---
+
+## Tasarım şemaları
+
+Röleve modeli tasarımın başlangıcı; bitişi değil. `src/config/schemes.js` içinde
+mevcut durum ve iki öneri tanımlı:
+
+| Şema | Kapsam | Kapı açıklığı | Denetim |
+|---|---|---:|---|
+| **Ş‑0** Mevcut durum | röleve, karşılaştırma tabanı | 109° | 0 hata, 1 uyarı |
+| **Ş‑1** Sakin palet | sadece boya + dolap kapağı | 109° | 0 hata, 1 uyarı |
+| **Ş‑2** Yeniden yerleşim | Ş‑1 + mobilya taşınır | **178°** | **0 hata, 0 uyarı** |
+
+Ayrıntı, gerekçe ve karşılaştırma tablosu: [`docs/semalar.md`](docs/semalar.md)
+
+Bir şema seçildiğinde **her şey** onu izler: 3B model, ölçü kotaları, 9 pafta teknik
+çizim ve metraj listesi. Yeni şema eklemek `schemes.js` içine bir nesne yazmaktır.
 
 ---
 
@@ -137,7 +167,9 @@ ve Inkscape ile açılır; 1:25 ölçekte, ölçüler cm.
 
 ```
 src/
-  config/room.js        ⭐ TEK DOĞRULUK KAYNAĞI — tüm ölçüler burada
+  config/
+    room.js             ⭐ TEK DOĞRULUK KAYNAĞI — tüm ölçüler burada
+    schemes.js          tasarım şemaları (mevcut durum + öneriler)
   lib/
     analysis.js         ayak izi, çakışma, kapı süpürme açısı, metrikler
     geom.js             cm→m dönüşümü, kutu/silindir/yuvarlatılmış kutu üreticileri
@@ -148,18 +180,23 @@ src/
     furniture.js        masa, dolap, kitaplık, koltuklar, kredenza, portmanto…
     equipment.js        monitör, PC, yazıcı, duvar elemanları (saat, tablo, ayna…)
     index.js            derleyici + aydınlatma rigi
-  viewer/dimensions.js  3B ölçü kotaları
+  viewer/
+    dimensions.js       3B ölçü kotaları
+    render.js           GTAO ortam gölgelemesi + FXAA işleme hattı
   export/gltf.js        GLB / OBJ / PNG ihracatı
   main.js               görselleştirici arayüzü
 scripts/
   check.mjs             model denetimi
-  drawings.mjs          2B teknik çizim üreteci
+  drawings.mjs          2B teknik çizim üreteci (plan · 4 görünüş · 2 kesit · tavan · döşeme)
   schedule.mjs          mahal ve donatı listesi üreteci
+  build-all.mjs         tüm şemalar için denetim + çizim + metraj
 docs/
   roleve.md             ⚠️ röleve notları, varsayımlar, yerinde kontrol listesi
+  semalar.md            tasarım şemaları: gerekçe, değişiklik ve karşılaştırma
   mahal-listesi.md      metraj + donatı listesi (üretilen)
   donati-listesi.csv    Excel için (üretilen)
-  drawings/*.svg        plan · A/B/C/D görünüşleri · tavan · döşeme (üretilen)
+  drawings/*.svg        plan · A/B/C/D görünüş · 1-1/2-2 kesit · tavan · döşeme
+                        (şema başına 9 pafta, üretilen)
 reference/              kaynak fotoğraflar + el krokisi
 ```
 

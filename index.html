@@ -129,11 +129,34 @@ table.sch tr:hover td.n{color:var(--acc)}
 .callout .note{color:#d5b58c}
 .callout .note b{color:var(--flag)}
 
+/* -------------------------------------------------------- sema secici */
+.schemes{display:flex;flex-direction:column;gap:5px}
+button.scheme{display:grid;grid-template-columns:auto 1fr auto;align-items:center;gap:9px;
+  background:var(--sink);border:1px solid var(--line);border-radius:4px;padding:8px 10px;
+  cursor:pointer;font-family:var(--ui);text-align:left;color:var(--txt-2);width:100%}
+button.scheme:hover{background:var(--raise);border-color:#453f52;color:var(--txt)}
+button.scheme.on{border-color:var(--acc);background:rgba(242,193,28,.09);color:var(--txt)}
+button.scheme .code{font-family:var(--mono);font-size:11px;font-weight:600;color:var(--txt-3);
+  letter-spacing:.04em}
+button.scheme.on .code{color:var(--acc)}
+button.scheme .nm{font-size:12.5px;font-weight:500}
+button.scheme .kind{font-family:var(--mono);font-size:8.5px;letter-spacing:.08em;
+  text-transform:uppercase;color:var(--txt-3);border:1px solid var(--line);
+  border-radius:2px;padding:1px 4px}
+button.scheme.on .kind{border-color:rgba(242,193,28,.35);color:var(--acc)}
+.callout-inline{border-left:2px solid var(--line);padding-left:9px;margin-top:2px}
+
 /* tespit kartlari - modelden cikan bulgular */
 .find{border:1px solid var(--line);border-radius:4px;padding:8px 10px;background:var(--sink)}
 .find h4{margin:0 0 3px;font-size:11px;font-weight:600;color:var(--txt);
   letter-spacing:.02em;display:flex;gap:7px;align-items:baseline}
 .find h4 span{font-family:var(--mono);font-size:9.5px;color:var(--acc);letter-spacing:.06em}
+.find h4 em.state{margin-left:auto;font-style:normal;font-family:var(--mono);font-size:8.5px;
+  letter-spacing:.07em;text-transform:uppercase;color:var(--flag);border:1px solid #5c4021;
+  background:#2a2013;border-radius:2px;padding:1px 4px;flex:0 0 auto}
+.find.ok{border-color:#33612a;background:#161d14}
+.find.ok h4 span{color:var(--pos)}
+.find.ok h4 em.state{color:var(--pos);border-color:#33612a;background:#1b2718}
 .find p{margin:0;font-size:11px;line-height:1.5;color:var(--txt-3)}
 .find p b{color:var(--txt-2);font-weight:600}
 

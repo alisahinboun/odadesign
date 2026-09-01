@@ -8,8 +8,11 @@
     "dev": "vite",
     "build": "vite build",
     "preview": "vite preview",
+    "check": "node scripts/check.mjs",
     "drawings": "node scripts/drawings.mjs",
-    "schedule": "node scripts/schedule.mjs"
+    "schedule": "node scripts/schedule.mjs",
+    "all": "node scripts/check.mjs && node scripts/drawings.mjs && node scripts/schedule.mjs",
+    "all:schemes": "node scripts/build-all.mjs"
   },
   "dependencies": {
     "three": "^0.169.0"

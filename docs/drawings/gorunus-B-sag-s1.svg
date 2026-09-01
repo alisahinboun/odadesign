@@ -6,20 +6,20 @@
 <line x1="73.80" y1="187.00" x2="188.20" y2="187.00" stroke="#111318" stroke-width="0.8" />
 <line x1="73.80" y1="71.00" x2="188.20" y2="71.00" stroke="#111318" stroke-width="0.5" />
 <rect x="77.00" y="71.80" width="108.00" height="42.40" fill="#ffffff" stroke="#111318" stroke-width="0.5" />
-<rect x="77.40" y="93.16" width="20.80" height="20.32" fill="#fcf1cd" stroke="#5a626e" stroke-width="0.3" />
-<rect x="77.40" y="72.68" width="20.80" height="20.32" fill="#f8f6f4" stroke="#5a626e" stroke-width="0.3" />
+<rect x="77.40" y="93.16" width="20.80" height="20.32" fill="#fbfbf9" stroke="#5a626e" stroke-width="0.3" />
+<rect x="77.40" y="72.68" width="20.80" height="20.32" fill="#faf8f6" stroke="#5a626e" stroke-width="0.3" />
 <text x="87.80" y="69.30" font-size="2" fill="#5a626e" text-anchor="middle" >54</text>
-<rect x="99.00" y="93.16" width="20.80" height="20.32" fill="#f8f6f4" stroke="#5a626e" stroke-width="0.3" />
-<rect x="99.00" y="72.68" width="20.80" height="20.32" fill="#fcf1cd" stroke="#5a626e" stroke-width="0.3" />
+<rect x="99.00" y="93.16" width="20.80" height="20.32" fill="#fbfbf9" stroke="#5a626e" stroke-width="0.3" />
+<rect x="99.00" y="72.68" width="20.80" height="20.32" fill="#faf8f6" stroke="#5a626e" stroke-width="0.3" />
 <text x="109.40" y="69.30" font-size="2" fill="#5a626e" text-anchor="middle" >54</text>
-<rect x="120.60" y="93.16" width="20.80" height="20.32" fill="#f8f6f4" stroke="#5a626e" stroke-width="0.3" />
-<rect x="120.60" y="72.68" width="20.80" height="20.32" fill="#fcf1cd" stroke="#5a626e" stroke-width="0.3" />
+<rect x="120.60" y="93.16" width="20.80" height="20.32" fill="#fbfbf9" stroke="#5a626e" stroke-width="0.3" />
+<rect x="120.60" y="72.68" width="20.80" height="20.32" fill="#faf8f6" stroke="#5a626e" stroke-width="0.3" />
 <text x="131.00" y="69.30" font-size="2" fill="#5a626e" text-anchor="middle" >54</text>
-<rect x="142.20" y="93.16" width="20.80" height="20.32" fill="#f8f6f4" stroke="#5a626e" stroke-width="0.3" />
-<rect x="142.20" y="72.68" width="20.80" height="20.32" fill="#fcf1cd" stroke="#5a626e" stroke-width="0.3" />
+<rect x="142.20" y="93.16" width="20.80" height="20.32" fill="#faf8f6" stroke="#5a626e" stroke-width="0.3" />
+<rect x="142.20" y="72.68" width="20.80" height="20.32" fill="#fbfbf9" stroke="#5a626e" stroke-width="0.3" />
 <text x="152.60" y="69.30" font-size="2" fill="#5a626e" text-anchor="middle" >54</text>
-<rect x="163.80" y="93.16" width="20.80" height="20.32" fill="#f8f6f4" stroke="#5a626e" stroke-width="0.3" />
-<rect x="163.80" y="72.68" width="20.80" height="20.32" fill="#fcf1cd" stroke="#5a626e" stroke-width="0.3" />
+<rect x="163.80" y="93.16" width="20.80" height="20.32" fill="#faf8f6" stroke="#5a626e" stroke-width="0.3" />
+<rect x="163.80" y="72.68" width="20.80" height="20.32" fill="#fbfbf9" stroke="#5a626e" stroke-width="0.3" />
 <text x="174.20" y="69.30" font-size="2" fill="#5a626e" text-anchor="middle" >54</text>
 <line x1="77.00" y1="62.40" x2="77.00" y2="65.20" stroke="#1b4f7a" stroke-width="0.18" /><line x1="185.00" y1="62.40" x2="185.00" y2="65.20" stroke="#1b4f7a" stroke-width="0.18" /><line x1="77.00" y1="63.80" x2="185.00" y2="63.80" stroke="#1b4f7a" stroke-width="0.18" /><line x1="76.00" y1="64.80" x2="78.00" y2="62.80" stroke="#1b4f7a" stroke-width="0.3" /><line x1="184.00" y1="64.80" x2="186.00" y2="62.80" stroke="#1b4f7a" stroke-width="0.3" /><text x="131.00" y="62.70" font-size="2.5" fill="#1b4f7a" text-anchor="middle" >270</text>
 <line x1="198.40" y1="71.80" x2="195.60" y2="71.80" stroke="#1b4f7a" stroke-width="0.18" /><line x1="198.40" y1="114.20" x2="195.60" y2="114.20" stroke="#1b4f7a" stroke-width="0.18" /><line x1="197.00" y1="71.80" x2="197.00" y2="114.20" stroke="#1b4f7a" stroke-width="0.18" /><line x1="196.00" y1="70.80" x2="198.00" y2="72.80" stroke="#1b4f7a" stroke-width="0.3" /><line x1="196.00" y1="113.20" x2="198.00" y2="115.20" stroke="#1b4f7a" stroke-width="0.3" /><text x="198.20" y="93.00" font-size="2.5" fill="#1b4f7a"
@@ -47,5 +47,5 @@
 <text x="133.00" y="167.20" font-size="2.1" fill="#b8860b" text-anchor="middle" >T6  +40</text>
 <text x="77.00" y="65.00" font-size="2" fill="#5a626e" text-anchor="start" >T4 Cerceveli belge + bayrak (+248)   ·   T6 Priz (+40)</text>
 <text x="77.00" y="65.00" font-size="3.2" fill="#111318" text-anchor="start" font-weight="700">B GORUNUSU — Sag duvar / ankastre dolap</text>
-<rect x="157.00" y="225.00" width="78.00" height="30.00" fill="#ffffff" stroke="#111318" stroke-width="0.4" /><line x1="157.00" y1="233.00" x2="235.00" y2="233.00" stroke="#111318" stroke-width="0.25" /><line x1="157.00" y1="240.50" x2="235.00" y2="240.50" stroke="#5a626e" stroke-width="0.18" /><line x1="157.00" y1="247.00" x2="235.00" y2="247.00" stroke="#5a626e" stroke-width="0.18" /><text x="160.00" y="230.60" font-size="3.2" fill="#111318" text-anchor="start" font-weight="700">Oda Tasarimi / Room Design</text><text x="160.00" y="238.00" font-size="2.9" fill="#111318" text-anchor="start" >B gorunusu — Sag duvar / ankastre dolap</text><text x="160.00" y="244.60" font-size="2.3" fill="#5a626e" text-anchor="start" >Olcek 1:25  ·  Olculer cm  ·  Pafta M-03</text><text x="232.00" y="230.60" font-size="2.6" fill="#5a626e" text-anchor="end" font-weight="700">Ş-0 Mevcut durum</text><text x="160.00" y="251.50" font-size="2.1" fill="#5a626e" text-anchor="start" >R00  2026-09-01  ·  parametrik model: src/config/room.js</text>
+<rect x="157.00" y="225.00" width="78.00" height="30.00" fill="#ffffff" stroke="#111318" stroke-width="0.4" /><line x1="157.00" y1="233.00" x2="235.00" y2="233.00" stroke="#111318" stroke-width="0.25" /><line x1="157.00" y1="240.50" x2="235.00" y2="240.50" stroke="#5a626e" stroke-width="0.18" /><line x1="157.00" y1="247.00" x2="235.00" y2="247.00" stroke="#5a626e" stroke-width="0.18" /><text x="160.00" y="230.60" font-size="3.2" fill="#111318" text-anchor="start" font-weight="700">Oda Tasarimi / Room Design</text><text x="160.00" y="238.00" font-size="2.9" fill="#111318" text-anchor="start" >B gorunusu — Sag duvar / ankastre dolap</text><text x="160.00" y="244.60" font-size="2.3" fill="#5a626e" text-anchor="start" >Olcek 1:25  ·  Olculer cm  ·  Pafta M-03</text><text x="232.00" y="230.60" font-size="2.6" fill="#b8860b" text-anchor="end" font-weight="700">Ş-1 Sakin palet</text><text x="160.00" y="251.50" font-size="2.1" fill="#5a626e" text-anchor="start" >R00  2026-09-01  ·  parametrik model: src/config/room.js</text>
 </svg>

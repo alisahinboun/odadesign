@@ -292,3 +292,53 @@ export const meta = {
   revision: 'R00',
   date: '2026-09-01',
 };
+
+/* ================================================== 10. SEMA UYGULAMA */
+/**
+ * Bir tasarim semasini config'e UYGULAR. Palet, mobilya/ekipman konumlari ve
+ * dolap kapak deseni yerinde degistirilir; boylece bu modulu okuyan her sey
+ * (3B model, kotalar, teknik cizimler, metraj) ayni semayi gorur.
+ *
+ * Once mevcut duruma (S-0) donulur, sonra sema farki uygulanir - semalar
+ * arasinda gecis yaparken birikme olmaz.
+ */
+const BASE = {
+  palette: JSON.parse(JSON.stringify(palette)),
+  furniture: furniture.map((f) => ({ pos: [...f.pos], rot: f.rot || 0 })),
+  equipment: equipment.map((f) => ({ pos: [...f.pos], rot: f.rot || 0 })),
+  clutter: clutter.map((f) => ({ pos: [...f.pos], rot: f.rot || 0 })),
+  wallItems: wallItems.map((w) => ({ u: w.u, z: w.z })),
+  wallUnitPattern: [...wallUnits.frontPattern],
+};
+
+export let activeScheme = 's0';
+
+export function applyScheme(resolved) {
+  // 1) mevcut duruma don
+  for (const [k, v] of Object.entries(BASE.palette)) palette[k] = { ...v };
+  furniture.forEach((f, i) => { f.pos = [...BASE.furniture[i].pos]; f.rot = BASE.furniture[i].rot; });
+  equipment.forEach((f, i) => { f.pos = [...BASE.equipment[i].pos]; f.rot = BASE.equipment[i].rot; });
+  clutter.forEach((f, i) => { f.pos = [...BASE.clutter[i].pos]; f.rot = BASE.clutter[i].rot; });
+  wallItems.forEach((w, i) => { w.u = BASE.wallItems[i].u; w.z = BASE.wallItems[i].z; });
+  wallUnits.frontPattern = [...BASE.wallUnitPattern];
+
+  // 2) sema farkini uygula
+  if (!resolved) { activeScheme = 's0'; return; }
+  for (const [k, v] of Object.entries(resolved.palette || {})) palette[k] = { ...palette[k], ...v };
+  const patch = (arr, over) => {
+    for (const [id, d] of Object.entries(over || {})) {
+      const it = arr.find((x) => x.id === id);
+      if (!it) continue;
+      if (d.pos) it.pos = [...d.pos];
+      if (d.rot !== undefined) it.rot = d.rot;
+      if (d.u !== undefined) it.u = d.u;
+      if (d.z !== undefined) it.z = d.z;
+    }
+  };
+  patch(furniture, resolved.furniture);
+  patch(equipment, resolved.equipment);
+  patch(clutter, resolved.clutter);
+  patch(wallItems, resolved.wallItems);
+  if (resolved.wallUnitPattern) wallUnits.frontPattern = [...resolved.wallUnitPattern];
+  activeScheme = resolved.id;
+}

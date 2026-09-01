@@ -10,6 +10,9 @@ function memo(key, fn) {
   return cache.get(key);
 }
 
+/** Palet degistiginde dokular yeniden cizilmeli */
+export function clearTextureCache() { cache.clear(); }
+
 function makeCanvas(w, h) {
   const c = document.createElement('canvas');
   c.width = w; c.height = h;

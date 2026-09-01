@@ -12,6 +12,20 @@ import {
   ceiling as ceilCfg, floor as floorCfg, palette, meta,
 } from '../src/config/room.js';
 import { footprint, metrics, doorSwingLimit } from '../src/lib/analysis.js';
+import { schemes, resolveScheme } from '../src/config/schemes.js';
+import { applyScheme } from '../src/config/room.js';
+
+/* ------------------------------------------------------------- sema secimi */
+/** node scripts/X.mjs --sema=s2   (varsayilan s0 = mevcut durum) */
+const argSema = (process.argv.find((a) => a.startsWith('--sema=')) || '').split('=')[1] || 's0';
+const SEMA = schemes.find((x) => x.id === argSema);
+if (!SEMA) {
+  console.error(`Bilinmeyen sema: ${argSema}. Secenekler: ${schemes.map((x) => x.id).join(', ')}`);
+  process.exit(2);
+}
+applyScheme(resolveScheme(argSema));
+const SUFFIX = argSema === 's0' ? '' : `-${argSema}`;
+
 
 const OUT = path.resolve(path.dirname(fileURLToPath(import.meta.url)), '../docs');
 const M = metrics();
@@ -43,9 +57,13 @@ const rows = (arr, kind) => arr.map((it) => {
 });
 const all = [...rows(furniture, 'Mobilya'), ...rows(equipment, 'Ekipman'), ...rows(clutter, 'Esya')];
 
-const md = `# Mahal ve Donatı Listesi
+const md = `# Mahal ve Donatı Listesi — ${SEMA.code} ${SEMA.name}
 
 **${meta.project}** · ${meta.revision} · ${meta.date}
+
+> **${SEMA.code} · ${SEMA.name}** — ${SEMA.summary}
+> ${SEMA.rationale}
+${SEMA.metrajNote ? `>\n> **Metraj notu:** ${SEMA.metrajNote}` : ''}
 Bu dosya \`src/config/room.js\` verisinden **otomatik üretilir** (\`npm run schedule\`). Elle düzenlemeyin.
 
 ## 1. Mahal metrikleri
@@ -107,7 +125,7 @@ ${all.filter((r) => r.not).map((r) => `- **${r.poz}** — ${r.not}`).join('\n')}
 Ölçülerin kaynağı ve güven düzeyi için: [\`docs/roleve.md\`](./roleve.md)
 `;
 
-fs.writeFileSync(path.join(OUT, 'mahal-listesi.md'), md);
+fs.writeFileSync(path.join(OUT, `mahal-listesi${SUFFIX}.md`), md);
 
 const csv = ['poz;ad;tip;genislik_cm;derinlik_cm;yukseklik_cm;x_cm;y_cm;aci_derece;ayak_izi_m2',
   ...[...furniture, ...equipment, ...clutter].map((it) => {
@@ -116,7 +134,7 @@ const csv = ['poz;ad;tip;genislik_cm;derinlik_cm;yukseklik_cm;x_cm;y_cm;aci_dere
     return [it.id, it.name, kind, it.w, it.d, it.h, it.pos[0], it.pos[1], it.rot || 0,
       (((r.x1 - r.x0) * (r.y1 - r.y0)) / 10000).toFixed(3)].join(';');
   })].join('\n');
-fs.writeFileSync(path.join(OUT, 'donati-listesi.csv'), csv + '\n');
+fs.writeFileSync(path.join(OUT, `donati-listesi${SUFFIX}.csv`), csv + '\n');
 
-console.log(`  ✓ docs/mahal-listesi.md   (${all.length} donati, ${Object.keys(palette).length} malzeme)`);
-console.log(`  ✓ docs/donati-listesi.csv (Excel icin ; ayracli)`);
+console.log(`  ✓ docs/mahal-listesi${SUFFIX}.md   (${SEMA.code} ${SEMA.name} · ${all.length} donati)`);
+console.log(`  ✓ docs/donati-listesi${SUFFIX}.csv (Excel icin ; ayracli)`);

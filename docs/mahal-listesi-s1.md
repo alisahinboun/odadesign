@@ -1,10 +1,11 @@
-# Mahal ve Donatı Listesi — Ş-0 Mevcut durum
+# Mahal ve Donatı Listesi — Ş-1 Sakin palet
 
 **Oda Tasarimi / Room Design** · R00 · 2026-09-01
 
-> **Ş-0 · Mevcut durum** — Fotoğraf ve krokiden çıkarılan mevcut hâl. Karşılaştırma tabanı.
-> Okul boyası paleti (sarı panel + yeşil şerit), mobilya olduğu yerde. Kapı kanadı S2 sandalyesine çarptığı için ~109° açılıyor; masanın arkasında 60 cm ölü alan var ve kullanıcı girişe sırtı dönük oturuyor.
-
+> **Ş-1 · Sakin palet** — Yerleşim aynı, yalnızca yüzey renkleri değişiyor. En düşük maliyetli müdahale.
+> Oda penceresiz; ışığı vasistastan ödünç alıyor. Doygun sarı ve yeşil hem ışığı yutuyor hem 10 m²lik hacmi daraltıyor. Panel yüzeyleri sıcak kırık beyaza alınıyor, yeşil TEK vurgu olarak kalıyor ama okul kimliğini koruyacak şekilde adaçayı tonuna çekiliyor. Mobilya, kapı kanadı ve ankastre dolap gövdesi yerinde kalır — sadece boya ve kapak yenilenir.
+>
+> **Metraj notu:** Boya: bölüntü panelleri + 3 sıvalı duvar + tavan bandı. Ankastre dolap kapakları yeniden kaplama. Mobilya alımı yok.
 Bu dosya `src/config/room.js` verisinden **otomatik üretilir** (`npm run schedule`). Elle düzenlemeyin.
 
 ## 1. Mahal metrikleri
@@ -83,11 +84,11 @@ Bölüntü dolu panel toplamı: 5.13 m² · Kapı boşluğu: 2.46 m²
 
 | Anahtar | Yüzey | Hex | RAL (yaklaşık) |
 |---|---|---|---|
-| `yellow` | Boluntu panel sarisi | `#f2c11c` | RAL 1023 benzeri |
-| `green` | Yesil dusey serit | `#3faa35` | RAL 6018 benzeri |
-| `greenLight` | Tavan yesil bandi | `#7cc623` | RAL 6018 acik |
-| `lilac` | Duvar boyasi (lila) | `#bdb5c9` | RAL 7035 mor tonlu |
-| `offwhite` | Krem dolap kapagi | `#ded8cc` | RAL 9001 |
+| `yellow` | Bölüntü panel — sıcak kırık beyaz | `#e7e1d5` | RAL 9001 yakını |
+| `green` | Düşey vurgu şeridi — adaçayı | `#4f7a63` | RAL 6021 koyu |
+| `greenLight` | Tavan bandı — açık adaçayı | `#7d9c87` | RAL 6021 |
+| `lilac` | Duvar boyası — sıcak nötr | `#dcd7ce` | RAL 9002 |
+| `offwhite` | Dolap kapağı — açık | `#efebe3` | RAL 9010 |
 | `beech` | Kayin/ceviz melamin | `#c98b4b` | - |
 | `beechDark` | Koyu melamin | `#8d5a2b` | - |
 | `greyLaminate` | Kapi kanadi gri laminat | `#adaaa4` | RAL 7038 |
@@ -99,7 +100,7 @@ Bölüntü dolu panel toplamı: 5.13 m² · Kapı boşluğu: 2.46 m²
 | `steelLight` | Metal aksam (acik) | `#a7abb0` | - |
 | `chrome` | Krom | `#c8ccd2` | - |
 | `aluminium` | Aluminyum profil | `#9ea3a8` | - |
-| `plasticGrey` | Gri plastik | `#b4b8bb` | - |
+| `plasticGrey` | Gri plastik | `#b9bcbe` | - |
 
 ## 6. Notlar
 

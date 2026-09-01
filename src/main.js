@@ -22,6 +22,9 @@ import { exportGLB, exportOBJ, exportPNG } from './export/gltf.js';
 import { createPipeline } from './viewer/render.js';
 import { cm } from './lib/geom.js';
 import { doorSwingLimit, metrics } from './lib/analysis.js';
+import { schemes, resolveScheme, defaultScheme } from './config/schemes.js';
+import { applyScheme } from './config/room.js';
+import { clearMaterialCache } from './lib/materials.js';
 
 /* ===================================================== SAHNE KURULUMU */
 const app = document.getElementById('app');
@@ -55,9 +58,22 @@ controls.maxDistance = 26;
 controls.target.set(cm(room.width / 2), cm(120), cm(room.depth / 2));
 
 /* ========================================================= MODELI KUR */
-const modelRoot = buildRoom();
+let currentScheme = defaultScheme;
+applyScheme(resolveScheme(currentScheme));
+
+let modelRoot = buildRoom();
 scene.add(modelRoot);
 const lights = buildLights(scene);
+
+/** Bir Object3D agacinin GPU kaynaklarini birakir */
+function disposeTree(node) {
+  node.traverse((o) => {
+    if (!o.isMesh && !o.isSprite && !o.isLine) return;
+    o.geometry?.dispose?.();
+    const mats = Array.isArray(o.material) ? o.material : [o.material];
+    for (const m of mats) { m?.map?.dispose?.(); m?.dispose?.(); }
+  });
+}
 
 /* --------------------------------------------------- isleme hatti (AO) */
 let pipeline = null;
@@ -69,13 +85,13 @@ try {
   useAO = false;
 }
 
-const dimPlan = buildPlanDimensions();
-const dimElev = buildElevationDimensions();
+let dimPlan = buildPlanDimensions();
+let dimElev = buildElevationDimensions();
 dimPlan.visible = false; dimElev.visible = false;
 scene.add(dimPlan, dimElev);
 
 /* Katman kayitlari: layer -> [Object3D] */
-const layerMap = new Map();
+let layerMap = new Map();
 function indexLayers(node) {
   node.traverse((o) => {
     const l = o.userData?.layer;
@@ -322,6 +338,45 @@ function drawMeasure() {
   }
 }
 
+/* =============================================== SEMA DEGISTIRME */
+/**
+ * Semayi uygular ve modeli bastan kurar. Malzeme/doku onbellegi temizlenir,
+ * boylece yeni palet gercekten gorunur. Kamera, katman durumu ve kapi acisi
+ * korunur - iki semayi ayni bakis acisindan karsilastirabilmek icin.
+ */
+function setScheme(id) {
+  if (id === currentScheme) return;
+  currentScheme = id;
+  applyScheme(resolveScheme(id));
+  clearMaterialCache();
+
+  scene.remove(modelRoot, dimPlan, dimElev);
+  disposeTree(modelRoot); disposeTree(dimPlan); disposeTree(dimElev);
+
+  modelRoot = buildRoom();
+  dimPlan = buildPlanDimensions();
+  dimElev = buildElevationDimensions();
+  dimPlan.visible = layerState.dimPlan !== false;
+  dimElev.visible = layerState.dimElev !== false;
+  scene.add(modelRoot, dimPlan, dimElev);
+
+  layerMap = new Map();
+  indexLayers(modelRoot);
+  indexLayers(lights.group);
+  layerMap.set('dimPlan', [dimPlan]);
+  layerMap.set('dimElev', [dimElev]);
+
+  SWING = doorSwingLimit();
+  MET = metrics();
+  selected = null; selBox.visible = false;
+  measure.pts = []; drawMeasure();
+  applyLayers();
+  setDoorAngle(Math.min(doorAngle, SWING.angle));
+  buildUI();
+  updateHead();
+  updateReadout();
+}
+
 /* ========================================================== ARAYUZ */
 const el = {
   topbar: document.getElementById('topbar'),
@@ -334,9 +389,15 @@ const el = {
 };
 el.toggle.onclick = () => el.panel.classList.remove('hidden');
 
-const M = roomMetrics();
-const SWING = doorSwingLimit();
-el.sub.textContent = `${room.width} × ${room.depth} × ${room.height} cm  ·  ${M.alan.toFixed(2)} m²  ·  ${meta.revision}`;
+let M = roomMetrics();
+let SWING = doorSwingLimit();
+let MET = metrics();
+function updateHead() {
+  const sc = schemes.find((x) => x.id === currentScheme);
+  el.sub.innerHTML = `${room.width} × ${room.depth} × ${room.height} cm  ·  ${M.alan.toFixed(2)} m²`
+    + `  ·  <b style="color:var(--acc)">${sc.code} ${sc.name}</b>`;
+}
+updateHead();
 
 function updateReadout() {
   if (measure.on) {
@@ -396,6 +457,7 @@ function buildUI() {
 
   /* ---- yan panel ---- */
   el.scroll.innerHTML = '';
+  el.scroll.appendChild(secSchemes());
   el.scroll.appendChild(secMetrics());
   el.scroll.appendChild(secFindings());
   el.scroll.appendChild(secLayers());
@@ -439,8 +501,8 @@ function secMetrics() {
     ${r('Net alan', `${M.alan.toFixed(2)} m²`, 't', true)}
     ${r('Net hacim', `${M.hacim.toFixed(2)} m³`, 't')}
     ${r('Çevre', `${M.cevre.toFixed(2)} m`, 't')}
-    ${r('Mobilya ayak izi', `${metrics().doluAlan.toFixed(2)} m²`, 't')}
-    ${r('Serbest dolaşım', `${(M.alan - metrics().doluAlan).toFixed(2)} m²`, 't', true)}
+    ${r('Mobilya ayak izi', `${MET.doluAlan.toFixed(2)} m²`, 't')}
+    ${r('Serbest dolaşım', `${(M.alan - MET.doluAlan).toFixed(2)} m²`, 't', true)}
     ${r('Kapı', `${door.width}×${door.height} cm`, 'k')}
     ${r('Kapı azami açıklık', `~${SWING.angle}°`, 't', true)}
     ${r('Vasistas yüksekliği', `${partition.transomTop - partition.sillHeight} cm`, 'f')}
@@ -455,34 +517,76 @@ function secMetrics() {
   return d;
 }
 
-/** Modelden cikan tasarim tespitleri - fotografta gorulmeyen, olculebilen sonuclar */
+/* ------------------------------------------------- tasarim semasi */
+function secSchemes() {
+  const d = sec('Tasarım şeması', true);
+  const wrap = document.createElement('div');
+  wrap.className = 'schemes';
+  for (const sc of schemes) {
+    const b = document.createElement('button');
+    b.className = 'scheme' + (sc.id === currentScheme ? ' on' : '');
+    b.innerHTML = `<span class="code">${sc.code}</span><span class="nm">${sc.name}</span>
+                   <span class="kind">${sc.kind === 'roleve' ? 'röleve' : 'öneri'}</span>`;
+    b.onclick = () => setScheme(sc.id);
+    wrap.appendChild(b);
+  }
+  d.body.appendChild(wrap);
+
+  const sc = schemes.find((x) => x.id === currentScheme);
+  const info = document.createElement('div');
+  info.innerHTML = `<p class="note" style="margin-top:2px"><b>${sc.summary}</b></p>
+    <p class="note">${sc.rationale}</p>
+    ${sc.metrajNote ? `<p class="note callout-inline"><b>Metraj:</b> ${sc.metrajNote}</p>` : ''}`;
+  d.body.appendChild(info);
+  return d;
+}
+
+/**
+ * Modelden cikan tasarim tespitleri. Her tespit aktif semaya gore
+ * "acik" veya "cozuldu" olarak isaretlenir - bir onerinin neyi duzelttigi
+ * boylece iddia degil, olculebilir sonuc olur.
+ */
 function secFindings() {
-  const d = sec('Tespitler');
+  const d = sec('Tespitler', true);
   const desk = furniture.find((f) => f.id === 'M1');
+  const behind = Math.round(room.depth - (desk.pos[1] + desk.d / 2));
+  const deskLeft = desk.pos[0] - desk.w / 2;
+  const deskFront = desk.pos[1] - desk.d / 2;
+  const hingeGap = Math.round(Math.hypot(deskLeft - 99, deskFront) - (door.width - 2 * door.frameFace));
+  const facesDoor = (desk.rot || 0) === 0 && desk.pos[1] > room.depth * 0.4;
+
   const items = [
-    ['T-1', 'Kapı tam açılamıyor',
-     `Kanat çarpmadan <b>~${SWING.angle}°</b> açılıyor; sınırlayan eleman
-      <b>${SWING.blocker || '—'}</b>. Fotoğraf 02 ve 03'te kanadın duvara tam
-      yaslanmamış olması bu tespiti doğruluyor.`],
-    ['T-2', 'Masa süpürme yayının sınırında',
-     `<b>M1</b> masasının sol‑ön köşesi menteşe ekseninden ≈120 cm uzakta,
-      kanat yarıçapı 112 cm. Masa 10 cm daha sola alınırsa kapı çarpar.`],
-    ['T-3', 'Dolabın yeri aynanın yerini belirliyor',
-     `<b>D1</b> ön duvara değil <b>sol duvara</b> sırtını veriyor. Aksi halde
-      95 cm'lik sarı panelin 80 cm'ini kapatır, foto 03'teki aynaya yer kalmazdı.`],
-    ['T-4', 'Dolaşım alanı sınırda',
-     `Mobilya ayak izi ${metrics().doluAlan.toFixed(1)} m², kalan
-      ${(M.alan - metrics().doluAlan).toFixed(1)} m². Masa arkası çalışma boşluğu
-      ${Math.round(room.depth - (desk.pos[1] + desk.d / 2))} cm — yeterli, sınırda.`],
-    ['T-5', 'Arka duvar röleve dışı',
-     `Arka duvar (y=${room.depth}) hiçbir fotoğrafta görünmüyor. Sol duvarla aynı
-      kabul edildi. <b>Yerinde ölçüm gerekiyor.</b>`],
+    { no: 'T-1', title: 'Kapı açılma açısı',
+      ok: SWING.angle >= 170,
+      body: SWING.angle >= 170
+        ? `Kanat <b>${SWING.angle}°</b>ye kadar serbest açılıyor — süpürme yayında mobilya yok.`
+        : `Kanat çarpmadan <b>~${SWING.angle}°</b> açılıyor; sınırlayan eleman <b>${SWING.blocker || '—'}</b>.
+           Fotoğraf 02 ve 03'te kanadın duvara tam yaslanmamış olması bu tespiti doğruluyor.` },
+    { no: 'T-2', title: 'Masa – süpürme yayı payı',
+      ok: hingeGap >= 20,
+      body: `<b>M1</b> masasının sol‑ön köşesi kanat yayının <b>${hingeGap} cm</b> dışında.
+             ${hingeGap >= 20 ? 'Rahat pay var.' : 'Masa birkaç cm sola alınırsa kapı çarpar.'}` },
+    { no: 'T-3', title: 'Kullanıcı girişi görüyor mu',
+      ok: facesDoor,
+      body: facesDoor
+        ? 'Kullanıcı masanın arkasında, kapıya dönük oturuyor; gelen kişiyi görüyor.'
+        : 'Kullanıcı girişe sırtı dönük oturuyor. İdari bir odada gelen kişinin görülmesi beklenir.' },
+    { no: 'T-4', title: 'Dolaşım ve çalışma boşluğu',
+      ok: behind >= 100 && (M.alan - MET.doluAlan) >= 6.4,
+      body: `Mobilya ayak izi <b>${MET.doluAlan.toFixed(1)} m²</b>, serbest kalan
+             <b>${(M.alan - MET.doluAlan).toFixed(1)} m²</b>. Masa arkası çalışma boşluğu
+             <b>${behind} cm</b> (en az 100 cm önerilir).` },
+    { no: 'T-5', title: 'Arka duvar röleve dışı',
+      ok: false,
+      body: `Arka duvar (y=${room.depth}) hiçbir fotoğrafta görünmüyor; sol duvarla aynı kabul edildi.
+             <b>Yerinde ölçüm gerekiyor</b> — priz, kanal veya radyatör olabilir.` },
   ];
-  for (const [no, title, body] of items) {
-    const f = document.createElement('div');
-    f.className = 'find';
-    f.innerHTML = `<h4><span>${no}</span>${title}</h4><p>${body}</p>`;
-    d.body.appendChild(f);
+  for (const f of items) {
+    const el2 = document.createElement('div');
+    el2.className = 'find' + (f.ok ? ' ok' : '');
+    el2.innerHTML = `<h4><span>${f.no}</span>${f.title}
+      <em class="state">${f.ok ? 'çözüldü' : 'açık'}</em></h4><p>${f.body}</p>`;
+    d.body.appendChild(el2);
   }
   return d;
 }

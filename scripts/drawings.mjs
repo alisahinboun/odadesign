@@ -19,6 +19,20 @@ import {
   ceiling as ceilCfg, floor as floorCfg, palette, meta,
 } from '../src/config/room.js';
 import { footprint, doorSwingLimit, metrics, hingeX, leafWidth } from '../src/lib/analysis.js';
+import { schemes, resolveScheme } from '../src/config/schemes.js';
+import { applyScheme } from '../src/config/room.js';
+
+/* ------------------------------------------------------------- sema secimi */
+/** node scripts/X.mjs --sema=s2   (varsayilan s0 = mevcut durum) */
+const argSema = (process.argv.find((a) => a.startsWith('--sema=')) || '').split('=')[1] || 's0';
+const SEMA = schemes.find((x) => x.id === argSema);
+if (!SEMA) {
+  console.error(`Bilinmeyen sema: ${argSema}. Secenekler: ${schemes.map((x) => x.id).join(', ')}`);
+  process.exit(2);
+}
+applyScheme(resolveScheme(argSema));
+const SUFFIX = argSema === 's0' ? '' : `-${argSema}`;
+
 
 const OUT = path.resolve(path.dirname(fileURLToPath(import.meta.url)), '../docs/drawings');
 fs.mkdirSync(OUT, { recursive: true });
@@ -46,6 +60,15 @@ function svg(wMM, hMM, title, body) {
 <rect width="${wMM}" height="${hMM}" fill="#ffffff"/>
 ${body}
 </svg>`;
+}
+
+/** Sema paletinden alinan renkleri cizim icin acar (baski okunurlugu) */
+function tint(key, mix = 0.78) {
+  const hex = (palette[key] || palette.yellow).hex.replace('#', '');
+  const n = parseInt(hex, 16);
+  const r = (n >> 16) & 255, g2 = (n >> 8) & 255, b2 = n & 255;
+  const f = (c) => Math.round(c + (255 - c) * mix).toString(16).padStart(2, '0');
+  return `#${f(r)}${f(g2)}${f(b2)}`;
 }
 
 const esc = (t) => String(t).replace(/&/g, '&amp;').replace(/</g, '&lt;').replace(/>/g, '&gt;');
@@ -100,6 +123,8 @@ function titleBlock(wMM, hMM, name, no, scaleTxt = '1:25') {
     text(x + 3, y + 5.6, meta.project, 3.2, 'start', C.txt, 'font-weight="700"'),
     text(x + 3, y + 13, name, 2.9, 'start'),
     text(x + 3, y + 19.6, `Olcek ${scaleTxt}  ·  Olculer cm  ·  Pafta ${no}`, 2.3, 'start', C.view),
+    text(x + bw - 3, y + 5.6, `${SEMA.code} ${SEMA.name}`, 2.6, 'end',
+      SEMA.kind === 'roleve' ? C.view : C.acc, 'font-weight="700"'),
     text(x + 3, y + 26.5, `${meta.revision}  ${meta.date}  ·  parametrik model: src/config/room.js`, 2.1, 'start', C.view),
   ].join('');
 }
@@ -140,16 +165,18 @@ function drawPlan() {
       // kanat + supurme yayi
       const hx = X(hingeX()), R = MM(leafWidth());
       const lim = doorSwingLimit();
-      const a = Math.min(lim.angle, 95) * Math.PI / 180;
+      const a = Math.min(lim.angle, 90) * Math.PI / 180;   // kanat 90 derecede cizilir
+      const am = lim.angle * Math.PI / 180;                // supurme yayi pratik azamiye kadar
       p.push(line(hx, Y(0), hx + R * Math.cos(a), Y(0) - R * Math.sin(a), C.cut, 0.6));
-      p.push(`<path d="M ${(hx + R).toFixed(2)} ${Y(0).toFixed(2)} A ${R.toFixed(2)} ${R.toFixed(2)} 0 0 0 ${(hx + R * Math.cos(a)).toFixed(2)} ${(Y(0) - R * Math.sin(a)).toFixed(2)}"
-        fill="none" stroke="${C.thin}" stroke-width="0.2" stroke-dasharray="1.6 1.2"/>`);
-      // pratik azami aci
-      const am = lim.angle * Math.PI / 180;
+      const big = lim.angle > 180 ? 1 : 0;
+      p.push(`<path d="M ${(hx + R).toFixed(2)} ${Y(0).toFixed(2)} A ${R.toFixed(2)} ${R.toFixed(2)} 0 ${big} 0 ${(hx + R * Math.cos(am)).toFixed(2)} ${(Y(0) - R * Math.sin(am)).toFixed(2)}"
+        fill="none" stroke="${C.thin}" stroke-width="0.22" stroke-dasharray="1.6 1.2"/>`);
       p.push(line(hx, Y(0), hx + R * Math.cos(am), Y(0) - R * Math.sin(am), C.acc, 0.3, 'stroke-dasharray="2 1.5"'));
-          p.push(text(hx + R * 1.02 * Math.cos(am), Y(0) - R * 1.02 * Math.sin(am) - 2, `azami ${lim.angle}°`, 2.2, 'middle', C.acc));
+      // aci etiketi yayin uzerinde, oda icinde kalacak sekilde
+      const la = (lim.angle * 0.55) * Math.PI / 180;
+      p.push(text(hx + R * 0.74 * Math.cos(la), Y(0) - R * 0.74 * Math.sin(la), `azami ${lim.angle}°`, 2.3, 'middle', C.acc));
     } else {
-      p.push(rect(x0, Y(0), w, PT, C.cut, 0.5, pan.color === 'green' ? '#dff0d8' : '#fdf3cf'));
+      p.push(rect(x0, Y(0), w, PT, C.cut, 0.5, tint(pan.color)));
     }
     cx += pan.width;
   }
@@ -279,7 +306,7 @@ function drawElevation(side, code, name) {
         p.push(text(x0 + w / 2, Z(door.height / 2) + 12.5, `${door.width}/${door.height}`, 2.3, 'middle', C.view));
       } else {
         p.push(rect(x0, Z(partition.sillHeight), w, MM(partition.sillHeight), C.cut, 0.4,
-          pan.color === 'green' ? '#dff0d8' : '#fdf3cf'));
+          tint(pan.color)));
         p.push(rect(x0, Z(partition.baseHeight), w, MM(partition.baseHeight), C.view, 0.3, '#e2e4e6'));
       }
       cx += pan.width;
@@ -316,7 +343,7 @@ function drawElevation(side, code, name) {
         const cName = (i + r) % 2 === 0 ? colorName : (colorName === 'yellow' ? 'offwhite' : 'yellow');
         const zz = zb + 1.8 + r * ((zt - zb - 3.6) / 2);
         p.push(rect(U(wallUnits.yStart + i * mw + 1), Z(zz + (zt - zb - 3.6) / 2 - 0.4), MM(mw - 2), MM((zt - zb - 3.6) / 2 - 0.4),
-          C.view, 0.3, cName === 'yellow' ? '#fdf3cf' : '#f2efe8'));
+          C.view, 0.3, tint(cName)));
       }
       p.push(text(U(wallUnits.yStart + i * mw + mw / 2), Z(zt) - 2.5, `${Math.round(mw)}`, 2.0, 'middle', C.view));
     }
@@ -437,7 +464,7 @@ function drawSection(axis, at, code, name) {
         p.push(text(x0 + w / 2, Z(door.height / 2), door.id, 3.0, 'middle', C.view, 'font-weight="700"'));
       } else {
         p.push(rect(x0, Z(partition.sillHeight), w, MM(partition.sillHeight), C.view, 0.3,
-          pan.color === 'green' ? '#e6f3df' : '#fdf6dd'));
+          tint(pan.color, 0.5)));
       }
       cx += pan.width;
     }
@@ -459,7 +486,7 @@ function drawSection(axis, at, code, name) {
         const rh = (wu.zTop - wu.zBottom - 3.6) / 2;
         const zz = wu.zBottom + 1.8 + r * rh;
         p.push(rect(U(uStart + 1), Z(zz + rh - 0.4), MM(mw - 2), MM(rh - 0.4), C.view, 0.28,
-          cName === 'yellow' ? '#fdf3cf' : '#f2efe8'));
+          tint(cName)));
       }
     }
     p.push(text(U(room.depth / 2), Z(wu.zBottom) + 5, `${wu.id} — ${n} modül × ${Math.round(mw)} cm`, 2.4, 'middle', C.acc));
@@ -595,7 +622,8 @@ const files = [
   ['doseme-plani.svg', drawGridPlan('floor')],
 ];
 for (const [n, c] of files) {
-  fs.writeFileSync(path.join(OUT, n), c);
-  console.log(`  ✓ docs/drawings/${n}  (${(c.length / 1024).toFixed(1)} kB)`);
+  const name = n.replace(/\.svg$/, `${SUFFIX}.svg`);
+  fs.writeFileSync(path.join(OUT, name), c);
+  console.log(`  ✓ docs/drawings/${name}  (${(c.length / 1024).toFixed(1)} kB)`);
 }
-console.log(`\n${files.length} pafta uretildi. Olcek 1:25 — A3'e sigmayan paftalar 1:50 yazdirilabilir.`);
+console.log(`\n${files.length} pafta uretildi — ${SEMA.code} ${SEMA.name}. Olcek 1:25.`);

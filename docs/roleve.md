@@ -75,6 +75,9 @@ Panel toplamı `npm run check` ile her seferinde doğrulanır.
 
 Bunlar fotoğrafta görülmeyen, ancak model üzerinde ölçülebilen sonuçlardır.
 
+> Bu tespitler tasarım önerilerinin çıkış noktasıdır; hangi önerinin hangisini
+> çözdüğü [`semalar.md`](./semalar.md) içinde ölçülebilir olarak karşılaştırılmıştır.
+
 **T‑1 · Kapı kanadı tam açılamıyor.**
 Kanat, çarpmadan **yaklaşık 109°** açılabiliyor; sınırlayan eleman sol duvardaki
 misafir sandalyesi **S2**. Fotoğraf 02 ve 03'te kanadın duvara tam yaslanmamış olması
@@ -126,3 +129,9 @@ Arka duvar (y = 270) hiçbir fotoğrafta görünmüyor. Model, sol duvarla aynı
 
 Ekran renkleri ile boya renkleri birebir örtüşmez; teklif öncesi fiziksel numune
 karşılaştırması yapılmalıdır.
+
+## 8. Sonraki adım
+
+Röleve tamamlandı; tasarım önerileri [`semalar.md`](./semalar.md) içinde.
+Yerinde ölçüm yapıldıktan sonra `src/config/room.js` güncellenir ve
+`npm run all:schemes` ile bütün çizim ve metraj seti yeniden üretilir.

@@ -1,10 +1,11 @@
-# Mahal ve Donatı Listesi — Ş-0 Mevcut durum
+# Mahal ve Donatı Listesi — Ş-2 Yeniden yerleşim
 
 **Oda Tasarimi / Room Design** · R00 · 2026-09-01
 
-> **Ş-0 · Mevcut durum** — Fotoğraf ve krokiden çıkarılan mevcut hâl. Karşılaştırma tabanı.
-> Okul boyası paleti (sarı panel + yeşil şerit), mobilya olduğu yerde. Kapı kanadı S2 sandalyesine çarptığı için ~109° açılıyor; masanın arkasında 60 cm ölü alan var ve kullanıcı girişe sırtı dönük oturuyor.
-
+> **Ş-2 · Yeniden yerleşim** — Ş-1 paleti + mobilya yeniden konumlanıyor. Kapı tam açılıyor, kullanıcı girişi görüyor.
+> Modelin ortaya çıkardığı üç sorunu birden çözer: (1) kapı süpürme yayı tamamen boşaltılır, kanat 175°ye kadar açılır; (2) masa arkaya alınıp kullanıcı girişe dönük oturur — idari bir odada gelen kişiyi görmek gerekir; (3) kapı ile masa arasında net bir ziyaretçi alanı oluşur. Depolama sol ve arka duvarda toplanır, yazıcı mevcut ankastre dolabın altına alınır. Ankastre dolap bankosu ve kapı yerinde kalır — taşınmaz.
+>
+> **Metraj notu:** Ş-1 boya kalemleri + mobilya taşıma/montaj. Yeni mobilya alımı yok; mevcut parçalar yeniden konumlanır. Priz konumları gözden geçirilmeli (masa arkaya alındığı için arka duvarda priz gerekiyor — röleve eksiği).
 Bu dosya `src/config/room.js` verisinden **otomatik üretilir** (`npm run schedule`). Elle düzenlemeyin.
 
 ## 1. Mahal metrikleri
@@ -18,7 +19,7 @@ Bu dosya `src/config/room.js` verisinden **otomatik üretilir** (`npm run schedu
 | Brüt duvar yüzeyi | 37.12 m² |
 | Mobilya ayak izi | 3.20 m² (%32) |
 | Serbest dolaşım alanı | 6.79 m² |
-| Kapı kanadı azami açıklık | ~109° (sınırlayan: S2) |
+| Kapı kanadı azami açıklık | ~178° |
 
 ## 2. Yüzey metrajı
 
@@ -42,28 +43,28 @@ Bölüntü dolu panel toplamı: 5.13 m² · Kapı boşluğu: 2.46 m²
 
 | Poz | Ad | Tip | G×D×Y (cm) | Konum (x,y) | Açı | Ayak izi m² |
 |---|---|---|---|---|---|---:|
-| **M1** | Calisma masasi | Mobilya | 160×75×75 | (283, 97) | 0° | 1.20 |
-| **D1** | Cift kanatli elbise/evrak dolabi | Mobilya | 80×55×185 | (28, 45) | -90° | 0.44 |
-| **K2** | 80 cm rafli modul (kitaplik kabul edildi) | Mobilya | 80×35×185 | (23, 202) | -90° | 0.28 |
-| **S1** | Yonetici calisma koltugu | Mobilya | 62×62×112 | (290, 148) | 180° | 0.38 |
-| **S2** | Misafir sandalyesi (istiflenebilir) | Mobilya | 48×54×82 | (33, 120) | -90° | 0.26 |
-| **A1** | Yazici altligi / alcak dolap | Mobilya | 90×45×62 | (345, 210) | 90° | 0.41 |
-| **C1** | Ayakli askilik | Mobilya | 38×38×178 | (300, 24) | 0° | 0.14 |
-| **W1** | Pedalli cop kovasi | Mobilya | 30×30×42 | (243, 100) | 0° | 0.09 |
-| **E1** | 24" monitor | Ekipman | 55×20×42 | (296, 76) | -10° | 0.17 |
-| **E2** | Masaustu bilgisayar | Ekipman | 20×45×42 | (345, 88) | 4° | 0.11 |
-| **E3** | Klavye | Ekipman | 44×15×3 | (292, 116) | -8° | 0.10 |
-| **E4** | Mouse | Ekipman | 7×11×4 | (330, 120) | -8° | 0.01 |
-| **E5** | Klasor / not defteri | Ekipman | 24×32×3 | (237, 107) | -6° | 0.09 |
-| **E6** | Kalemlik (hasir) | Ekipman | 11×11×20 | (268, 73) | 0° | 0.01 |
-| **E7** | Zimba / kutu | Ekipman | 12×7×4 | (249, 75) | -8° | 0.01 |
-| **E8** | Bardak altligi | Ekipman | 11×11×1 | (243, 97) | 0° | 0.01 |
-| **E9** | Fotokopi / yazici | Ekipman | 58×42×44 | (345, 210) | 90° | 0.24 |
-| **X1** | Mavi klasor | Esya | 8×30×32 | (10, 26) | 4° | 0.03 |
-| **X2** | Eski CRT monitor | Esya | 34×32×28 | (29, 30) | -6° | 0.13 |
-| **X3** | Kutu oyunu | Esya | 30×22×6 | (29, 64) | 102° | 0.09 |
-| **X4** | Futbol topu | Esya | 22×22×22 | (78, 36) | 0° | 0.05 |
-| **X5** | Karton rulo | Esya | 38×12×12 | (76, 11) | 4° | 0.06 |
+| **M1** | Calisma masasi | Mobilya | 160×75×75 | (258, 130) | 0° | 1.20 |
+| **D1** | Cift kanatli elbise/evrak dolabi | Mobilya | 80×55×185 | (28, 180) | -90° | 0.44 |
+| **K2** | 80 cm rafli modul (kitaplik kabul edildi) | Mobilya | 80×35×185 | (95, 250) | 180° | 0.28 |
+| **S1** | Yonetici calisma koltugu | Mobilya | 62×62×112 | (258, 200) | 180° | 0.38 |
+| **S2** | Misafir sandalyesi (istiflenebilir) | Mobilya | 48×54×82 | (258, 55) | 0° | 0.26 |
+| **A1** | Yazici altligi / alcak dolap | Mobilya | 90×45×62 | (345, 215) | 90° | 0.41 |
+| **C1** | Ayakli askilik | Mobilya | 38×38×178 | (340, 30) | 0° | 0.14 |
+| **W1** | Pedalli cop kovasi | Mobilya | 30×30×42 | (225, 138) | 0° | 0.09 |
+| **E1** | 24" monitor | Ekipman | 55×20×42 | (268, 112) | 0° | 0.11 |
+| **E2** | Masaustu bilgisayar | Ekipman | 20×45×42 | (200, 120) | 0° | 0.09 |
+| **E3** | Klavye | Ekipman | 44×15×3 | (268, 148) | 0° | 0.07 |
+| **E4** | Mouse | Ekipman | 7×11×4 | (300, 150) | 0° | 0.01 |
+| **E5** | Klasor / not defteri | Ekipman | 24×32×3 | (320, 145) | -6° | 0.09 |
+| **E6** | Kalemlik (hasir) | Ekipman | 11×11×20 | (228, 108) | 0° | 0.01 |
+| **E7** | Zimba / kutu | Ekipman | 12×7×4 | (222, 128) | 0° | 0.01 |
+| **E8** | Bardak altligi | Ekipman | 11×11×1 | (242, 132) | 0° | 0.01 |
+| **E9** | Fotokopi / yazici | Ekipman | 58×42×44 | (345, 215) | 90° | 0.24 |
+| **X1** | Mavi klasor | Esya | 8×30×32 | (10, 161) | 4° | 0.03 |
+| **X2** | Eski CRT monitor | Esya | 34×32×28 | (29, 165) | -6° | 0.13 |
+| **X3** | Kutu oyunu | Esya | 30×22×6 | (29, 199) | 102° | 0.09 |
+| **X4** | Futbol topu | Esya | 22×22×22 | (42, 252) | 0° | 0.05 |
+| **X5** | Karton rulo | Esya | 38×12×12 | (30, 232) | 0° | 0.05 |
 
 > Konum değerleri elemanın **plan merkezini** verir; dönme de merkez etrafındadır.
 
@@ -83,11 +84,11 @@ Bölüntü dolu panel toplamı: 5.13 m² · Kapı boşluğu: 2.46 m²
 
 | Anahtar | Yüzey | Hex | RAL (yaklaşık) |
 |---|---|---|---|
-| `yellow` | Boluntu panel sarisi | `#f2c11c` | RAL 1023 benzeri |
-| `green` | Yesil dusey serit | `#3faa35` | RAL 6018 benzeri |
-| `greenLight` | Tavan yesil bandi | `#7cc623` | RAL 6018 acik |
-| `lilac` | Duvar boyasi (lila) | `#bdb5c9` | RAL 7035 mor tonlu |
-| `offwhite` | Krem dolap kapagi | `#ded8cc` | RAL 9001 |
+| `yellow` | Bölüntü panel — sıcak kırık beyaz | `#e7e1d5` | RAL 9001 yakını |
+| `green` | Düşey vurgu şeridi — adaçayı | `#4f7a63` | RAL 6021 koyu |
+| `greenLight` | Tavan bandı — açık adaçayı | `#7d9c87` | RAL 6021 |
+| `lilac` | Duvar boyası — sıcak nötr | `#dcd7ce` | RAL 9002 |
+| `offwhite` | Dolap kapağı — açık | `#efebe3` | RAL 9010 |
 | `beech` | Kayin/ceviz melamin | `#c98b4b` | - |
 | `beechDark` | Koyu melamin | `#8d5a2b` | - |
 | `greyLaminate` | Kapi kanadi gri laminat | `#adaaa4` | RAL 7038 |
@@ -99,7 +100,7 @@ Bölüntü dolu panel toplamı: 5.13 m² · Kapı boşluğu: 2.46 m²
 | `steelLight` | Metal aksam (acik) | `#a7abb0` | - |
 | `chrome` | Krom | `#c8ccd2` | - |
 | `aluminium` | Aluminyum profil | `#9ea3a8` | - |
-| `plasticGrey` | Gri plastik | `#b4b8bb` | - |
+| `plasticGrey` | Gri plastik | `#b9bcbe` | - |
 
 ## 6. Notlar
 

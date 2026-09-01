@@ -16,6 +16,15 @@ import {
   room, partition, door, furniture, equipment, clutter, wallItems, wallUnits, ceiling,
 } from '../src/config/room.js';
 import { footprint as rect, overlap, doorSwingLimit, metrics } from '../src/lib/analysis.js';
+import { resolveScheme, schemes } from '../src/config/schemes.js';
+import { applyScheme } from '../src/config/room.js';
+
+/* Sema secimi:  node scripts/check.mjs --sema=s2   (varsayilan: s0 mevcut durum) */
+const argSema = (process.argv.find((a) => a.startsWith('--sema=')) || '').split('=')[1] || 's0';
+const SEMA = schemes.find((x) => x.id === argSema);
+if (!SEMA) { console.error(`Bilinmeyen sema: ${argSema}. Secenekler: ${schemes.map((x) => x.id).join(', ')}`); process.exit(2); }
+applyScheme(resolveScheme(argSema));
+console.log(`\n\x1b[1m\x1b[33m${SEMA.code} · ${SEMA.name}\x1b[0m  —  ${SEMA.summary}`);
 
 let errs = 0, warns = 0;
 const bad = (m) => { console.log('  \x1b[31m✗\x1b[0m ' + m); errs++; };

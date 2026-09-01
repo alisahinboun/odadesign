@@ -27,11 +27,11 @@
 <line x1="229.40" y1="97.80" x2="232.60" y2="97.80" stroke="#98a0ab" stroke-width="0.35" />
 <rect x="93.00" y="227.80" width="148.00" height="1.20" fill="#dcdee1" stroke="#111318" stroke-width="0.45" />
 <text x="167.00" y="105.80" font-size="2.3" fill="#5a626e" text-anchor="middle" >asma tavan üstü tesisat boşluğu  35 cm</text>
-<rect x="93.00" y="145.80" width="38.00" height="82.00" fill="#f9e08e" stroke="#5a626e" stroke-width="0.3" />
+<rect x="93.00" y="145.80" width="38.00" height="82.00" fill="#f3f0ea" stroke="#5a626e" stroke-width="0.3" />
 <rect x="131.00" y="145.80" width="48.00" height="82.00" fill="#f2f2f0" stroke="#5a626e" stroke-width="0.35" />
 <text x="155.00" y="186.80" font-size="3" fill="#5a626e" text-anchor="middle" font-weight="700">K1</text>
-<rect x="179.00" y="145.80" width="14.00" height="82.00" fill="#9fd59a" stroke="#5a626e" stroke-width="0.3" />
-<rect x="193.00" y="145.80" width="48.00" height="82.00" fill="#f9e08e" stroke="#5a626e" stroke-width="0.3" />
+<rect x="179.00" y="145.80" width="14.00" height="82.00" fill="#a7bdb1" stroke="#5a626e" stroke-width="0.3" />
+<rect x="193.00" y="145.80" width="48.00" height="82.00" fill="#f3f0ea" stroke="#5a626e" stroke-width="0.3" />
 <rect x="93.00" y="119.00" width="148.00" height="26.80" fill="#eff3f4" stroke="#5a626e" stroke-width="0.3" />
 <rect x="93.00" y="111.80" width="148.00" height="7.20" fill="#e2f2ce" stroke="#5a626e" stroke-width="0.3" />
 <rect x="227.00" y="112.60" width="14.00" height="42.40" fill="#ffffff" stroke="#111318" stroke-width="0.6" />
@@ -44,19 +44,13 @@
        text-anchor="middle" transform="rotate(-90 258.20 133.80)">106</text>
 <line x1="258.40" y1="155.00" x2="255.60" y2="155.00" stroke="#1b4f7a" stroke-width="0.18" /><line x1="258.40" y1="227.80" x2="255.60" y2="227.80" stroke="#1b4f7a" stroke-width="0.18" /><line x1="257.00" y1="155.00" x2="257.00" y2="227.80" stroke="#1b4f7a" stroke-width="0.18" /><line x1="256.00" y1="154.00" x2="258.00" y2="156.00" stroke="#1b4f7a" stroke-width="0.3" /><line x1="256.00" y1="226.80" x2="258.00" y2="228.80" stroke="#1b4f7a" stroke-width="0.3" /><text x="258.20" y="191.40" font-size="2.5" fill="#1b4f7a"
        text-anchor="middle" transform="rotate(-90 258.20 191.40)">182</text>
-<rect x="93.20" y="153.80" width="22.00" height="74.00" fill="#fbfbfa" stroke="#98a0ab" stroke-width="0.28" />
-<text x="104.20" y="150.80" font-size="2.2" fill="#98a0ab" text-anchor="middle" >D1</text>
-<rect x="205.40" y="156.60" width="15.20" height="71.20" fill="#fbfbfa" stroke="#98a0ab" stroke-width="0.28" />
-<text x="213.00" y="153.60" font-size="2.2" fill="#98a0ab" text-anchor="middle" >C1</text>
-<rect x="174.20" y="197.80" width="64.00" height="30.00" fill="url(#hc)" stroke="#111318" stroke-width="0.55" />
-<circle cx="206.20" cy="192.30" r="3.10" fill="#fffdf5" stroke="#b8860b" stroke-width="0.3"/><text x="206.20" y="193.25" font-size="2.5" fill="#7a5c05" text-anchor="middle" font-weight="700">M1</text>
-<text x="206.20" y="212.80" font-size="2.3" fill="#111318" text-anchor="middle" >75</text>
-<rect x="95.40" y="195.00" width="21.60" height="32.80" fill="url(#hc)" stroke="#111318" stroke-width="0.55" />
-<circle cx="106.20" cy="189.50" r="3.10" fill="#fffdf5" stroke="#b8860b" stroke-width="0.3"/><text x="106.20" y="190.45" font-size="2.5" fill="#7a5c05" text-anchor="middle" font-weight="700">S2</text>
-<text x="106.20" y="211.40" font-size="2.3" fill="#111318" text-anchor="middle" >82</text>
-<rect x="184.20" y="211.00" width="12.00" height="16.80" fill="url(#hc)" stroke="#111318" stroke-width="0.55" />
-<circle cx="190.20" cy="205.50" r="3.10" fill="#fffdf5" stroke="#b8860b" stroke-width="0.3"/><text x="190.20" y="206.45" font-size="2.5" fill="#7a5c05" text-anchor="middle" font-weight="700">W1</text>
-<text x="190.20" y="219.40" font-size="2.3" fill="#111318" text-anchor="middle" >42</text>
+<rect x="186.60" y="195.00" width="19.20" height="32.80" fill="#fbfbfa" stroke="#98a0ab" stroke-width="0.28" />
+<text x="196.20" y="192.00" font-size="2.2" fill="#98a0ab" text-anchor="middle" >S2</text>
+<rect x="221.40" y="156.60" width="15.20" height="71.20" fill="#fbfbfa" stroke="#98a0ab" stroke-width="0.28" />
+<text x="229.00" y="153.60" font-size="2.2" fill="#98a0ab" text-anchor="middle" >C1</text>
+<rect x="164.20" y="197.80" width="64.00" height="30.00" fill="url(#hc)" stroke="#111318" stroke-width="0.55" />
+<circle cx="196.20" cy="192.30" r="3.10" fill="#fffdf5" stroke="#b8860b" stroke-width="0.3"/><text x="196.20" y="193.25" font-size="2.5" fill="#7a5c05" text-anchor="middle" font-weight="700">M1</text>
+<text x="196.20" y="212.80" font-size="2.3" fill="#111318" text-anchor="middle" >75</text>
 <line x1="75.00" y1="227.80" x2="89.00" y2="227.80" stroke="#1b4f7a" stroke-width="0.16" stroke-dasharray="3 2"/><path d="M 78.00 227.80 l -2.4 -2.4 l -2.4 2.4 z" fill="#1b4f7a"/><text x="79.00" y="226.20" font-size="2.4" fill="#1b4f7a" text-anchor="start" >±0.00</text>
 <line x1="75.00" y1="111.80" x2="89.00" y2="111.80" stroke="#1b4f7a" stroke-width="0.16" stroke-dasharray="3 2"/><path d="M 78.00 111.80 l -2.4 -2.4 l -2.4 2.4 z" fill="#1b4f7a"/><text x="79.00" y="110.20" font-size="2.4" fill="#1b4f7a" text-anchor="start" >+2.90 asma tavan</text>
 <line x1="75.00" y1="97.80" x2="89.00" y2="97.80" stroke="#1b4f7a" stroke-width="0.16" stroke-dasharray="3 2"/><path d="M 78.00 97.80 l -2.4 -2.4 l -2.4 2.4 z" fill="#1b4f7a"/><text x="79.00" y="96.20" font-size="2.4" fill="#1b4f7a" text-anchor="start" >+3.25 kaba tavan</text>
@@ -67,5 +61,5 @@
 <line x1="93.00" y1="239.40" x2="93.00" y2="242.20" stroke="#1b4f7a" stroke-width="0.18" /><line x1="241.00" y1="239.40" x2="241.00" y2="242.20" stroke="#1b4f7a" stroke-width="0.18" /><line x1="93.00" y1="240.80" x2="241.00" y2="240.80" stroke="#1b4f7a" stroke-width="0.18" /><line x1="92.00" y1="241.80" x2="94.00" y2="239.80" stroke="#1b4f7a" stroke-width="0.3" /><line x1="240.00" y1="241.80" x2="242.00" y2="239.80" stroke="#1b4f7a" stroke-width="0.3" /><text x="167.00" y="239.70" font-size="2.5" fill="#1b4f7a" text-anchor="middle" >370</text>
 <text x="63.00" y="63.00" font-size="3.2" fill="#111318" text-anchor="start" font-weight="700">1-1 KESITI — Enine kesit — kapı duvarına bakış</text>
 <text x="63.00" y="69.00" font-size="2.4" fill="#5a626e" text-anchor="start" >Kesme duzlemi y = 110 cm, on duvara bakis</text>
-<rect x="229.00" y="294.60" width="78.00" height="30.00" fill="#ffffff" stroke="#111318" stroke-width="0.4" /><line x1="229.00" y1="302.60" x2="307.00" y2="302.60" stroke="#111318" stroke-width="0.25" /><line x1="229.00" y1="310.10" x2="307.00" y2="310.10" stroke="#5a626e" stroke-width="0.18" /><line x1="229.00" y1="316.60" x2="307.00" y2="316.60" stroke="#5a626e" stroke-width="0.18" /><text x="232.00" y="300.20" font-size="3.2" fill="#111318" text-anchor="start" font-weight="700">Oda Tasarimi / Room Design</text><text x="232.00" y="307.60" font-size="2.9" fill="#111318" text-anchor="start" >1-1 kesiti — Enine kesit — kapı duvarına bakış</text><text x="232.00" y="314.20" font-size="2.3" fill="#5a626e" text-anchor="start" >Olcek 1:25  ·  Olculer cm  ·  Pafta M-08</text><text x="304.00" y="300.20" font-size="2.6" fill="#5a626e" text-anchor="end" font-weight="700">Ş-0 Mevcut durum</text><text x="232.00" y="321.10" font-size="2.1" fill="#5a626e" text-anchor="start" >R00  2026-09-01  ·  parametrik model: src/config/room.js</text>
+<rect x="229.00" y="294.60" width="78.00" height="30.00" fill="#ffffff" stroke="#111318" stroke-width="0.4" /><line x1="229.00" y1="302.60" x2="307.00" y2="302.60" stroke="#111318" stroke-width="0.25" /><line x1="229.00" y1="310.10" x2="307.00" y2="310.10" stroke="#5a626e" stroke-width="0.18" /><line x1="229.00" y1="316.60" x2="307.00" y2="316.60" stroke="#5a626e" stroke-width="0.18" /><text x="232.00" y="300.20" font-size="3.2" fill="#111318" text-anchor="start" font-weight="700">Oda Tasarimi / Room Design</text><text x="232.00" y="307.60" font-size="2.9" fill="#111318" text-anchor="start" >1-1 kesiti — Enine kesit — kapı duvarına bakış</text><text x="232.00" y="314.20" font-size="2.3" fill="#5a626e" text-anchor="start" >Olcek 1:25  ·  Olculer cm  ·  Pafta M-08</text><text x="304.00" y="300.20" font-size="2.6" fill="#b8860b" text-anchor="end" font-weight="700">Ş-2 Yeniden yerleşim</text><text x="232.00" y="321.10" font-size="2.1" fill="#5a626e" text-anchor="start" >R00  2026-09-01  ·  parametrik model: src/config/room.js</text>
 </svg>

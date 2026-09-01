@@ -2,6 +2,7 @@
 import * as THREE from 'three';
 import { palette } from '../config/room.js';
 import * as T from './textures.js';
+import { clearTextureCache } from './textures.js';
 
 const cache = new Map();
 const CM = 100; // 1 three.js birimi = 1 m, config cm -> repeat hesabinda kullanilir
@@ -27,6 +28,16 @@ function tx(canvas, { repeat = [1, 1], srgb = true } = {}) {
 function M(key, fn) {
   if (!cache.has(key)) cache.set(key, fn());
   return cache.get(key);
+}
+
+/** Sema degistiginde cagrilir: malzemeler ve dokular yeniden uretilir. */
+export function clearMaterialCache() {
+  for (const m of cache.values()) {
+    if (m.map) m.map.dispose();
+    m.dispose?.();
+  }
+  cache.clear();
+  clearTextureCache();
 }
 
 /* -------------------------------------------------------------- KABUK */
